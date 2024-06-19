@@ -1,17 +1,10 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Grid, Stack, Typography, Button, Avatar, Box } from '@mui/material';
-import { IconGridDots } from '@tabler/icons';
+import { Stack, Typography,  Avatar, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
 
 const RevenueUpdates = () => {
-  const [month, setMonth] = React.useState('1');
-
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
 
   // chart color
   const theme = useTheme();
@@ -25,9 +18,10 @@ const RevenueUpdates = () => {
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
       foreColor: '#adb0bb',
       toolbar: {
-        show: true,
+        show: false,
       },
-      height: 370,
+      height: 320,
+      offsetX: -20,
       stacked: true,
     },
     colors: [primary, secondary],
@@ -41,7 +35,6 @@ const RevenueUpdates = () => {
         borderRadiusWhenStacked: 'all',
       },
     },
-
     stroke: {
       show: false,
     },
@@ -52,13 +45,8 @@ const RevenueUpdates = () => {
       show: false,
     },
     grid: {
-      borderColor: 'rgba(0,0,0,0.1)',
-      strokeDashArray: 3,
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
+      show: false,
+      
     },
     yaxis: {
       min: -5,
@@ -66,10 +54,10 @@ const RevenueUpdates = () => {
       tickAmount: 4,
     },
     xaxis: {
-      categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08'],
-      axisBorder: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      axisTicks: {
         show: false,
-      },
+      }
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
@@ -78,100 +66,44 @@ const RevenueUpdates = () => {
   };
   const seriescolumnchart = [
     {
-      name: 'Eanings this month',
-      data: [1.5, 2.7, 2.2, 3.6, 1.5, 1.0],
+      name: 'Footware',
+      data: [2.5, 3.7, 3.2, 2.6, 1.9],
     },
     {
-      name: 'Expense this month',
-      data: [-1.8, -1.1, -2.5, -1.5, -0.6, -1.8],
+      name: 'Fashionware',
+      data: [-2.8, -1.1, -3.0, -1.5, -1.9],
     },
   ];
 
   return (
     <DashboardCard
       title="Revenue Updates"
-      subtitle="Overview of Profit"
-      action={
-        <CustomSelect
-          labelId="month-dd"
-          id="month-dd"
-          value={month}
-          size="small"
-          onChange={handleChange}
-        >
-          <MenuItem value={1}>March 2023</MenuItem>
-          <MenuItem value={2}>Feb 2023</MenuItem>
-          <MenuItem value={3}>Jan 2023</MenuItem>
-        </CustomSelect>
-      }
-    >
-      <Grid container spacing={3}>
-        {/* column */}
-        <Grid item xs={12} sm={8}>
-          <Box className="rounded-bars">
-            <Chart
-              options={optionscolumnchart}
-              series={seriescolumnchart}
-              type="bar"
-              height="370px"
-            />
-          </Box>
-        </Grid>
-        {/* column */}
-        <Grid item xs={12} sm={4}>
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box
-                width={40}
-                height={40}
-                bgcolor="primary.light"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Typography color="primary" variant="h6" display="flex">
-                  <IconGridDots width={21} />
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                  $63,489.50
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Total Earnings
-                </Typography>
-              </Box>
-            </Stack>
+      subtitle="Overview of Profit">
+      <>
+        <Stack direction="row" spacing={3}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Avatar
+              sx={{ width: 9, height: 9, bgcolor: primary, svg: { display: 'none' } }}
+            ></Avatar>
+            <Box>
+              <Typography variant="subtitle2" fontSize="12px" color="textSecondary">
+                Footware
+              </Typography>
+            </Box>
           </Stack>
-          <Stack spacing={3} my={5}>
-            <Stack direction="row" spacing={2}>
-              <Avatar
-                sx={{ width: 9, mt: 1, height: 9, bgcolor: primary, svg: { display: 'none' } }}
-              ></Avatar>
-              <Box>
-                <Typography variant="subtitle1" color="textSecondary">
-                  Earnings this month
-                </Typography>
-                <Typography variant="h5">$48,820</Typography>
-              </Box>
-            </Stack>
-            <Stack direction="row" spacing={2}>
-              <Avatar
-                sx={{ width: 9, mt: 1, height: 9, bgcolor: secondary, svg: { display: 'none' } }}
-              ></Avatar>
-              <Box>
-                <Typography variant="subtitle1" color="textSecondary">
-                  Expense this month
-                </Typography>
-                <Typography variant="h5">$26,498</Typography>
-              </Box>
-            </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Avatar
+              sx={{ width: 9, height: 9, bgcolor: secondary, svg: { display: 'none' } }}
+            ></Avatar>
+            <Box>
+              <Typography variant="subtitle2" fontSize="12px" color="textSecondary">
+                Fashionware
+              </Typography>
+            </Box>
           </Stack>
-          <Button color="primary" variant="contained" fullWidth>
-            View Full Report
-          </Button>
-        </Grid>
-      </Grid>
+        </Stack>
+        <Chart options={optionscolumnchart} series={seriescolumnchart} type="bar" height="320px" />
+      </>
     </DashboardCard>
   );
 };
