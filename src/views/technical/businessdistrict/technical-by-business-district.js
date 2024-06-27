@@ -16,6 +16,9 @@ import Followers from '../../../components/widgets/charts/Followers';
 import Views from '../../../components/widgets/charts/Views';
 import Earned from '../../../components/widgets/charts/Earned';
 import CurrentValue from '../../../components/widgets/charts/CurrentValue';
+import BDMapboxTechnicalBBD from '../../../components/technical-components/by-business-district-chart-cards/business-district-mapbox-bbd';
+import HighestPeakFeedersBBD from '../../../components/technical-components/by-business-district-chart-cards/highest-peak-feeders-bbd';
+import LowestPeakFeedersBBD from '../../../components/technical-components/by-business-district-chart-cards/lowest-peak-feeders-bbd';
 
 const BCrumb = [
   {
@@ -37,57 +40,16 @@ const TechnicalByBusinessDistricts = () => {
       <Breadcrumb title="Technical By Business District" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={3}>
-          <Followers />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Views />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Earned />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <SalesTwo />
+        <Grid item xs={12}>
+          <BDMapboxTechnicalBBD />
         </Grid>
         <Grid item xs={12}>
-          <CurrentValue />
-        </Grid>
-        <Grid item xs={12} lg={4}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlyBreakup />
-            </Grid>
-            <Grid item xs={12}>
-              <MonthlyEarnings />
-            </Grid>
-            <Grid item xs={12}>
-              <MostVisited />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlySales />
-            </Grid>
-            <Grid item xs={12}>
-              <PageImpressions />
+            <Grid item xs={12} sm={6}>
+              <HighestPeakFeedersBBD />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Customers />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Projects />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <RevenueUpdates />
-            </Grid>
-            <Grid item xs={12}>
-              <SalesOverview />
+              <LowestPeakFeedersBBD />
             </Grid>
           </Grid>
         </Grid>

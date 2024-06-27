@@ -16,6 +16,9 @@ import Followers from '../../../components/widgets/charts/Followers';
 import Views from '../../../components/widgets/charts/Views';
 import Earned from '../../../components/widgets/charts/Earned';
 import CurrentValue from '../../../components/widgets/charts/CurrentValue';
+import AvailabilityTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/availability-abd';
+import FeederNumberTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/feeder-number-abd';
+import PeakLoadTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/peak-load-abd';
 
 const BCrumb = [
   {
@@ -37,57 +40,18 @@ const TechnicalAllBusinessDistricts = () => {
       <Breadcrumb title="Technical All Business District" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={3}>
-          <Followers />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Views />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Earned />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <SalesTwo />
-        </Grid>
+      
         <Grid item xs={12}>
-          <CurrentValue />
+          <AvailabilityTechnicalABD />
         </Grid>
-        <Grid item xs={12} lg={4}>
+
+        <Grid item xs={12}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlyBreakup />
-            </Grid>
-            <Grid item xs={12}>
-              <MonthlyEarnings />
-            </Grid>
-            <Grid item xs={12}>
-              <MostVisited />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlySales />
-            </Grid>
-            <Grid item xs={12}>
-              <PageImpressions />
+            <Grid item xs={12} sm={6}>
+              <FeederNumberTechnicalABD />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Customers />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Projects />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <RevenueUpdates />
-            </Grid>
-            <Grid item xs={12}>
-              <SalesOverview />
+            <PeakLoadTechnicalABD />
             </Grid>
           </Grid>
         </Grid>

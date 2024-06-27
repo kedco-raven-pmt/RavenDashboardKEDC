@@ -197,13 +197,6 @@ const Menuitems = [
     icon: IconChartDonut3,
     href: '/financial/financial-service-band',
   },
-
-  {
-    id: uniqueId(),
-    title: 'Customers',
-    icon: IconChartDonut3,
-    href: '/financial/financial-customer',
-  },
   {
     navlabel: true,
     subheader: 'Technical',
@@ -265,13 +258,6 @@ const Menuitems = [
     title: 'Service Band',
     icon: IconChartDonut3,
     href: '/technical/technical-service-band',
-  },
-
-  {
-    id: uniqueId(),
-    title: 'Customers',
-    icon: IconChartDonut3,
-    href: '/technical/technical-customer',
   },
   
   {

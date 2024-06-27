@@ -16,6 +16,9 @@ import Followers from '../../../components/widgets/charts/Followers';
 import Views from '../../../components/widgets/charts/Views';
 import Earned from '../../../components/widgets/charts/Earned';
 import CurrentValue from '../../../components/widgets/charts/CurrentValue';
+import StateMapboxTechnicalBS from '../../../components/technical-components/by-state-chart-cards/statemapbox-bs';
+import HighestPeakFeedersBS from '../../../components/technical-components/by-state-chart-cards/highest-peak-feeders-bs';
+import LowestPeakFeedersBS from '../../../components/technical-components/by-state-chart-cards/lowest-peak-feeders-bs';
 
 const BCrumb = [
   {
@@ -37,57 +40,18 @@ const TechnicalByState = () => {
       <Breadcrumb title="Technical by State" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={3}>
-          <Followers />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Views />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Earned />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <SalesTwo />
-        </Grid>
+        
         <Grid item xs={12}>
-          <CurrentValue />
+          <StateMapboxTechnicalBS />
         </Grid>
-        <Grid item xs={12} lg={4}>
+
+        <Grid item xs={12}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlyBreakup />
-            </Grid>
-            <Grid item xs={12}>
-              <MonthlyEarnings />
-            </Grid>
-            <Grid item xs={12}>
-              <MostVisited />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlySales />
-            </Grid>
-            <Grid item xs={12}>
-              <PageImpressions />
+            <Grid item xs={12} sm={6}>
+              <HighestPeakFeedersBS />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Customers />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Projects />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <RevenueUpdates />
-            </Grid>
-            <Grid item xs={12}>
-              <SalesOverview />
+              <LowestPeakFeedersBS />
             </Grid>
           </Grid>
         </Grid>
