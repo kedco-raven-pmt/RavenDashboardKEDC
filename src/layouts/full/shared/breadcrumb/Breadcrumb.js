@@ -1,11 +1,20 @@
 import React from 'react';
-import { Grid, Typography, Box, Breadcrumbs, Link } from '@mui/material';
+import { Grid, Typography, Box, Breadcrumbs, Link, MenuItem } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-
+import CustomSelect from '../../../../components/forms/theme-elements/CustomSelect';
 import breadcrumbImg from 'src/assets/images/breadcrumb/ChatBc.png';
 import { IconCircle } from '@tabler/icons';
 
-const Breadcrumb = ({ subtitle, items, title, children }) => (
+
+const Breadcrumb = ({ subtitle, items, title, children }) => {
+
+  const [month, setMonth] = React.useState('1');
+
+  const handleChange = (event) => {
+    setMonth(event.target.value);
+  };
+  
+  return(
   <Grid
     container
     sx={{
@@ -59,17 +68,24 @@ const Breadcrumb = ({ subtitle, items, title, children }) => (
         }}
       >
         {children ? (
-          <Box sx={{ top: '0px', position: 'absolute' }}>{children}</Box>
+          <Box sx={{ top: '0px', position: 'absolute' }} alignContent='center'>{children}</Box>
         ) : (
           <>
             <Box sx={{ top: '0px', position: 'absolute' }}>
-              <img src={breadcrumbImg} alt={breadcrumbImg} width={'165px'} />
+            <CustomSelect labelId="month-dd" id="month-dd" size="small" value={month}  onChange={handleChange} sx={{ display: 'flex' }} p="15px"
+              >
+              <MenuItem value={1}>Today</MenuItem>
+              <MenuItem value={2}>Week</MenuItem>
+              <MenuItem value={3}>Month</MenuItem>
+              </CustomSelect>
+            
             </Box>
           </>
         )}
       </Box>
     </Grid>
   </Grid>
-);
+  )
+};
 
 export default Breadcrumb;

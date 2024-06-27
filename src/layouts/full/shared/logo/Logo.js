@@ -11,7 +11,7 @@ const Logo = () => {
   const customizer = useSelector((state) => state.customizer);
   const LinkStyled = styled(Link)(() => ({
     height: customizer.TopbarHeight,
-    width: customizer.isCollapse ? '40px' : '180px',
+    width: customizer.isCollapse ? '55px' : '210px',
     overflow: 'hidden',
     display: 'block',
   }));
