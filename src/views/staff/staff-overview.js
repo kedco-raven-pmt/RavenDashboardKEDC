@@ -6,15 +6,11 @@ import WeeklyStats from 'src/components/dashboards/modern/WeeklyStats';
 import YearlySales from 'src/components/dashboards/ecommerce/YearlySales';
 import PaymentGateways from 'src/components/dashboards/ecommerce/PaymentGateways';
 import StaffWelcomeCard from 'src/components/dashboards/ecommerce/StaffWelcomeCard';
-import Expence from 'src/components/dashboards/ecommerce/Expence';
-import Growth from 'src/components/dashboards/ecommerce/Growth';
-import RevenueUpdates from 'src/components/dashboards/ecommerce/RevenueUpdates';
-import SalesOverview from 'src/components/dashboards/ecommerce/SalesOverview';
-import SalesTwo from 'src/components/dashboards/ecommerce/SalesTwo';
-import Sales from 'src/components/dashboards/ecommerce/Sales';
-import MonthlyEarnings from 'src/components/dashboards/ecommerce/MonthlyEarnings';
-import ProductPerformances from 'src/components/dashboards/ecommerce/ProductPerformances';
-import RecentTransactions from 'src/components/dashboards/ecommerce/RecentTransactions';
+import ChurnRate from 'src/components/dashboards/ecommerce/ChurnRate';
+import StaffDistribution from 'src/components/dashboards/ecommerce/StaffDistribution';
+import GenderDistribution from 'src/components/dashboards/ecommerce/GenderDistribution';
+import RetentionRate from 'src/components/dashboards/ecommerce/RetentionRate';
+import CollectionsPerStaff from 'src/components/dashboards/ecommerce/CollectionsPerStaff';
 
 const StaffOverview = () => {
   return (
@@ -29,46 +25,36 @@ const StaffOverview = () => {
           {/* column */}
           
           <Grid item xs={12} sm={6} lg={4}>
-            <RevenueUpdates />
+            <StaffDistribution />
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
-            <SalesOverview />
+            <GenderDistribution />
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
-                <SalesTwo />
+                <RetentionRate />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Growth />
+                <ChurnRate />
               </Grid>
               <Grid item xs={12}>
-                <MonthlyEarnings />
+                <CollectionsPerStaff />
               </Grid>
             </Grid>
           </Grid>
           {/* column */}
-          <Grid item xs={12} sm={6} lg={4}>
-            <WeeklyStats />
-          </Grid>
+          
           {/* column */}
-          <Grid item xs={12} lg={4}>
-            <YearlySales />
-          </Grid>
+          
           {/* column */}
-          <Grid item xs={12} lg={4}>
-            <PaymentGateways />
-          </Grid>
+          
           {/* column */}
 
-          <Grid item xs={12} lg={4}>
-            <RecentTransactions />
-          </Grid>
+          
           {/* column */}
 
-          <Grid item xs={12} lg={8}>
-            <ProductPerformances />
-          </Grid>
+          
         </Grid>
       </Box>
     </PageContainer>

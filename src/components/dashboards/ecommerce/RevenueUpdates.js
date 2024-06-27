@@ -78,7 +78,7 @@ const RevenueUpdates = () => {
   return (
     <DashboardCard
       title="Revenue Updates"
-      subtitle="Overview of Profit">
+      subtitle="Overview of Sections">
       <>
         <Stack direction="row" spacing={3}>
           <Stack direction="row" alignItems="center" spacing={1}>
