@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
-
+import OpexBreakdownFinancial from '../../components/financial-components/overview-charts-cards/opex-breakdown-fo';
 import WeeklyStats from 'src/components/dashboards/modern/WeeklyStats';
 import YearlySales from 'src/components/dashboards/ecommerce/YearlySales';
 import PaymentGateways from 'src/components/dashboards/ecommerce/PaymentGateways';
@@ -15,6 +15,18 @@ import Sales from 'src/components/dashboards/ecommerce/Sales';
 import MonthlyEarnings from 'src/components/dashboards/ecommerce/MonthlyEarnings';
 import ProductPerformances from 'src/components/dashboards/ecommerce/ProductPerformances';
 import RecentTransactions from 'src/components/dashboards/ecommerce/RecentTransactions';
+import Followers from '../../components/widgets/charts/Followers';
+import Views from '../../components/widgets/charts/Views';
+import TotalCostFinancial from '../../components/financial-components/overview-charts-cards/total-cost-fo';
+import RevenueBilledFinancial from '../../components/financial-components/overview-charts-cards/revenue-billed-fo';
+import CollectionsFinancial from '../../components/financial-components/overview-charts-cards/collections-fo';
+import CostBreakdownFinancial from '../../components/financial-components/overview-charts-cards/cost-breakdown-fo';
+import Earned from '../../components/widgets/charts/Earned';
+import PageImpressions from '../../components/widgets/charts/PageImpressions';
+import CurrentValue from '../../components/widgets/charts/CurrentValue';
+import MostVisited from '../../components/widgets/charts/MostVisited';
+import YearlyBreakup from '../../components/dashboards/modern/YearlyBreakup';
+
 
 const FinancialOverview = () => {
   return (
@@ -28,46 +40,20 @@ const FinancialOverview = () => {
 
           {/* column */}
           
-          <Grid item xs={12} sm={6} lg={4}>
-            <RevenueUpdates />
+          <Grid item xs={12} sm={4}>
+            <TotalCostFinancial />
           </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <SalesOverview />
+          <Grid item xs={12} sm={4}>
+            <RevenueBilledFinancial />
           </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <SalesTwo />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Growth />
-              </Grid>
-              <Grid item xs={12}>
-                <MonthlyEarnings />
-              </Grid>
-            </Grid>
+          <Grid item xs={12} sm={4}>
+            <CollectionsFinancial />
           </Grid>
-          {/* column */}
-          <Grid item xs={12} sm={6} lg={4}>
-            <WeeklyStats />
+          <Grid item xs={12} sm={12}>
+              <OpexBreakdownFinancial />
           </Grid>
-          {/* column */}
-          <Grid item xs={12} lg={4}>
-            <YearlySales />
-          </Grid>
-          {/* column */}
-          <Grid item xs={12} lg={4}>
-            <PaymentGateways />
-          </Grid>
-          {/* column */}
-
-          <Grid item xs={12} lg={4}>
-            <RecentTransactions />
-          </Grid>
-          {/* column */}
-
-          <Grid item xs={12} lg={8}>
-            <ProductPerformances />
+          <Grid item xs={12} sm={12}>
+            <CostBreakdownFinancial />
           </Grid>
         </Grid>
       </Box>

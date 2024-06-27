@@ -12,7 +12,7 @@ const TechnicalWelcomeCard = () => {
     setMonth(event.target.value);
   };
   return (
-    <Card elevation={0} sx={{ backgroundColor: (theme) => theme.palette.primary.light, py: 0 }}>
+    <Card elevation={0} sx={{ backgroundColor: '#EFF2F4', py: 0 }}>
       <CardContent sx={{ py: 2, px: 2 }}>
         <Grid container justifyContent="space-between">
           <Grid item sm={6} display="flex" alignItems="center">

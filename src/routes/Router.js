@@ -150,6 +150,10 @@ const Maintenance = Loadable(lazy(() => import('../views/temp-others/authenticat
 // landingpage
 const Landingpage = Loadable(lazy(() => import('../views/temp-others/pages/landingpage/Landingpage')));
 
+const Homepage = Loadable(lazy(() => import('../views/homepage/homepage')))
+
+
+
 const Router = [
   {
     path: '/',
@@ -192,6 +196,8 @@ const Router = [
       { path: '/staff/staff-feeder', element: <StaffFeeder /> },
       { path: '/staff/staff-service-band', element: <StaffServiceBand /> },
       { path: '/staff/staff-customer', element: <StaffCustomer /> },
+
+      { path: '/home', element: <Homepage /> },
 
 
 
