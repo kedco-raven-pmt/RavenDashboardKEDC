@@ -18,6 +18,7 @@ import Earned from '../../../components/widgets/charts/Earned';
 import CurrentValue from '../../../components/widgets/charts/CurrentValue';
 import AvailabilityTechnicalSBT from '../../../components/technical-components/service-bands-chart-cards/availability-service-bands';
 import TechBreakdownTechnicalSBT from '../../../components/technical-components/service-bands-chart-cards/technical-breakdown-servicce-band';
+import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter';
 
 
 const BCrumb = [
@@ -39,6 +40,9 @@ const TechnicalServiceBand = () => {
       {/* breadcrumb */}
       <Breadcrumb title="Technical Service Band" items={BCrumb} />
       {/* end breadcrumb */}
+      <Grid item xs={4}>
+          <StateFilter />
+        </Grid>
       <Grid container spacing={3}>
 
         <Grid item xs={12}>

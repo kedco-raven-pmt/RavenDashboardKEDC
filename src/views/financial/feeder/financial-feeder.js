@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
 import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
@@ -16,6 +16,9 @@ import Followers from '../../../components/widgets/charts/Followers';
 import Views from '../../../components/widgets/charts/Views';
 import Earned from '../../../components/widgets/charts/Earned';
 import RevenueCostFinancialFeeder from '../../../components/financial-components/feeder-chart-cards/revenue-cost-feeder';
+import StateMenuFilter from 'src/layouts/full/shared/breadcrumb/StateMenuFilter';
+import BusinessDistrictFilter from 'src/layouts/full/shared/breadcrumb/BusinessDistrictFilter';
+import FeederType from 'src/layouts/full/shared/breadcrumb/FeederType';
 
 const BCrumb = [
   {
@@ -31,13 +34,34 @@ const BCrumb = [
 ];
 
 const FinancialFeeder = () => {
+  const handleFilterChange = (filter) => {
+    // Implement the filter change logic here
+    console.log(filter);
+  };
+
   return (
     <PageContainer title="Financial Feeder" description="this is Charts page">
       {/* breadcrumb */}
       <Breadcrumb title="Financial Feeder" items={BCrumb} />
       {/* end breadcrumb */}
+      
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ width: 'fit-content' }}>
+            <BusinessDistrictFilter onFilterChange={handleFilterChange} />
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ marginRight: '10px' }}>
+              <StateMenuFilter />
+            </Box>
+            <Box>
+              <FeederType />
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+
       <Grid container spacing={3}>
-        
         <Grid item xs={12}>
           <RevenueCostFinancialFeeder />
         </Grid>

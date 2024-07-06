@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Box, CardContent, Grid, Typography, Stack, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { Box, CardContent, Grid, Typography } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -15,21 +15,17 @@ const businessDistricts = {
   'Kano West': { coordinates: [12.0352, 8.4262], value: 129 },
   'Katsina South': { coordinates: [12.8432, 7.6710], value: 80 },
   'Jigawa South': { coordinates: [11.7200, 9.6100], value: 64 },
-  'Jigawa North': { coordinates: [12.8760, 9.6181], value: 60 }
+  'Jigawa North': { coordinates: [12.8760, 9.6181], value: 60 },
+  'Katsina Central': { coordinates: [12.9898, 7.6006], value: 75 } // Added Katsina Central
 };
 
-const BusinessDistrictMap = () => {
+const BusinessDistrictMap = ({ selectedDistrict }) => {
   const theme = useTheme();
-  const primary = theme.palette.primary.main;
-  const secondary = theme.palette.secondary.main;
-  const tertiary = theme.palette.tertiary ? theme.palette.tertiary.main : 'blue';
-  const [selectedDistrict, setSelectedDistrict] = useState('All');
 
   const MapController = () => {
     const map = useMap();
-    if (selectedDistrict !== 'All') {
-      const district = businessDistricts[selectedDistrict];
-      map.setView(district.coordinates, 10);
+    if (selectedDistrict && businessDistricts[selectedDistrict]) {
+      map.setView(businessDistricts[selectedDistrict].coordinates, 10);
     } else {
       map.setView([12.5, 8], 7);
     }
@@ -39,25 +35,7 @@ const BusinessDistrictMap = () => {
   return (
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
-        <Stack direction="row" spacing={2} justifyContent="space-between">
-          <Typography variant="h5">Business District Map</Typography>
-          <FormControl variant="outlined">
-            <InputLabel>Business District</InputLabel>
-            <Select
-              value={selectedDistrict}
-              onChange={(e) => setSelectedDistrict(e.target.value)}
-              label="Business District"
-            >
-              <MenuItem value="All">All</MenuItem>
-              {Object.keys(businessDistricts).map((district) => (
-                <MenuItem key={district} value={district}>
-                  {district}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
-
+        <Typography variant="h5">Business District Map</Typography>
         <Grid container spacing={3} mt={2}>
           <Grid item xs={12}>
             <MapContainer center={[12.5, 8]} zoom={7} style={{ height: '550px', width: '100%' }}>

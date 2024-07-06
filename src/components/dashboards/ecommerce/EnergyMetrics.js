@@ -2,9 +2,7 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
 import {
-  MenuItem,
   Typography,
   Box,
   Table,
@@ -13,7 +11,6 @@ import {
   TableHead,
   TableRow,
   TableContainer,
-  Stack,
 } from '@mui/material';
 
 const EnergyMetrics = () => {
@@ -31,137 +28,74 @@ const EnergyMetrics = () => {
   const primarylight = theme.palette.primary.light;
   const greylight = theme.palette.grey[100];
 
-  // chart 1
-  const optionsrow1chart = {
+  const getColumnChartOptions = (color, data) => ({
     chart: {
-      type: 'area',
+      type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
       foreColor: '#adb0bb',
       toolbar: {
         show: false,
       },
-      height: 45,
-      width: 100,
+      height: 75,
       sparkline: {
         enabled: true,
       },
-      group: 'sparklines',
     },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
+    colors: [color],
+    plotOptions: {
+      bar: {
+        borderRadius: 3,
+        columnWidth: '65%',
+        endingShape: 'rounded',
+        dataLabels: {
+          position: 'top',
+        },
+      },
     },
-    fill: {
-      colors: [primarylight],
-      type: 'solid',
-      opacity: 0.05,
+    dataLabels: {
+      enabled: true,
+      formatter: (val) => val,
+      style: {
+        fontSize: '10px',
+        colors: [theme.palette.mode === 'dark' ? '#fff' : '#000'],
+      },
+      offsetY: -20,
     },
-    markers: {
-      size: 0,
+    legend: {
+      show: false,
+    },
+    grid: {
+      yaxis: {
+        lines: {
+          show: false,
+        },
+      },
+    },
+    xaxis: {
+      categories: ['March', 'April', 'May', 'June'],
+      labels: {
+        style: {
+          fontSize: '10px',
+          fontWeight: 600,
+        },
+      },
+    },
+    yaxis: {
+      show: false,
     },
     tooltip: {
-      enabled: false,
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
-  };
-  const seriesrow1chart = [
-    {
-      name: 'Customers',
-      color: primary,
-      data: [25, 35, 20, 30],
-    },
-  ];
+  });
 
-  // chart 2
-  const optionsrow2chart = {
-    chart: {
-      type: 'area',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: false,
-      },
-      height: 45,
-      width: 100,
-      sparkline: {
-        enabled: true,
-      },
-      group: 'sparklines',
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
-    },
-    fill: {
-      colors: [greylight],
-      type: 'solid',
-      opacity: 0.05,
-    },
-    markers: {
-      size: 0,
-    },
-    tooltip: {
-      enabled: false,
-    },
-  };
-  const seriesrow2chart = [
-    {
-      name: 'Customers',
-      color: grey,
-      data: [30, 25, 35, 20],
-    },
-  ];
-
-  // chart 3
-  const optionsrow3chart = {
-    chart: {
-      type: 'area',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: false,
-      },
-      height: 45,
-      width: 100,
-      sparkline: {
-        enabled: true,
-      },
-      group: 'sparklines',
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
-    },
-    fill: {
-      colors: [primarylight],
-      type: 'solid',
-      opacity: 0.05,
-    },
-    markers: {
-      size: 0,
-    },
-    tooltip: {
-      enabled: false,
-    },
-  };
-  const seriesrow3chart = [
-    {
-      name: 'Customers',
-      color: primary,
-      data: [30, 25, 35, 20],
-    },
-  ];
+  const energyDeliveredSeries = [{ name: 'Energy Delivered', data: [150, 105, 192, 100] }];
+  const energyBilledSeries = [{ name: 'Energy Billed', data: [80, 75, 55, 100] }];
+  const energyCollectedSeries = [{ name: 'Energy Collected', data: [40, 35, 25, 50] }];
 
   return (
-    <DashboardCard
-      title="Energy Metrics"
-    >
+    <DashboardCard title="Energy Metrics">
       <TableContainer>
-        <Table
-          aria-label="simple table"
-          sx={{
-            whiteSpace: 'nowrap',
-          }}
-        >
+        <Table aria-label="simple table" sx={{ whiteSpace: 'nowrap' }}>
           <TableHead>
             <TableRow>
               <TableCell sx={{ pl: 0 }}>
@@ -200,10 +134,10 @@ const EnergyMetrics = () => {
               </TableCell>
               <TableCell>
                 <Chart
-                  options={optionsrow1chart}
-                  series={seriesrow1chart}
-                  type="area"
-                  height="35px"
+                  options={getColumnChartOptions(primary, energyDeliveredSeries[0].data)}
+                  series={energyDeliveredSeries}
+                  type="bar"
+                  height="75px"
                   width="100px"
                 />
               </TableCell>
@@ -227,9 +161,9 @@ const EnergyMetrics = () => {
               </TableCell>
               <TableCell>
                 <Chart
-                  options={optionsrow2chart}
-                  series={seriesrow2chart}
-                  type="area"
+                  options={getColumnChartOptions(grey, energyBilledSeries[0].data)}
+                  series={energyBilledSeries}
+                  type="bar"
                   height="75px"
                   width="100px"
                 />
@@ -254,9 +188,9 @@ const EnergyMetrics = () => {
               </TableCell>
               <TableCell>
                 <Chart
-                  options={optionsrow3chart}
-                  series={seriesrow3chart}
-                  type="area"
+                  options={getColumnChartOptions(primary, energyCollectedSeries[0].data)}
+                  series={energyCollectedSeries}
+                  type="bar"
                   height="75px"
                   width="100px"
                 />

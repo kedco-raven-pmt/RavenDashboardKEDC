@@ -89,15 +89,9 @@ const StateMapboxTechnicalBS = () => {
 
   return (
     <DashboardCard 
-      title="Financial Breakdown By State"
+      title="Technical Breakdown By State"
       subtitle="Select a state"
-      action={
-        <ButtonGroup variant="outlined"  aria-label="outlined button group">
-        <Button>Kano</Button>
-        <Button>Katsina</Button>
-        <Button>Jigawa</Button>
-      </ButtonGroup>
-      }
+      
     >
       <Grid container spacing={3}>
         {/* column */}

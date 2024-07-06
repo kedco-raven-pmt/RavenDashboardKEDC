@@ -1,267 +1,198 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import DashboardCard from '../../shared/DashboardCard';
-import {
-  Typography,
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Chip,
-  TableContainer,
-} from '@mui/material';
+import { CardContent, Typography, Grid, Stack, Box } from '@mui/material';
+import BlankCard from '../../shared/BlankCard';
+import { IconArrowUpRight } from '@tabler/icons';
 
 const CustomerMetrics = () => {
-  // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
-  const grey = theme.palette.grey[300];
-  const primarylight = theme.palette.primary.light;
-  const greylight = theme.palette.grey[100];
 
-  // x-axis labels
-  const xAxisLabels = ['J', 'M', 'A', 'M'];
-
-  // common chart options
-  const commonChartOptions = (color) => ({
+  const getColumnChartOptions = (color, formatter) => ({
     chart: {
-      type: 'area',
+      type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
       foreColor: '#adb0bb',
       toolbar: {
         show: false,
       },
-      height: 35,
-      width: 100,
-      sparkline: {
-        enabled: true,
+    },
+    colors: [color],
+    plotOptions: {
+      bar: {
+        borderRadius: 3,
+        columnWidth: '65%',
+        endingShape: 'rounded',
+        dataLabels: {
+          position: 'top',
+        },
       },
-      group: 'sparklines',
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: formatter,
+      style: {
+        fontSize: '10px',
+        colors: [theme.palette.mode === 'dark' ? '#fff' : '#000'],
+      },
+      offsetY: -20,
+    },
+    legend: {
+      show: false,
+    },
+    grid: {
+      yaxis: {
+        lines: {
+          show: false,
+        },
+      },
     },
     xaxis: {
-      categories: xAxisLabels,
+      categories: ['March', 'April', 'May', 'June'],
       labels: {
-        show: true,
+        style: {
+          fontSize: '10px',
+          fontWeight: 600,
+        },
       },
     },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
-    },
-    fill: {
-      colors: [color],
-      type: 'solid',
-      opacity: 0.05,
-    },
-    markers: {
-      size: 0,
+    yaxis: {
+      show: false,
     },
     tooltip: {
-      enabled: false,
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
+    },
+    title: {
+      text: 'Past Four Months',
+      align: 'center',
+      style: {
+        fontSize: '14px',
+        fontWeight: 600,
+        color: theme.palette.mode === 'dark' ? '#fff' : '#000',
+      },
     },
   });
 
-  const seriesData = [
-    {
-      name: 'Customers',
-      data: [30, 25, 35, 20],
-    },
-  ];
+  const responseSeries = [{ name: 'Response Rate', data: [63, 65, 68, 70] }];
+  const metricSeries = [{ name: 'Metric', data: [1.6, 1.8, 1.5, 1.7] }];
+  const revenueSeries = [{ name: 'Revenue', data: [90, 95, 85, 80] }];
+  const collectionsSeries = [{ name: 'Collections', data: [144, 150, 138, 140] }];
 
   return (
-    <DashboardCard title="Customer Metrics">
-      <TableContainer>
-        <Table
-          aria-label="simple table"
-          sx={{ whiteSpace: 'nowrap' }}
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ pl: 0 }}>
-                <Typography variant="subtitle2" fontWeight={600}>
-                  Metrics
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant="subtitle2" fontWeight={600}>
-                  Value
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant="subtitle2" fontWeight={600}>
-                  Status
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Typography variant="subtitle2" fontWeight={600}>
-                  Trend (Past four Months)
-                </Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell sx={{ pl: 0 }}>
-                <Box>
-                  <Typography variant="subtitle2" fontWeight={600}>
-                    Customer Response Rate
-                  </Typography>
-                  <Typography color="textSecondary" fontSize="12px" variant="subtitle2">
-                    Response
-                  </Typography>
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                  63%
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Chip
-                  sx={{
-                    bgcolor: (theme) => theme.palette.success.light,
-                    color: (theme) => theme.palette.success.main,
-                    borderRadius: '6px',
-                    width: 80,
-                  }}
-                  size="small"
-                  label="Low"
-                />
-              </TableCell>
-              <TableCell>
-                <Chart
-                  options={commonChartOptions(primarylight)}
-                  series={seriesData}
-                  type="area"
-                  height="35px"
-                  width="100px"
-                />
-              </TableCell>
-            </TableRow>
-            {/* 2 */}
-            <TableRow>
-              <TableCell sx={{ pl: 0 }}>
-                <Box>
-                  <Typography variant="subtitle2" fontWeight={600}>
-                    Customer Response Metric
-                  </Typography>
-                  <Typography color="textSecondary" fontSize="12px" variant="subtitle2">
-                    Response
-                  </Typography>
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                  1.60
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Chip
-                  sx={{
-                    bgcolor: (theme) => theme.palette.warning.light,
-                    color: (theme) => theme.palette.warning.main,
-                    borderRadius: '6px',
-                    width: 80,
-                  }}
-                  size="small"
-                  label="Medium"
-                />
-              </TableCell>
-              <TableCell>
-                <Chart
-                  options={commonChartOptions(greylight)}
-                  series={seriesData}
-                  type="area"
-                  height="35px"
-                  width="100px"
-                />
-              </TableCell>
-            </TableRow>
-            {/* 3 */}
-            <TableRow>
-              <TableCell sx={{ pl: 0 }}>
-                <Box>
-                  <Typography variant="subtitle2" fontWeight={600}>
-                    Revenue Billed Per Customer ('000)
-                  </Typography>
-                  <Typography color="textSecondary" fontSize="12px" variant="subtitle2">
-                    Billings
-                  </Typography>
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                  90
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Chip
-                  sx={{
-                    bgcolor: (theme) => theme.palette.primary.light,
-                    color: (theme) => theme.palette.primary.main,
-                    borderRadius: '6px',
-                    width: 80,
-                  }}
-                  size="small"
-                  label="Very High"
-                />
-              </TableCell>
-              <TableCell>
-                <Chart
-                  options={commonChartOptions(primarylight)}
-                  series={seriesData}
-                  type="area"
-                  height="35px"
-                  width="100px"
-                />
-              </TableCell>
-            </TableRow>
-            {/* 4 */}
-            <TableRow>
-              <TableCell sx={{ pl: 0 }}>
-                <Box>
-                  <Typography variant="subtitle2" fontWeight={600}>
-                    Collections Per Customer ('000)
-                  </Typography>
-                  <Typography color="textSecondary" fontSize="12px" variant="subtitle2">
-                    Collections
-                  </Typography>
-                </Box>
-              </TableCell>
-              <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                  144
-                </Typography>
-              </TableCell>
-              <TableCell>
-                <Chip
-                  sx={{
-                    bgcolor: (theme) => theme.palette.error.light,
-                    color: (theme) => theme.palette.error.main,
-                    borderRadius: '6px',
-                    width: 80,
-                  }}
-                  size="small"
-                  label="High"
-                />
-              </TableCell>
-              <TableCell>
-                <Chart
-                  options={commonChartOptions(greylight)}
-                  series={seriesData}
-                  type="area"
-                  height="35px"
-                  width="100px"
-                />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </DashboardCard>
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={6}>
+        <BlankCard>
+          <CardContent>
+            <Typography variant="h5">Customer Response Rate</Typography>
+            <Typography variant="h4" mt={3} fontWeight={600}>63%</Typography>
+            <Typography variant="subtitle2" fontSize="12px" color="textSecondary">
+              (last month)
+            </Typography>
+            <Stack direction="row" spacing={1} mt={1} alignItems="center">
+              <Box sx={{ bgcolor: 'success.light', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>
+                <IconArrowUpRight width={16} color="#28a745" />
+              </Box>
+              <Typography variant="subtitle2" color="textSecondary">
+                +4%
+              </Typography>
+            </Stack>
+            <Box mt={2}>
+              <Chart
+                options={getColumnChartOptions(theme.palette.success.main, (val) => val + '%')}
+                series={responseSeries}
+                type="bar"
+                height="125px"
+              />
+            </Box>
+          </CardContent>
+        </BlankCard>
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+        <BlankCard>
+          <CardContent>
+            <Typography variant="h5">Revenue Billed Per Customer</Typography>
+            <Typography variant="h4" mt={3} fontWeight={600}>₦90k</Typography>
+            <Typography variant="subtitle2" fontSize="12px" color="textSecondary">
+              (last month)
+            </Typography>
+            <Stack direction="row" spacing={1} mt={1} alignItems="center">
+              <Box sx={{ bgcolor: 'primary.light', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>
+                <IconArrowUpRight width={16} color="#007bff" />
+              </Box>
+              <Typography variant="subtitle2" color="textSecondary">
+                +3%
+              </Typography>
+            </Stack>
+            <Box mt={2}>
+              <Chart
+                options={getColumnChartOptions(theme.palette.primary.main, (val) => '₦' + val + 'k')}
+                series={revenueSeries}
+                type="bar"
+                height="125px"
+              />
+            </Box>
+          </CardContent>
+        </BlankCard>
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+        <BlankCard>
+          <CardContent>
+            <Typography variant="h5">Collections Per Customer</Typography>
+            <Typography variant="h4" mt={3} fontWeight={600}>₦144k</Typography>
+            <Typography variant="subtitle2" fontSize="12px" color="textSecondary">
+              (last month)
+            </Typography>
+            <Stack direction="row" spacing={1} mt={1} alignItems="center">
+              <Box sx={{ bgcolor: 'error.light', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>
+                <IconArrowUpRight width={16} color="#dc3545" />
+              </Box>
+              <Typography variant="subtitle2" color="textSecondary">
+                +2%
+              </Typography>
+            </Stack>
+            <Box mt={2}>
+              <Chart
+                options={getColumnChartOptions(theme.palette.error.main, (val) => '₦' + val + 'k')}
+                series={collectionsSeries}
+                type="bar"
+                height="125px"
+              />
+            </Box>
+          </CardContent>
+        </BlankCard>
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+        <BlankCard>
+          <CardContent>
+            <Typography variant="h5">Customer Response Metric</Typography>
+            <Typography variant="h4" mt={3} fontWeight={600}>1.60</Typography>
+            <Typography variant="subtitle2" fontSize="12px" color="textSecondary">
+              (last month)
+            </Typography>
+            <Stack direction="row" spacing={1} mt={1} alignItems="center">
+              <Box sx={{ bgcolor: 'warning.light', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>
+                <IconArrowUpRight width={16} color="#ffc107" />
+              </Box>
+              <Typography variant="subtitle2" color="textSecondary">
+                +1.5%
+              </Typography>
+            </Stack>
+            <Box mt={2}>
+              <Chart
+                options={getColumnChartOptions(theme.palette.warning.main, (val) => val)}
+                series={metricSeries}
+                type="bar"
+                height="125px"
+              />
+            </Box>
+          </CardContent>
+        </BlankCard>
+      </Grid>
+    </Grid>
   );
 };
 

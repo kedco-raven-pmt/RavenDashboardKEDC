@@ -87,7 +87,7 @@ const RetentionChurnRateState = () => {
   ];
 
   return (
-    <EnergyComparisonAllStatesDashboardWidgetCard title="Retention Vs. Churn Rate" sx={{ height: '250px' }}> 
+    <EnergyComparisonAllStatesDashboardWidgetCard title="Retention Vs. Turnover Rate" sx={{ height: '250px' }}> 
       <Chart options={optionscolumnchart} series={seriescolumnchart} type="bar" height="345px" /> 
     </EnergyComparisonAllStatesDashboardWidgetCard>
   );

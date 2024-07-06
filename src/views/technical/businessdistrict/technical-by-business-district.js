@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
 import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
@@ -19,8 +19,10 @@ import CurrentValue from '../../../components/widgets/charts/CurrentValue';
 import BDMapboxTechnicalBBD from '../../../components/technical-components/by-business-district-chart-cards/business-district-mapbox-bbd';
 import HighestPeakFeedersBBD from '../../../components/technical-components/by-business-district-chart-cards/highest-peak-feeders-bbd';
 import LowestPeakFeedersBBD from '../../../components/technical-components/by-business-district-chart-cards/lowest-peak-feeders-bbd';
+import BusinessDistrictFilter from '/src/layouts/full/shared/breadcrumb/BusinessDistrictFilter';
 
 const BCrumb = [
+  
   {
     to: '/',
     title: 'Home',
@@ -34,11 +36,21 @@ const BCrumb = [
 ];
 
 const TechnicalByBusinessDistricts = () => {
+  const handleFilterChange = (filter) => {
+    // Implement the filter change logic here
+    console.log(filter);
+  };
+
   return (
     <PageContainer title="Technical By Business District" description="this is Charts page">
       {/* breadcrumb */}
       <Breadcrumb title="Technical By Business District" items={BCrumb} />
       {/* end breadcrumb */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ width: 'fit-content' }}>
+          <BusinessDistrictFilter onFilterChange={handleFilterChange} />
+        </Box>
+      </Box>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <BDMapboxTechnicalBBD />

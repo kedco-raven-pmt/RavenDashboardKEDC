@@ -17,6 +17,7 @@ import Views from '../../../components/widgets/charts/Views';
 import Earned from '../../../components/widgets/charts/Earned';
 import StateMapboxFinancialBS from '../../../components/financial-components/by-state-chart-cards/statemapbox-bs';
 import StateCostBreakdownFinancialBS from '../../../components/financial-components/by-state-chart-cards/statecost-breakdown-bs';
+import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter'
 import TariffFinancialBS from '../../../components/financial-components/by-state-chart-cards/tarrifs-bs';
 const BCrumb = [
   {
@@ -38,6 +39,9 @@ const FinancialByState = () => {
       <Breadcrumb title="Financial by State" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
+      <Grid item xs={12}>
+          <StateFilter />
+        </Grid>
         <Grid item xs={12}>
           <StateMapboxFinancialBS />
         </Grid>

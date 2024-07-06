@@ -86,12 +86,7 @@ const CostBreakdownFinancialABD = () => {
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
-          <ButtonGroup variant="outlined" aria-label="outlined button group">
-            <Button>All</Button>
-            <Button>Kano</Button>
-            <Button>Katsina</Button>
-            <Button>Jigawa</Button>
-          </ButtonGroup>
+         
           <Stack direction="row" spacing={3}>
             {['Total Cost', 'Revenue Billed', 'Collections'].map((label, index) => (
               <Stack direction="row" alignItems="center" spacing={1} key={index}>

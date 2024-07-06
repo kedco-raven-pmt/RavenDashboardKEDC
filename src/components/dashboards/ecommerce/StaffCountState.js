@@ -3,7 +3,7 @@ import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import EnergyComparisonAllStatesDashboardWidgetCard from '../../shared/EnergyComparisonAllStatesDashboardWidgetCard';
 
-const StaffCountState = () => {
+const StaffAndGenderCountState = () => {
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const secondary = theme.palette.secondary.main;
@@ -14,7 +14,7 @@ const StaffCountState = () => {
     return `₦${(value / 1000).toFixed(0)}k`;
   };
 
-  const optionscolumnchart = {
+  const optionsColumnChart = {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
@@ -74,7 +74,7 @@ const StaffCountState = () => {
     },
   };
 
-  const seriescolumnchart = [
+  const seriesColumnChart = [
     {
       name: 'Finance',
       data: [150, 90, 60],
@@ -97,11 +97,36 @@ const StaffCountState = () => {
     },
   ];
 
+  const optionsGenderChart = {
+    ...optionsColumnChart,
+    xaxis: {
+      categories: ['Kano', 'Katsina', 'Jigawa'],
+    },
+  };
+
+  const seriesGenderChart = [
+    {
+      name: 'Male',
+      data: [400, 200, 150],
+      color: primary,
+    },
+    {
+      name: 'Female',
+      data: [200, 150, 100],
+      color: secondary,
+    },
+  ];
+
   return (
-    <EnergyComparisonAllStatesDashboardWidgetCard title="Staff Count" sx={{ height: '250px' }}> 
-      <Chart options={optionscolumnchart} series={seriescolumnchart} type="bar" height="345px" /> 
+    <EnergyComparisonAllStatesDashboardWidgetCard title="Staff and Gender Distribution" sx={{ height: '500px' }}>
+      <div style={{ height: '250px' }}>
+        <Chart options={optionsColumnChart} series={seriesColumnChart} type="bar" height="100%" />
+      </div>
+      <div style={{ height: '250px' }}>
+        <Chart options={optionsGenderChart} series={seriesGenderChart} type="bar" height="100%" />
+      </div>
     </EnergyComparisonAllStatesDashboardWidgetCard>
   );
 };
 
-export default StaffCountState;
+export default StaffAndGenderCountState;

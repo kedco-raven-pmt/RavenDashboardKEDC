@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, CardContent, Grid, Typography, Stack, MenuItem, Select } from '@mui/material';
+import { CardContent, Typography, Box } from '@mui/material';
 
-const CommercialBusinessDistrictEnergy = () => {
+const CommercialBusinessDistrictEnergy = ({ filters }) => {
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const secondary = theme.palette.secondary.main;
@@ -40,14 +40,13 @@ const CommercialBusinessDistrictEnergy = () => {
 
   const [filteredCategories, setFilteredCategories] = useState(allCategories);
   const [filteredData, setFilteredData] = useState(allData);
-  const [month, setMonth] = useState('Months');
-  const [activeState, setActiveState] = useState('All');
 
-  const filterData = (state) => {
-    if (state === 'All') {
+  useEffect(() => {
+    const { state } = filters;
+
+    if (state === 'All' || !state) {
       setFilteredCategories(allCategories);
       setFilteredData(allData);
-      setActiveState('All');
     } else {
       const filteredCategories = allCategories.filter(category => category.includes(state));
       const filteredData = allData.map(series => ({
@@ -56,9 +55,8 @@ const CommercialBusinessDistrictEnergy = () => {
       }));
       setFilteredCategories(filteredCategories);
       setFilteredData(filteredData);
-      setActiveState(state);
     }
-  };
+  }, [filters]);
 
   const optionsColumnChart = {
     chart: {
@@ -140,54 +138,7 @@ const CommercialBusinessDistrictEnergy = () => {
 
   return (
     <CardContent sx={{ p: '30px', border: `1px solid ${borderColor}` }}>
-      <Stack direction="row" spacing={2} justifyContent="space-between">
-        <Typography variant="h5">Business Districts Energy</Typography>
-        <Stack spacing={1} direction="row">
-          <Button 
-            color="primary" 
-            variant={activeState === 'Kano' ? 'contained' : 'outlined'}
-            onClick={() => filterData('Kano')}
-          >
-            Kano
-          </Button>
-          <Button 
-            color="primary" 
-            variant={activeState === 'Katsina' ? 'contained' : 'outlined'}
-            onClick={() => filterData('Katsina')}
-          >
-            Katsina
-          </Button>
-          <Button 
-            color="primary" 
-            variant={activeState === 'Jigawa' ? 'contained' : 'outlined'}
-            onClick={() => filterData('Jigawa')}
-          >
-            Jigawa
-          </Button>
-          <Button 
-            color="primary" 
-            variant={activeState === 'All' ? 'contained' : 'outlined'}
-            onClick={() => filterData('All')}
-          >
-            Reset
-          </Button>
-        </Stack>
-      </Stack>
-      <Stack direction="row" justifyContent="flex-end" mt={2}>
-        <Select
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-          variant="outlined"
-          size="small"
-        >
-          <MenuItem value="Months">Months</MenuItem>
-          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((m) => (
-            <MenuItem key={m} value={m}>
-              {m}
-            </MenuItem>
-          ))}
-        </Select>
-      </Stack>
+      <Typography variant="h5">Business Districts Energy</Typography>
       <Box mt={4}>
         <Chart options={optionsColumnChart} series={filteredData} type="bar" height="350" />
       </Box>
@@ -196,3 +147,4 @@ const CommercialBusinessDistrictEnergy = () => {
 };
 
 export default CommercialBusinessDistrictEnergy;
+

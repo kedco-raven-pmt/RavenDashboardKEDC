@@ -141,12 +141,18 @@ const StaffMetricsStates = () => {
       categories: ['Finance', 'Technical', 'Commercial', 'Admin'],
       labels: {
         style: {
-          fontSize: '8px',
-          whiteSpace: 'nowrap',
+          fontSize: '9px',
+          fontWeight: '500',
+          colors: theme.palette.mode === 'dark' ? '#fff' : '#000',
         }
       },
+      axisBorder: {
+        show: true,
+        color: theme.palette.mode === 'dark' ? '#ffffff40' : '#00000040',
+      },
       axisTicks: {
-        show: false,
+        show: true,
+        color: theme.palette.mode === 'dark' ? '#ffffff40' : '#00000040',
       }
     },
     tooltip: {
@@ -161,66 +167,130 @@ const StaffMetricsStates = () => {
     },
   ];
 
- // Chart 3: Retention vs Churn Rate
-const optionscolumnchart3 = {
-  chart: {
-    type: 'donut',
-    fontFamily: "'Plus Jakarta Sans', sans-serif;",
-    toolbar: {
-      show: false,
+  // Chart 3: Retention vs Churn Rate
+  const optionscolumnchart3 = {
+    chart: {
+      type: 'donut',
+      fontFamily: "'Plus Jakarta Sans', sans-serif;",
+      toolbar: {
+        show: false,
+      },
+      height: 220,
     },
-    height: 220,
-  },
-  labels: ['Retention Rate', 'Churn Rate'],
-  colors: [primary, secondary],
-  plotOptions: {
-    pie: {
-      startAngle: 0,
-      endAngle: 360,
-      donut: {
-        size: '89%',
-        background: 'transparent',
-        labels: {
-          show: true,
-          name: {
-            show: false,
-          },
-          value: {
+    labels: ['Retention', 'Turnover'],
+    colors: [primary, secondary],
+    plotOptions: {
+      pie: {
+        startAngle: 0,
+        endAngle: 360,
+        donut: {
+          size: '89%',
+          background: 'transparent',
+          labels: {
             show: true,
-            fontSize: '14px',
-            fontWeight: '600',
-            color: textColor,
-            offsetY: 7,
-          },
-          total: {
-            show: true,
-            label: 'Retention',
-            color: textColor,
-            fontSize: '16px',
-            fontWeight: '600',
-            formatter: function (w) {
-              return '94%';
-            }
+            name: {
+              show: false,
+            },
+            value: {
+              show: true,
+              fontSize: '14px',
+              fontWeight: '600',
+              color: textColor,
+              offsetY: 7,
+            },
+            total: {
+              show: true,
+              label: 'Retention',
+              color: textColor,
+              fontSize: '16px',
+              fontWeight: '600',
+              formatter: function (w) {
+                return '94%';
+              }
+            },
           },
         },
       },
     },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  stroke: {
-    show: false,
-  },
-  legend: {
-    show: true,
-    position: "bottom"
-  },
-  tooltip: {
-    enabled: false,
-  },
-};
-const seriescolumnchart3 = [94, 6];
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      show: false,
+    },
+    legend: {
+      show: true,
+      position: "bottom",
+      labels: {
+        colors: textColor,
+      }
+    },
+    tooltip: {
+      enabled: false,
+    },
+  };
+  const seriescolumnchart3 = [94, 6];
+
+  // Chart 4: Gender Distribution
+  const optionsGenderChart = {
+    chart: {
+      type: 'donut',
+      fontFamily: "'Plus Jakarta Sans', sans-serif;",
+      toolbar: {
+        show: false,
+      },
+      height: 220,
+    },
+    labels: ['Male', 'Female'],
+    colors: [primary, secondary],
+    plotOptions: {
+      pie: {
+        startAngle: 0,
+        endAngle: 360,
+        donut: {
+          size: '89%',
+          background: 'transparent',
+          labels: {
+            show: true,
+            name: {
+              show: false,
+            },
+            value: {
+              show: true,
+              fontSize: '14px',
+              fontWeight: '600',
+              color: textColor,
+              offsetY: 7,
+            },
+            total: {
+              show: true,
+              label: 'Gender',
+              color: textColor,
+              fontSize: '16px',
+              fontWeight: '600',
+            },
+          },
+        },
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      show: false,
+    },
+    legend: {
+      show: true,
+      position: "bottom",
+      labels: {
+        colors: textColor,
+      }
+    },
+    tooltip: {
+      enabled: false,
+    },
+  };
+  const seriesGenderChart = [700, 500];
 
   const [filter, setFilter] = React.useState('All');
 
@@ -233,28 +303,18 @@ const seriescolumnchart3 = [94, 6];
       <CardContent sx={{ p: '30px' }}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
           <Typography variant="h5">Staff Metrics</Typography>
-          <Select
-            value={filter}
-            onChange={handleFilterChange}
-            displayEmpty
-            inputProps={{ 'aria-label': 'Without label' }}
-          >
-            <MenuItem value="All">All</MenuItem>
-            <MenuItem value="Kano">Kano</MenuItem>
-            <MenuItem value="Katsina">Katsina</MenuItem>
-            <MenuItem value="Jigawa">Jigawa</MenuItem>
-          </Select>
+          
         </Stack>
 
         <Grid container spacing={3} mt={2}>
-          {/* Chart 1: Staff Collections States */}
-          <Grid item xs={12} sm={4}>
+          {/* Chart 1: Staff Collections States - Full Width */}
+          <Grid item xs={12}>
             <DashboardCard
               title="Collections Per Staff"
               action={
                 <Avatar
                   variant="rounded"
-                  sx={{ bgcolor: (theme) => theme.palette.primary.light, width: 40, height: 40 }}
+                  sx={{ bgcolor: (theme) => theme.palette.primary.light, width: 40, height: 60 }}
                 >
                   <Avatar src={icon1Img} alt={icon1Img} sx={{ width: 24, height: 24 }} />
                 </Avatar>
@@ -267,7 +327,7 @@ const seriescolumnchart3 = [94, 6];
                 <Stack direction="row" spacing={2} alignItems="flex-start" mb={3}>
                   <Stack>
                     <Typography variant="h3" fontWeight="700">
-                     ₦450k
+                      ₦450k
                     </Typography>
                     <Typography variant="subtitle2" color="textSecondary">
                       (last year)
@@ -289,15 +349,15 @@ const seriescolumnchart3 = [94, 6];
           {/* Chart 2: Staff Distribution */}
           <Grid item xs={12} sm={4}>
             <DashboardCard title="Staff Distribution" subtitle="">
-              <Chart options={optionscolumnchart2} series={seriescolumnchart2} type="bar" height="196px" />
+              <Chart options={optionscolumnchart2} series={seriescolumnchart2} type="bar" height="215px" />
             </DashboardCard>
           </Grid>
 
           {/* Chart 3: Retention vs Churn Rate */}
           <Grid item xs={12} sm={4}>
             <BlankCard>
-              <CardContent sx={{ p: '30px' }}>
-                <Typography variant="h6" mb={3}>Retention Vs. Churn</Typography>
+              <CardContent sx={{ p: '34.2px' }}>
+                <Typography variant="h6" mb={3}>Retention Vs. Turnover</Typography>
                 <Box>
                   <Chart
                     options={optionscolumnchart3}
@@ -313,7 +373,34 @@ const seriescolumnchart3 = [94, 6];
                   </Stack>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <IconGridDots size={16} color={secondary} />
-                    <Typography variant="body2">Churn Rate: 6%</Typography>
+                    <Typography variant="body2">Turnover Rate: 6%</Typography>
+                  </Stack>
+                </Stack>
+              </CardContent>
+            </BlankCard>
+          </Grid>
+
+          {/* Chart 4: Gender Distribution */}
+          <Grid item xs={12} sm={4}>
+            <BlankCard>
+              <CardContent sx={{ p: '30px' }}>
+                <Typography variant="h6" mb={3}>Gender Distribution</Typography>
+                <Box>
+                  <Chart
+                    options={optionsGenderChart}
+                    series={seriesGenderChart}
+                    type="donut"
+                    height="237px"
+                  />
+                </Box>
+                <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <IconGridDots size={16} color={primary} />
+                    <Typography variant="body2">Male 700</Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <IconGridDots size={16} color={secondary} />
+                    <Typography variant="body2">Female 500</Typography>
                   </Stack>
                 </Stack>
               </CardContent>

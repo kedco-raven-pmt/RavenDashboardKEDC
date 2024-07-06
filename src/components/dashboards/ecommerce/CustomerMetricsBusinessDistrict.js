@@ -2,9 +2,7 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
 import {
-  MenuItem,
   Typography,
   Box,
   Table,
@@ -13,194 +11,77 @@ import {
   TableHead,
   TableRow,
   TableContainer,
-  Stack,
 } from '@mui/material';
 
 const CustomerMetricsBusinessDistrict = () => {
-  // for select
-  const [month, setMonth] = React.useState('1');
-
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
-
   // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const grey = theme.palette.grey[300];
-  const primarylight = theme.palette.primary.light;
-  const greylight = theme.palette.grey[100];
 
-  // chart 1
-  const optionsrow1chart = {
+  const getColumnChartOptions = (color, data, dataLabelFormat) => ({
     chart: {
-      type: 'area',
+      type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
       foreColor: '#adb0bb',
       toolbar: {
         show: false,
       },
-      height: 35,
-      width: 100,
+      height: 75,
       sparkline: {
         enabled: true,
       },
-      group: 'sparklines',
     },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
+    colors: [color],
+    plotOptions: {
+      bar: {
+        borderRadius: 3,
+        columnWidth: '65%',
+        endingShape: 'rounded',
+        dataLabels: {
+          position: 'top',
+        },
+      },
     },
-    fill: {
-      colors: [primarylight],
-      type: 'solid',
-      opacity: 0.05,
+    dataLabels: {
+      enabled: true,
+      formatter: (val) => {
+        if (dataLabelFormat === 'percentage') return val + '%';
+        if (dataLabelFormat === 'naira') return '₦' + val + 'k';
+        return val.toFixed(2);
+      },
+      style: {
+        fontSize: '8px',
+        colors: [theme.palette.mode === 'dark' ? '#fff' : '#000'],
+      },
+      offsetY: -20,
     },
-    markers: {
-      size: 0,
+    xaxis: {
+      categories: ['March', 'April', 'May', 'June'],
+      labels: {
+        style: {
+          fontSize: '8px',
+          fontWeight: 600,
+        },
+      },
+    },
+    yaxis: {
+      show: false,
     },
     tooltip: {
-      enabled: false,
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
-  };
-  const seriesrow1chart = [
-    {
-      name: 'Customers',
-      color: primary,
-      data: [30, 25, 35,  30],
-    },
-  ];
+  });
 
-  // chart 2
-  const optionsrow2chart = {
-    chart: {
-      type: 'area',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: false,
-      },
-      height: 35,
-      width: 100,
-      sparkline: {
-        enabled: true,
-      },
-      group: 'sparklines',
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
-    },
-    fill: {
-      colors: [greylight],
-      type: 'solid',
-      opacity: 0.05,
-    },
-    markers: {
-      size: 0,
-    },
-    tooltip: {
-      enabled: false,
-    },
-  };
-  const seriesrow2chart = [
-    {
-      name: 'Customers',
-      color: grey,
-      data: [30, 25, 35, 30],
-    },
-  ];
-
-  // chart 3
-  const optionsrow3chart = {
-    chart: {
-      type: 'area',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: false,
-      },
-      height: 35,
-      width: 100,
-      sparkline: {
-        enabled: true,
-      },
-      group: 'sparklines',
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
-    },
-    fill: {
-      colors: [primarylight],
-      type: 'solid',
-      opacity: 0.05,
-    },
-    markers: {
-      size: 0,
-    },
-    tooltip: {
-      enabled: false,
-    },
-  };
-  const seriesrow3chart = [
-    {
-      name: 'Customers',
-      color: primary,
-      data: [30, 25, 35, 30],
-    },
-  ];
-
-  // chart 4
-  const optionsrow4chart = {
-    chart: {
-      type: 'area',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: false,
-      },
-      height: 35,
-      width: 100,
-      sparkline: {
-        enabled: true,
-      },
-      group: 'sparklines',
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
-    },
-    fill: {
-      colors: [greylight],
-      type: 'solid',
-      opacity: 0.05,
-    },
-    markers: {
-      size: 0,
-    },
-    tooltip: {
-      enabled: false,
-    },
-  };
-  const seriesrow4chart = [
-    {
-      color: grey,
-      data: [30, 25, 35, 30],
-    },
-  ];
+  const customerResponseRateSeries = [{ name: 'Customer Response Rate', data: [63, 58, 68, 63] }];
+  const customerResponseMetricSeries = [{ name: 'Customer Response Metric', data: [1.60, 1.55, 1.65, 1.60] }];
+  const revenueBilledPerCustomerSeries = [{ name: 'Revenue Billed Per Customer', data: [90, 85, 95, 90] }];
+  const collectionsPerCustomerSeries = [{ name: 'Collections Per Customer', data: [144, 139, 149, 144] }];
 
   return (
-    <DashboardCard
-      title="Customer Metrics"
-    >
+    <DashboardCard title="Customer Metrics">
       <TableContainer>
-        <Table
-          aria-label="simple table"
-          sx={{
-            whiteSpace: 'nowrap',
-          }}
-        >
+        <Table aria-label="simple table" sx={{ whiteSpace: 'nowrap' }}>
           <TableHead>
             <TableRow>
               <TableCell sx={{ pl: 0 }}>
@@ -239,10 +120,10 @@ const CustomerMetricsBusinessDistrict = () => {
               </TableCell>
               <TableCell>
                 <Chart
-                  options={optionsrow1chart}
-                  series={seriesrow1chart}
-                  type="area"
-                  height="35px"
+                  options={getColumnChartOptions(primary, customerResponseRateSeries[0].data, 'percentage')}
+                  series={customerResponseRateSeries}
+                  type="bar"
+                  height="50px"
                   width="100px"
                 />
               </TableCell>
@@ -265,10 +146,10 @@ const CustomerMetricsBusinessDistrict = () => {
               </TableCell>
               <TableCell>
                 <Chart
-                  options={optionsrow2chart}
-                  series={seriesrow2chart}
-                  type="area"
-                  height="35px"
+                  options={getColumnChartOptions(grey, customerResponseMetricSeries[0].data, 'decimal')}
+                  series={customerResponseMetricSeries}
+                  type="bar"
+                  height="50px"
                   width="100px"
                 />
               </TableCell>
@@ -291,10 +172,10 @@ const CustomerMetricsBusinessDistrict = () => {
               </TableCell>
               <TableCell>
                 <Chart
-                  options={optionsrow3chart}
-                  series={seriesrow3chart}
-                  type="area"
-                  height="35px"
+                  options={getColumnChartOptions(primary, revenueBilledPerCustomerSeries[0].data, 'naira')}
+                  series={revenueBilledPerCustomerSeries}
+                  type="bar"
+                  height="50px"
                   width="100px"
                 />
               </TableCell>
@@ -317,10 +198,10 @@ const CustomerMetricsBusinessDistrict = () => {
               </TableCell>
               <TableCell>
                 <Chart
-                  options={optionsrow4chart}
-                  series={seriesrow4chart}
-                  type="area"
-                  height="35px"
+                  options={getColumnChartOptions(grey, collectionsPerCustomerSeries[0].data, 'naira')}
+                  series={collectionsPerCustomerSeries}
+                  type="bar"
+                  height="50px"
                   width="100px"
                 />
               </TableCell>

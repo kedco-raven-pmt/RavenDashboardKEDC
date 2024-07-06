@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
+import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter';
 import PageContainer from 'src/components/container/PageContainer';
 
 import CommercialBusinessDistrictEnergy from '../../../components/widgets/charts/CommercialBusinessDistrictEnergy';
@@ -21,39 +22,37 @@ const BCrumb = [
 ];
 
 const CommercialAllBusinessDistricts = () => {
+  const [filters, setFilters] = useState({
+    year: 'All',
+    month: 'All',
+    state: 'All',
+  });
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
+
   return (
     <PageContainer title="Commercial All Business District" description="this is Charts page">
       {/* breadcrumb */}
-      <Breadcrumb title="Commercial All Business District" items={BCrumb} />
+      <Breadcrumb 
+        title="Commercial All Business District" 
+        items={BCrumb} 
+        onFilterChange={handleFilterChange} 
+      />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-        
-        
-        
-        
-        <Grid item xs={12}>
-          <CommercialBusinessDistrictEnergy />
+      <Grid item xs={4}>
+        <StateFilter />
         </Grid>
         <Grid item xs={12}>
-          <CommercialBusinessDistrictATCC />
+          <CommercialBusinessDistrictEnergy filters={filters} />
         </Grid>
         <Grid item xs={12}>
-          <CommercialBusinessDistrictBillColl />
+          <CommercialBusinessDistrictATCC filters={filters} />
         </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-            
-         
-            
-            
-            
-            
-          
-            
-            
-          </Grid>
+        <Grid item xs={12}>
+          <CommercialBusinessDistrictBillColl filters={filters} />
         </Grid>
       </Grid>
     </PageContainer>

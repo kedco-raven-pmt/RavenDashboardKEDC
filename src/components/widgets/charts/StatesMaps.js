@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, CardContent, Grid, Typography, Stack } from '@mui/material';
+import { Box, CardContent, Grid, Typography, Stack } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
 import { MapContainer, TileLayer, Polygon, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Define the coordinates for the states and values
 const kanoCoordinates = [
   [12.002179, 8.591956],
   [11.999444, 8.579444],
@@ -40,16 +39,15 @@ const statesData = {
   Jigawa: { coordinates: jigawaCoordinates, value: 124, center: [12.568400, 9.857800] },
 };
 
-const StatesMaps = () => {
+const StatesMaps = ({ filters }) => {
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const secondary = theme.palette.secondary.main;
-  const [selectedState, setSelectedState] = useState(null);
 
   const MapController = () => {
     const map = useMap();
-    if (selectedState) {
-      map.setView(statesData[selectedState].center, 10);
+    if (filters.state && statesData[filters.state]) {
+      map.setView(statesData[filters.state].center, 10);
     } else {
       map.setView([12.5, 8], 7);
     }
@@ -61,36 +59,7 @@ const StatesMaps = () => {
       <CardContent sx={{ p: '30px' }}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
           <Typography variant="h5">State Maps</Typography>
-          <Stack spacing={1} direction="row">
-            <Button
-              color="primary"
-              variant={selectedState === 'Kano' ? 'contained' : 'outlined'}
-              onClick={() => setSelectedState('Kano')}
-            >
-              Kano
-            </Button>
-            <Button
-              color="primary"
-              variant={selectedState === 'Katsina' ? 'contained' : 'outlined'}
-              onClick={() => setSelectedState('Katsina')}
-            >
-              Katsina
-            </Button>
-            <Button
-              color="primary"
-              variant={selectedState === 'Jigawa' ? 'contained' : 'outlined'}
-              onClick={() => setSelectedState('Jigawa')}
-            >
-              Jigawa
-            </Button>
-            <Button
-              color="primary"
-              variant={!selectedState ? 'contained' : 'outlined'}
-              onClick={() => setSelectedState(null)}
-            >
-              Reset
-            </Button>
-          </Stack>
+          {/* No need for state buttons here, use filters.state */}
         </Stack>
 
         <Grid container spacing={3} mt={2}>
@@ -101,24 +70,36 @@ const StatesMaps = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               />
-              <Polygon positions={statesData.Kano.coordinates} color={primary}>
-                <Popup>Kano: Energy Delivered = 1273</Popup>
-              </Polygon>
-              <Polygon positions={statesData.Katsina.coordinates} color={secondary}>
-                <Popup>Katsina: Energy Delivered = 375</Popup>
-              </Polygon>
-              <Polygon positions={statesData.Jigawa.coordinates} color="red">
-                <Popup>Jigawa: Energy Delivered = 124</Popup>
-              </Polygon>
-              <Marker position={statesData.Kano.center}>
-                <Popup>Kano: Energy Delivered = 1273</Popup>
-              </Marker>
-              <Marker position={statesData.Katsina.center}>
-                <Popup>Katsina: Energy Delivered = 375</Popup>
-              </Marker>
-              <Marker position={statesData.Jigawa.center}>
-                <Popup>Jigawa: Energy Delivered = 124</Popup>
-              </Marker>
+              {filters.state === 'Kano' && (
+                <>
+                  <Polygon positions={statesData.Kano.coordinates} color={primary}>
+                    <Popup>Kano: Energy Delivered = 1273</Popup>
+                  </Polygon>
+                  <Marker position={statesData.Kano.center}>
+                    <Popup>Kano: Energy Delivered = 1273</Popup>
+                  </Marker>
+                </>
+              )}
+              {filters.state === 'Katsina' && (
+                <>
+                  <Polygon positions={statesData.Katsina.coordinates} color={secondary}>
+                    <Popup>Katsina: Energy Delivered = 375</Popup>
+                  </Polygon>
+                  <Marker position={statesData.Katsina.center}>
+                    <Popup>Katsina: Energy Delivered = 375</Popup>
+                  </Marker>
+                </>
+              )}
+              {filters.state === 'Jigawa' && (
+                <>
+                  <Polygon positions={statesData.Jigawa.coordinates} color="red">
+                    <Popup>Jigawa: Energy Delivered = 124</Popup>
+                  </Polygon>
+                  <Marker position={statesData.Jigawa.center}>
+                    <Popup>Jigawa: Energy Delivered = 124</Popup>
+                  </Marker>
+                </>
+              )}
             </MapContainer>
           </Grid>
         </Grid>
@@ -128,3 +109,4 @@ const StatesMaps = () => {
 };
 
 export default StatesMaps;
+

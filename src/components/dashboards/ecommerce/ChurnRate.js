@@ -27,7 +27,7 @@ const ChurnRate = () => {
           </span>
         </Typography>
         <Typography variant="subtitle2" color="textSecondary">
-          Churn Rate
+          Turnover Rate
         </Typography>
       </>
     </DashboardCard>

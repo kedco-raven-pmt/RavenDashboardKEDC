@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, CardContent, Typography, Stack, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Box, CardContent, Typography } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
 
 const EnergyFeeders = () => {
@@ -10,10 +10,6 @@ const EnergyFeeders = () => {
   const secondary = theme.palette.secondary.main;
   const tertiary = theme.palette.error.main;
   const textColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#2A3547';
-
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [stateFilter, setStateFilter] = useState('All');
-  const [districtFilter, setDistrictFilter] = useState('All');
 
   const feederData = [
     { name: '11KV Dr Bala', type: '11' },
@@ -197,17 +193,7 @@ const EnergyFeeders = () => {
 { name: '33KV Sumaila', type: '33' },
 { name: '33KV Gujungu', type: '33' },
 { name: '33KV Jahun', type: '33' }
-
-    // ... Add all 181 feeders here with their respective states and districts
   ];
-
-  const filteredFeeders = useMemo(() => {
-    return feederData.filter(feeder => 
-      (activeFilter === 'all' || feeder.type === activeFilter) &&
-      (stateFilter === 'All' || feeder.state === stateFilter) &&
-      (districtFilter === 'All' || feeder.district === districtFilter)
-    );
-  }, [activeFilter, stateFilter, districtFilter]);
 
   const optionsComboChart = {
     chart: {
@@ -232,7 +218,7 @@ const EnergyFeeders = () => {
       curve: 'smooth',
     },
     xaxis: {
-      categories: filteredFeeders.map(feeder => feeder.name),
+      categories: feederData.map(feeder => feeder.name),
       labels: {
         style: {
           colors: textColor,
@@ -305,95 +291,34 @@ const EnergyFeeders = () => {
     {
       name: 'Energy Delivered',
       type: 'column',
-      data: filteredFeeders.map(() => Math.floor(Math.random() * (20 - 15 + 1) + 15)),
+      data: feederData.map(() => Math.floor(Math.random() * (20 - 15 + 1) + 15)),
     },
     {
       name: 'Energy Billed',
       type: 'column',
-      data: filteredFeeders.map(() => Math.floor(Math.random() * (13 - 8 + 1) + 8)),
+      data: feederData.map(() => Math.floor(Math.random() * (13 - 8 + 1) + 8)),
     },
     {
       name: 'Energy Collected',
       type: 'column',
-      data: filteredFeeders.map(() => Math.floor(Math.random() * (5 - 1 + 1) + 1)),
+      data: feederData.map(() => Math.floor(Math.random() * (5 - 1 + 1) + 1)),
     },
     {
       name: 'ATCC',
       type: 'line',
-      data: filteredFeeders.map(() => Math.floor(Math.random() * (78 - 50 + 1) + 50)),
+      data: feederData.map(() => Math.floor(Math.random() * (78 - 50 + 1) + 50)),
     },
   ];
-
-  const handleFilterClick = (filter) => {
-    setActiveFilter(filter);
-  };
 
   return (
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
-        <Stack direction="row" spacing={2} justifyContent="flex-start" flexWrap="wrap">
-          <Stack spacing={2} direction="row" flexWrap="wrap">
-            <FormControl sx={{ minWidth: 120 }}>
-              <InputLabel>State</InputLabel>
-              <Select
-                value={stateFilter}
-                label="State"
-                onChange={(e) => setStateFilter(e.target.value)}
-              >
-                <MenuItem value="All">All</MenuItem>
-                <MenuItem value="Kano">Kano</MenuItem>
-                <MenuItem value="Katsina">Katsina</MenuItem>
-                <MenuItem value="Jigawa">Jigawa</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ minWidth: 120 }}>
-              <InputLabel>Business District</InputLabel>
-              <Select
-                value={districtFilter}
-                label="Business District"
-                onChange={(e) => setDistrictFilter(e.target.value)}
-              >
-                <MenuItem value="All">All</MenuItem>
-                <MenuItem value="Kano Industrial">Kano Industrial</MenuItem>
-                <MenuItem value="Kano Central">Kano Central</MenuItem>
-                <MenuItem value="Katsina North">Katsina North</MenuItem>
-                <MenuItem value="Kano North">Kano North</MenuItem>
-                <MenuItem value="Kano East">Kano East</MenuItem>
-                <MenuItem value="Kano West">Kano West</MenuItem>
-                <MenuItem value="Katsina South">Katsina South</MenuItem>
-                <MenuItem value="Jigawa South">Jigawa South</MenuItem>
-                <MenuItem value="Jigawa North">Jigawa North</MenuItem>
-              </Select>
-            </FormControl>
-            <Button 
-              color="primary" 
-              variant={activeFilter === '11' ? "contained" : "outlined"}
-              onClick={() => handleFilterClick('11')}
-            >
-              11
-            </Button>
-            <Button 
-              color="primary" 
-              variant={activeFilter === '33' ? "contained" : "outlined"}
-              onClick={() => handleFilterClick('33')}
-            >
-              33
-            </Button>
-            <Button 
-              color="primary" 
-              variant={activeFilter === 'all' ? "contained" : "outlined"}
-              onClick={() => handleFilterClick('all')}
-            >
-              All
-            </Button>
-          </Stack>
-        </Stack>
         <Typography variant="h6" sx={{ mt: 2 }}>
           Feeders
         </Typography>
 
         <Box mt={4} sx={{ overflowX: 'auto' }}>
-          <Box sx={{ minWidth: `${filteredFeeders.length * 50}px`, maxWidth: '100%' }}>
+          <Box sx={{ minWidth: `${feederData.length * 50}px`, maxWidth: '100%' }}>
             <Chart
               options={optionsComboChart}
               series={seriesComboChart}

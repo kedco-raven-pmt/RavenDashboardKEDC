@@ -160,51 +160,7 @@ const StaffCollectionBusinessDistrict = () => {
     <CardContent sx={{ p: '30px', border: `1px solid ${borderColor}` }}>
       <Stack direction="row" spacing={2} justifyContent="space-between">
         <Typography variant="h5">Staff Collections Vs. Staff Count</Typography>
-        <Stack spacing={1} direction="row">
-          <Button 
-            color="primary" 
-            variant={activeState === 'Kano' ? 'contained' : 'outlined'}
-            onClick={() => filterData('Kano')}
-          >
-            Kano
-          </Button>
-          <Button 
-            color="primary" 
-            variant={activeState === 'Katsina' ? 'contained' : 'outlined'}
-            onClick={() => filterData('Katsina')}
-          >
-            Katsina
-          </Button>
-          <Button 
-            color="primary" 
-            variant={activeState === 'Jigawa' ? 'contained' : 'outlined'}
-            onClick={() => filterData('Jigawa')}
-          >
-            Jigawa
-          </Button>
-          <Button 
-            color="primary" 
-            variant={activeState === 'All' ? 'contained' : 'outlined'}
-            onClick={() => filterData('All')}
-          >
-            Reset
-          </Button>
-        </Stack>
-      </Stack>
-      <Stack direction="row" justifyContent="flex-end" mt={2}>
-        <Select
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-          variant="outlined"
-          size="small"
-        >
-          <MenuItem value="Months">Months</MenuItem>
-          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((m) => (
-            <MenuItem key={m} value={m}>
-              {m}
-            </MenuItem>
-          ))}
-        </Select>
+        
       </Stack>
       <Grid container spacing={2} mt={4}>
         <Grid item xs={12} md={6}>

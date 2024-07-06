@@ -4,6 +4,7 @@ import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
 import StaffMetricsStates from '../../../components/widgets/charts/StaffMetricsStates';
 import StaffCollectionsStates from 'src/components/dashboards/ecommerce/StaffCollectionsStates';
+import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter';
 
 const BCrumb = [
   {
@@ -25,6 +26,9 @@ const StaffByState = () => {
       <Breadcrumb title="Staff by State" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
+      <Grid item xs={4}>
+          <StateFilter />
+        </Grid>
       <Grid item xs={12}>
           <StaffMetricsStates />
         </Grid>

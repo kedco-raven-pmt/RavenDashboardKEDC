@@ -98,18 +98,7 @@ const BDMapboxTechnicalBBD = () => {
       <Grid container spacing={3}>
         {/* column */}
         <Grid item xs={12} justifyContent='center' textAlign='center' >
-            <ButtonGroup variant="outlined" color="primary" size='small' aria-label="outlined button group">
-                <Button>Jigawa North</Button>
-                <Button>Jigawa South</Button>
-                <Button>Kano Central</Button>
-                <Button>Kano East</Button>
-                <Button>Kano Industrial</Button>
-                <Button>Kano North</Button>
-                <Button>Kano West</Button>
-                <Button>Katsina Central</Button>
-                <Button>Katsina North</Button>
-                <Button>Katsina South</Button>
-            </ButtonGroup>
+            
         </Grid>
 
         <Grid item xs={12} sm={8}>

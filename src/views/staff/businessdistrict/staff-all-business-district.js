@@ -4,6 +4,8 @@ import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
 import StaffCollectionBusinessDistrict from '../../../components/widgets/charts/StaffCollectionBusinessDistrict';
 import RetentionVsChurnBusinessDistrict from '../../../components/widgets/charts/RetentionVsChurnBusinessDistrict';
+import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter';
+
 const BCrumb = [
   {
     to: '/',
@@ -24,6 +26,9 @@ const StaffAllBusinessDistricts = () => {
       <Breadcrumb title="Staff All Business District" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
+      <Grid item xs={4}>
+          <StateFilter />
+        </Grid>
       <Grid item xs={12}>
           <StaffCollectionBusinessDistrict />
         </Grid>

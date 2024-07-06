@@ -171,17 +171,7 @@ const Customers = () => {
       <MenuItem value="Jigawa North">Jigawa North</MenuItem>
     </Select>
             </FormControl>
-            <FormControl variant="outlined" size="small" sx={{ minWidth: 180 }}>
-            <InputLabel>Band</InputLabel>
-          <Select defaultValue="All" label="Band">
-            <MenuItem value="All">All</MenuItem>
-            <MenuItem value="Band A">Band A</MenuItem>
-            <MenuItem value="Band B">Band B</MenuItem>
-            <MenuItem value="Band C">Band C</MenuItem>
-            <MenuItem value="Band D">Band D</MenuItem>
-            <MenuItem value="Band E">Band E</MenuItem>
-          </Select>
-            </FormControl>
+            
           </Stack>
         </Stack>
 

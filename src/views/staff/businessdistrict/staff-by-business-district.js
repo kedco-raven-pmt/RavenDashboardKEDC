@@ -1,21 +1,10 @@
-import React from 'react';
-import { Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid, Box } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
-import Projects from '../../../components/dashboards/modern/Projects';
-import Customers from '../../../components/dashboards/modern/Customers';
-import SalesTwo from '../../../components/dashboards/ecommerce/SalesTwo';
-import MonthlyEarnings from '../../../components/dashboards/modern/MonthlyEarnings';
-import SalesOverview from '../../../components/dashboards/ecommerce/SalesOverview';
-import RevenueUpdates from '../../../components/dashboards/modern/RevenueUpdates';
-import YearlySales from '../../../components/dashboards/ecommerce/YearlySales';
-import MostVisited from '../../../components/widgets/charts/MostVisited';
-import PageImpressions from '../../../components/widgets/charts/PageImpressions';
-import Followers from '../../../components/widgets/charts/Followers';
-import Views from '../../../components/widgets/charts/Views';
-import Earned from '../../../components/widgets/charts/Earned';
-import CurrentValue from '../../../components/widgets/charts/CurrentValue';
+import StaffCollectionBusinessDistrict_II from '../../../components/widgets/charts/StaffCollectionBusinessDistrict_II';
+import RetentionVsChurnBusinessDistrict_II from '../../../components/widgets/charts/RetentionVsChurnBusinessDistrict_II';
+import BusinessDistrictFilter from '/src/layouts/full/shared/breadcrumb/BusinessDistrictFilter';
 
 const BCrumb = [
   {
@@ -31,66 +20,33 @@ const BCrumb = [
 ];
 
 const StaffByBusinessDistricts = () => {
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+
+  const handleFilterChange = (district) => {
+    setSelectedDistrict(district);
+  };
+
   return (
     <PageContainer title="Staff By Business District" description="this is Charts page">
       {/* breadcrumb */}
       <Breadcrumb title="Staff By Business District" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={3}>
-          <Followers />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Views />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Earned />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <SalesTwo />
+        <Grid item xs={12}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box sx={{ width: 'fit-content' }}>
+              <BusinessDistrictFilter onFilterChange={handleFilterChange} />
+            </Box>
+          </Box>
         </Grid>
         <Grid item xs={12}>
-          <CurrentValue />
+          <StaffCollectionBusinessDistrict_II filteredDistrict={selectedDistrict} />
         </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlyBreakup />
-            </Grid>
-            <Grid item xs={12}>
-              <MonthlyEarnings />
-            </Grid>
-            <Grid item xs={12}>
-              <MostVisited />
-            </Grid>
-          </Grid>
+        <Grid item xs={12}>
+          <RetentionVsChurnBusinessDistrict_II filteredDistrict={selectedDistrict} />
         </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlySales />
-            </Grid>
-            <Grid item xs={12}>
-              <PageImpressions />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Customers />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Projects />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <RevenueUpdates />
-            </Grid>
-            <Grid item xs={12}>
-              <SalesOverview />
-            </Grid>
-          </Grid>
-        </Grid>
+        
+        
       </Grid>
     </PageContainer>
   );

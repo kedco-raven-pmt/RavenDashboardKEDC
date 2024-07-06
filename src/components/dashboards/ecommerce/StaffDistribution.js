@@ -4,7 +4,6 @@ import { useTheme } from '@mui/material/styles';
 import DashboardCard from '../../shared/DashboardCard';
 
 const StaffDistribution = () => {
-
   // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
@@ -62,7 +61,9 @@ const StaffDistribution = () => {
       categories: ['Finance', 'Technical', 'Commercial', 'Admin'],
       labels: {
         style: {
-          fontSize: '10px',
+          fontSize: '10px', 
+          fontWeight: 600, 
+          colors: theme.palette.mode === 'dark' ? '#fff' : '#000', // Improved color contrast
           whiteSpace: 'nowrap',
         }
       },
@@ -75,6 +76,7 @@ const StaffDistribution = () => {
       fillSeriesColor: false,
     },
   };
+
   const seriescolumnchart = [
     {
       name: 'Staff Count',

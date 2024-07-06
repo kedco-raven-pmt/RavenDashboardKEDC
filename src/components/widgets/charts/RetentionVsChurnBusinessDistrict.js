@@ -29,13 +29,25 @@ const RetentionVsChurnBusinessDistrict = () => {
       data: [88, 82, 90, 80, 85, 96, 90, 92, 94, 88],
     },
     {
-      name: 'Churn Rate',
+      name: 'Turnover Rate',
       data: [12, 18, 8, 20, 15, 4, 10, 8, 6, 12],
+    },
+  ];
+
+  const allGenderData = [
+    {
+      name: 'Male',
+      data: [30, 20, 20, 25, 20, 10, 8, 13, 20, 15],
+    },
+    {
+      name: 'Female',
+      data: [50, 25, 18, 13, 20, 15, 10, 27, 25, 15],
     },
   ];
 
   const [filteredCategories, setFilteredCategories] = useState(allCategories);
   const [filteredData, setFilteredData] = useState(allData);
+  const [filteredGenderData, setFilteredGenderData] = useState(allGenderData);
   const [month, setMonth] = useState('Months');
   const [activeState, setActiveState] = useState('All');
 
@@ -43,6 +55,7 @@ const RetentionVsChurnBusinessDistrict = () => {
     if (state === 'All') {
       setFilteredCategories(allCategories);
       setFilteredData(allData);
+      setFilteredGenderData(allGenderData);
       setActiveState('All');
     } else {
       const filteredCategories = allCategories.filter(category => category.includes(state));
@@ -50,8 +63,13 @@ const RetentionVsChurnBusinessDistrict = () => {
         ...series,
         data: series.data.filter((_, index) => allCategories[index].includes(state))
       }));
+      const filteredGenderData = allGenderData.map(series => ({
+        ...series,
+        data: series.data.filter((_, index) => allCategories[index].includes(state))
+      }));
       setFilteredCategories(filteredCategories);
       setFilteredData(filteredData);
+      setFilteredGenderData(filteredGenderData);
       setActiveState(state);
     }
   };
@@ -78,7 +96,7 @@ const RetentionVsChurnBusinessDistrict = () => {
     dataLabels: {
       enabled: true,
       style: {
-        fontSize: '12px',
+        fontSize: '10px',
         colors: [theme.palette.mode === 'dark' ? '#fff' : '#000'],
       },
       offsetY: -20,
@@ -96,6 +114,7 @@ const RetentionVsChurnBusinessDistrict = () => {
       labels: {
         style: {
           colors: textColor,
+          fontSize: '10px',
         },
       },
     },
@@ -137,59 +156,97 @@ const RetentionVsChurnBusinessDistrict = () => {
     colors: [primary, secondary, textColor],
   };
 
+  const optionsGenderChart = {
+    chart: {
+      type: 'bar',
+      height: 250,
+      toolbar: {
+        show: false,
+      },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '65%',
+        endingShape: 'rounded',
+        borderRadius: 5,
+        dataLabels: {
+          position: 'top'
+        }
+      },
+    },
+    dataLabels: {
+      enabled: true,
+      style: {
+        fontSize: '10px',
+        colors: [theme.palette.mode === 'dark' ? '#fff' : '#000'],
+      },
+      offsetY: -20,
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ['transparent'],
+    },
+    xaxis: {
+      categories: filteredCategories,
+      labels: {
+        style: {
+          colors: textColor,
+          fontSize: '10px',
+        },
+      },
+    },
+    yaxis: {
+      tickAmount: 2,
+      labels: {
+        style: {
+          colors: textColor,
+        },
+      },
+    },
+    grid: {
+      show: true,
+      borderColor: borderColor,
+      yaxis: {
+        lines: {
+          show: true,
+        },
+      },
+    },
+    fill: {
+      opacity: 1,
+    },
+    tooltip: {
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
+    },
+    legend: {
+      position: 'top',
+      labels: {
+        colors: textColor,
+      },
+    },
+    colors: [primary, secondary],
+  };
+
   return (
     <CardContent sx={{ p: '30px', border: `1px solid ${borderColor}` }}>
       <Stack direction="row" spacing={2} justifyContent="space-between">
-        <Typography variant="h5">Retention Vs. Churn </Typography>
-        <Stack spacing={1} direction="row">
-          <Button 
-            color="primary" 
-            variant={activeState === 'Kano' ? 'contained' : 'outlined'}
-            onClick={() => filterData('Kano')}
-          >
-            Kano
-          </Button>
-          <Button 
-            color="primary" 
-            variant={activeState === 'Katsina' ? 'contained' : 'outlined'}
-            onClick={() => filterData('Katsina')}
-          >
-            Katsina
-          </Button>
-          <Button 
-            color="primary" 
-            variant={activeState === 'Jigawa' ? 'contained' : 'outlined'}
-            onClick={() => filterData('Jigawa')}
-          >
-            Jigawa
-          </Button>
-          <Button 
-            color="primary" 
-            variant={activeState === 'All' ? 'contained' : 'outlined'}
-            onClick={() => filterData('All')}
-          >
-            Reset
-          </Button>
-        </Stack>
+        <Typography variant="h5">Retention Vs. Turnover and Gender Distribution</Typography>
+        
       </Stack>
-      <Stack direction="row" justifyContent="flex-end" mt={2}>
-        <Select
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-          variant="outlined"
-          size="small"
-        >
-          <MenuItem value="Months">Months</MenuItem>
-          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((m) => (
-            <MenuItem key={m} value={m}>
-              {m}
-            </MenuItem>
-          ))}
-        </Select>
-      </Stack>
-      <Box mt={4}>
-        <Chart options={optionsColumnChart} series={filteredData} type="bar" height="350" />
-      </Box>
+      <Grid container spacing={3} mt={4}>
+        <Grid item xs={12} sm={6}>
+          <Box>
+            <Chart options={optionsColumnChart} series={filteredData} type="bar" height="350" />
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Box>
+            <Chart options={optionsGenderChart} series={filteredGenderData} type="bar" height="350" />
+          </Box>
+        </Grid>
+      </Grid>
     </CardContent>
   );
 };

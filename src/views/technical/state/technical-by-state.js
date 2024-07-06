@@ -19,6 +19,7 @@ import CurrentValue from '../../../components/widgets/charts/CurrentValue';
 import StateMapboxTechnicalBS from '../../../components/technical-components/by-state-chart-cards/statemapbox-bs';
 import HighestPeakFeedersBS from '../../../components/technical-components/by-state-chart-cards/highest-peak-feeders-bs';
 import LowestPeakFeedersBS from '../../../components/technical-components/by-state-chart-cards/lowest-peak-feeders-bs';
+import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter';
 
 const BCrumb = [
   {
@@ -40,7 +41,9 @@ const TechnicalByState = () => {
       <Breadcrumb title="Technical by State" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-        
+      <Grid item xs={4}>
+          <StateFilter />
+        </Grid>
         <Grid item xs={12}>
           <StateMapboxTechnicalBS />
         </Grid>

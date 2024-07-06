@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Typography, Card, CardContent, Grid, Divider, Stack, MenuItem } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Card, CardContent, Grid, Divider, Stack, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { IconArrowUpRight, IconArrowDownLeft } from '@tabler/icons';
 import CustomSelect from '../../forms/theme-elements/CustomSelect';
 import welcomeImg from 'src/assets/images/backgrounds/overveiw-bg.svg';
@@ -11,11 +11,31 @@ const WelcomeCard = () => {
   const primaryLight = theme.palette.primary.light;
   const textColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#2A3547';
   const sparklineTextColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#094780';
-  const [month, setMonth] = React.useState('1');
 
-  const handleChange = (event) => {
+  const [year, setYear] = useState('All');
+  const [month, setMonth] = useState('All');
+
+  const handleYearChange = (event) => {
+    setYear(event.target.value);
+  };
+
+  const handleMonthChange = (event) => {
     setMonth(event.target.value);
   };
+
+  const years = ['All', '2023', '2024'];
+  const allMonths = ['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const [availableMonths, setAvailableMonths] = useState(allMonths);
+
+  useEffect(() => {
+    if (year === '2024') {
+      const currentMonth = new Date().getMonth();
+      setAvailableMonths(['All', ...allMonths.slice(1, currentMonth + 2)]);
+    } else {
+      setAvailableMonths(allMonths);
+    }
+  }, [year]);
 
   // Sparkline chart options
   const optionsSparkline = {
@@ -161,19 +181,66 @@ const WelcomeCard = () => {
           </Grid>
           <Grid sm={5}>
             <Box mb="-30px" mt="50px">
-              <CustomSelect
-                labelId="month-dd"
-                id="month-dd"
-                size="small"
-                value={month}
-                onChange={handleChange}
-                sx={{ display: 'flex' }}
-                p="15px"
-              >
-                <MenuItem value={1}>Today</MenuItem>
-                <MenuItem value={2}>Week</MenuItem>
-                <MenuItem value={3}>Month</MenuItem>
-              </CustomSelect>
+              <Stack direction="row" spacing={4} sx={{ mb: 2 }}>
+                <FormControl size="small" sx={{ minWidth: 200 }}>
+                  <InputLabel
+                    id="year-label"
+                    sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
+                  >
+                    Year
+                  </InputLabel>
+                  <CustomSelect
+                    labelId="year-label"
+                    id="year-select"
+                    value={year}
+                    onChange={handleYearChange}
+                    label="Year"
+                    sx={{
+                      backgroundColor: theme.palette.mode === 'dark' ? '#424242' : 'white',
+                      color: theme.palette.mode === 'dark' ? 'white' : 'black',
+                    }}
+                  >
+                    {years.map((y) => (
+                      <MenuItem
+                        key={y}
+                        value={y}
+                        sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
+                      >
+                        {y}
+                      </MenuItem>
+                    ))}
+                  </CustomSelect>
+                </FormControl>
+                <FormControl size="small" sx={{ minWidth: 200 }}>
+                  <InputLabel
+                    id="month-label"
+                    sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
+                  >
+                    Month
+                  </InputLabel>
+                  <CustomSelect
+                    labelId="month-label"
+                    id="month-select"
+                    value={month}
+                    onChange={handleMonthChange}
+                    label="Month"
+                    sx={{
+                      backgroundColor: theme.palette.mode === 'dark' ? '#424242' : 'white',
+                      color: theme.palette.mode === 'dark' ? 'white' : 'black',
+                    }}
+                  >
+                    {availableMonths.map((m) => (
+                      <MenuItem
+                        key={m}
+                        value={m}
+                        sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
+                      >
+                        {m}
+                      </MenuItem>
+                    ))}
+                                    </CustomSelect>
+                </FormControl>
+              </Stack>
               <img src={welcomeImg} alt="Welcome Background" width={'400px'} />
             </Box>
           </Grid>
@@ -184,3 +251,4 @@ const WelcomeCard = () => {
 };
 
 export default WelcomeCard;
+
