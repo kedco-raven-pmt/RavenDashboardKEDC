@@ -2,20 +2,12 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
-import Projects from '../../../components/dashboards/modern/Projects';
-import Customers from '../../../components/dashboards/modern/Customers';
-import SalesTwo from '../../../components/dashboards/ecommerce/SalesTwo';
-import MonthlyEarnings from '../../../components/dashboards/modern/MonthlyEarnings';
-import SalesOverview from '../../../components/dashboards/ecommerce/SalesOverview';
-import RevenueUpdates from '../../../components/dashboards/modern/RevenueUpdates';
-import YearlySales from '../../../components/dashboards/ecommerce/YearlySales';
-import MostVisited from '../../../components/widgets/charts/MostVisited';
-import PageImpressions from '../../../components/widgets/charts/PageImpressions';
-import Followers from '../../../components/widgets/charts/Followers';
-import Views from '../../../components/widgets/charts/Views';
-import Earned from '../../../components/widgets/charts/Earned';
-import CurrentValue from '../../../components/widgets/charts/CurrentValue';
+import EnergyAllStates from '../../../components/dashboards/ecommerce/EnergyAllStates';
+import BillingsandCollections from '../../../components/dashboards/ecommerce/BillingsandCollections';
+import CollectionEfficiencyWidget from '../../../components/widgets/charts/CollectionEfficiencyWidget';
+import BillingEfficiencyWidget from '../../../components/widgets/charts/BillingEfficiencyWidget';
+import CustomerResponseRateWidget from '../../../components/widgets/charts/CustomerResponseRateWidget';
+import ATCCWidget from '../../../components/widgets/charts/ATCCWidget';
 
 const BCrumb = [
   {
@@ -26,7 +18,7 @@ const BCrumb = [
     title: 'State',
   },
   {
-    title: 'Commercial All State',
+    title: 'Commercial All State:',
   },
 ];
 
@@ -37,57 +29,33 @@ const CommercialAllState = () => {
       <Breadcrumb title="Commercial All State" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={3}>
-          <Followers />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Views />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Earned />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <SalesTwo />
-        </Grid>
-        <Grid item xs={12}>
-          <CurrentValue />
-        </Grid>
-        <Grid item xs={12} lg={4}>
+        <Grid item xs={12} lg={12}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlyBreakup />
+            <Grid item xs={12} lg={8}>
+              <Grid container spacing={3} direction="column">
+                <Grid item style={{ height: '500px' }}>
+                  <EnergyAllStates />
+                </Grid>
+                <Grid item style={{ height: '500px' }}>
+                  <BillingsandCollections />
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <MonthlyEarnings />
-            </Grid>
-            <Grid item xs={12}>
-              <MostVisited />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <YearlySales />
-            </Grid>
-            <Grid item xs={12}>
-              <PageImpressions />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Customers />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Projects />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <RevenueUpdates />
-            </Grid>
-            <Grid item xs={12}>
-              <SalesOverview />
+            <Grid item xs={12} lg={4}>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <ATCCWidget />
+                </Grid>
+                <Grid item xs={12}>
+                  <BillingEfficiencyWidget />
+                </Grid>
+                <Grid item xs={12}>
+                  <CollectionEfficiencyWidget />
+                </Grid>
+                <Grid item xs={12}>
+                  <CustomerResponseRateWidget />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

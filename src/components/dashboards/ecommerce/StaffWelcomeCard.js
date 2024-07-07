@@ -37,16 +37,16 @@ const TechnicalWelcomeCard = () => {
 
               <Stack spacing={2}  direction="row" divider={<Divider orientation="vertical" flexItem />}>
                 <Box>  
-                <Typography variant="h2" whiteSpace="nowrap">₦202,300 <span><IconArrowUpRight width={18} color="#39B69A" /></span></Typography>
-                <Typography variant="subtitle1" whiteSpace="nowrap">Average Salary</Typography>
-                </Box>
-                <Box> 
-                <Typography variant="h2" whiteSpace="nowrap">3,200<span><IconArrowUpRight width={18} color="#39B69A" /></span></Typography>
+                <Typography variant="h2" whiteSpace="nowrap">1,200 <span><IconArrowUpRight width={18} color="#39B69A" /></span></Typography>
                 <Typography variant="subtitle1" whiteSpace="nowrap">Total Staff Number</Typography>
                 </Box>
+                <Box> 
+                <Typography variant="h2" whiteSpace="nowrap">₦202,300<span><IconArrowUpRight width={18} color="#39B69A" /></span></Typography>
+                <Typography variant="subtitle1" whiteSpace="nowrap">Average Salary</Typography>
+                </Box>
                 <Box>
-                <Typography variant="h2" whiteSpace="nowrap">79<span><IconArrowDownLeft width={18} color="#b63939" /></span></Typography>
-                <Typography variant="subtitle1" whiteSpace="nowrap">Average Per Feeder</Typography>
+                <Typography variant="h2" whiteSpace="nowrap">41 yrs<span><IconArrowDownLeft width={18} color="#b63939" /></span></Typography>
+                <Typography variant="subtitle1" whiteSpace="nowrap">Average Staff Age</Typography>
                 </Box>
               </Stack>
             </Box>
