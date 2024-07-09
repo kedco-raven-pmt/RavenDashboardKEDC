@@ -13,6 +13,7 @@ import Search from './Search';
 import Language from './Language';
 import Navigation from './Navigation';
 import MobileRightSidebar from './MobileRightSidebar';
+import Client from './client-tm';
 
 const Header = () => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
@@ -74,6 +75,7 @@ const Header = () => {
 
           {lgDown ? <MobileRightSidebar /> : null}
           <Profile />
+          <Client />
         </Stack>
       </ToolbarStyled>
     </AppBarStyled>

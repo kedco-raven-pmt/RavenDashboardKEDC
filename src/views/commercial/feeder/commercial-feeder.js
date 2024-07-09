@@ -2,9 +2,10 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import Top5FeedersATCC from '../../../components/widgets/charts/Top5FeedersATCC';
-import Least5FeedersATCC from '../../../components/widgets/charts/Least5FeedersATCC';
-import EnergyFeeders from '../../../components/widgets/charts/EnergyFeeders';
+
+import LowestATCCFeeder from '../../../components/commercial-components/feeder-charts-cards/lower-atcc-feeder';
+import HighestATCCFeeder from '../../../components/commercial-components/feeder-charts-cards/higher-atcc-feeder';
+import BreakdownCommercialFeeder from '../../../components/commercial-components/feeder-charts-cards/commercial-breakdown-feeder';
 
 const BCrumb = [
   {
@@ -27,13 +28,13 @@ const CommercialFeeder = () => {
       {/* end breadcrumb */}
       <Grid container spacing={3}>
       <Grid item xs={12} lg={6}>
-          <Top5FeedersATCC />
+          <LowestATCCFeeder />
         </Grid>
         <Grid item xs={12} lg={6}>
-          <Least5FeedersATCC />
+          <HighestATCCFeeder />
         </Grid>
         <Grid item xs={12}>
-          <EnergyFeeders />
+          <BreakdownCommercialFeeder />
         
         </Grid>
         

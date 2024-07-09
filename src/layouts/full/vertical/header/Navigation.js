@@ -27,6 +27,9 @@ const AppDD = () => {
       <Button color="inherit" sx={{color: (theme) => theme.palette.text.secondary}} variant="text" to="/staff/staff-overview" component={Link}>
         Staff Manager
       </Button>
+      <Button color="inherit" sx={{color: (theme) => theme.palette.text.secondary}} variant="text" to="/staff/staff-overview" component={Link}>
+        NERC
+      </Button>
     </>
   );
 };

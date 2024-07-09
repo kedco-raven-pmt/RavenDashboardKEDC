@@ -6,8 +6,8 @@ import ATCCServiceBand from '../../../components/dashboards/ecommerce/ATCCServic
 import BillingEfficiencyServiceBand from '../../../components/dashboards/ecommerce/BillingEfficiencyServiceBand';
 import CollectionEfficiencyServiceBand from '../../../components/dashboards/ecommerce/CollectionEfficiencyServiceBand';
 import CustomerResponseRateServiceBand from '../../../components/dashboards/ecommerce/CustomerResponseRateServiceBand';
-import EnergyCommercialServiceBand from '../../../components/widgets/charts/EnergyCommercialServiceBand';
-
+import BreakdownCommercialSBT from '../../../components/commercial-components/service-band-charts-cards/commercial-breakdown-sb';
+import ATCCCommercialSBT from '../../../components/commercial-components/service-band-charts-cards/atcc-breakdown-sb'
 const BCrumb = [
   {
     to: '/',
@@ -29,7 +29,10 @@ const CommercialServiceBand = () => {
       {/* end breadcrumb */}
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <EnergyCommercialServiceBand />
+          <BreakdownCommercialSBT />
+        </Grid>
+        <Grid item xs={12}>
+          <ATCCCommercialSBT />
         </Grid>
         
         <Grid item xs={12} lg={6}>
