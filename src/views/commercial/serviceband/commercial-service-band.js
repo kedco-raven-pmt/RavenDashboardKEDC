@@ -6,14 +6,8 @@ import ATCCServiceBand from '../../../components/dashboards/ecommerce/ATCCServic
 import BillingEfficiencyServiceBand from '../../../components/dashboards/ecommerce/BillingEfficiencyServiceBand';
 import CollectionEfficiencyServiceBand from '../../../components/dashboards/ecommerce/CollectionEfficiencyServiceBand';
 import CustomerResponseRateServiceBand from '../../../components/dashboards/ecommerce/CustomerResponseRateServiceBand';
-<<<<<<< HEAD
 import BreakdownCommercialSBT from '../../../components/commercial-components/service-band-charts-cards/commercial-breakdown-sb';
 import ATCCCommercialSBT from '../../../components/commercial-components/service-band-charts-cards/atcc-breakdown-sb'
-=======
-import EnergyCommercialServiceBand from '../../../components/widgets/charts/EnergyCommercialServiceBand';
-import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter'
-
->>>>>>> 4f1d1de...  Please enter the commit message for your changes. Lines starting
 const BCrumb = [
   {
     to: '/',
