@@ -16,7 +16,9 @@ export default defineConfig({
     include: /src\/.*\.jsx?$/,
     exclude: [],
   },
-
+  build: {
+    outDir: 'dist' // Change this if your output directory is different
+  },
   optimizeDeps: {
     esbuildOptions: {
       loader: {
