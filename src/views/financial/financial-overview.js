@@ -26,19 +26,21 @@ import PageImpressions from '../../components/widgets/charts/PageImpressions';
 import CurrentValue from '../../components/widgets/charts/CurrentValue';
 import MostVisited from '../../components/widgets/charts/MostVisited';
 import YearlyBreakup from '../../components/dashboards/modern/YearlyBreakup';
+import DailyCollectionFinancialOverview from '../../components/financial-components/overview-charts-cards/daily-collections-prepaid-fo';
+import DailyPostpaidCollectionFinancialOverview from '../../components/financial-components/overview-charts-cards/daily-collections-postpaid-fo';
 
 
 const FinancialOverview = () => {
   return (
     <PageContainer title="Financial Overview" description="this is Financial Overview Dashboard page">
-      <Box mt={3}>
+      <Box mt={1}>
         <Grid container spacing={3}>
           {/* column */}
           <Grid item xs={12} >
             <FinancialWelcomeCard />
           </Grid>
 
-          {/* column */}
+          {/* column */} 
           
           <Grid item xs={12} sm={4}>
             <TotalCostFinancial />
@@ -48,6 +50,12 @@ const FinancialOverview = () => {
           </Grid>
           <Grid item xs={12} sm={4}>
             <CollectionsFinancial />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+              <DailyCollectionFinancialOverview />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+              <DailyPostpaidCollectionFinancialOverview />
           </Grid>
           <Grid item xs={12} sm={12}>
               <OpexBreakdownFinancial />

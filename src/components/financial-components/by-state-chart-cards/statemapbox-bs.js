@@ -1,139 +1,142 @@
-import React from 'react';
-import Chart from 'react-apexcharts';
+import React, { useEffect, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Grid, Stack, Typography, Button, Avatar, Box, ButtonGroup } from '@mui/material';
-import { IconGridDots } from '@tabler/icons';
+import { Grid, Stack, Typography, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
+// Replace with your Mapbox access token
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
+
+const financialData = {
+  'NG018': { name: 'Jigawa', revenueRequired: 63242094983, revenueBilled: 80137421022, collections: 43042464340 },
+  'NG020': { name: 'Kano', revenueRequired: 50000000000, revenueBilled: 60000000000, collections: 35000000000 },
+  'NG021': { name: 'Katsina', revenueRequired: 70000000000, revenueBilled: 80000000000, collections: 45000000000 }
+  // Add more states as needed
+};
 
 const StateMapboxFinancialBS = () => {
-  const [month, setMonth] = React.useState('1');
-
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
-
-  // chart color
+  const [selectedStateData, setSelectedStateData] = useState(null);
+  const [selectedPcod, setSelectedPcod] = useState(null);
   const theme = useTheme();
   const primary = theme.palette.primary.main;
-  const secondary = theme.palette.secondary.main;
 
-  // chart
-  const optionscolumnchart = {
-    chart: {
-      type: 'bar',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: true,
-      },
-      height: 370,
-      stacked: true,
-    },
-    colors: [primary, secondary],
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        barHeight: '60%',
-        columnWidth: '20%',
-        borderRadius: [6],
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'all',
-      },
-    },
+  // Define the initial center of the map
+  const longitude = 8.582; // Central longitude for Nigeria
+  const latitude = 12.075;  // Central latitude for Nigeria
 
-    stroke: {
-      show: false,
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: false,
-    },
-    grid: {
-      borderColor: 'rgba(0,0,0,0.1)',
-      strokeDashArray: 3,
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
-    },
-    yaxis: {
-      min: -5,
-      max: 5,
-      tickAmount: 4,
-    },
-    xaxis: {
-      categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08'],
-      axisBorder: {
-        show: false,
-      },
-    },
-    tooltip: {
-      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-      fillSeriesColor: false,
-    },
-  };
-  const seriescolumnchart = [
-    {
-      name: 'Eanings this month',
-      data: [1.5, 2.7, 2.2, 3.6, 1.5, 1.0],
-    },
-    {
-      name: 'Expense this month',
-      data: [-1.8, -1.1, -2.5, -1.5, -0.6, -1.8],
-    },
-  ];
+  useEffect(() => {
+    const map = new mapboxgl.Map({
+      container: 'mapContainer',
+      style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
+      center: [longitude, latitude], // Set the initial center of the map
+      zoom: 6.6 // Set the initial zoom level
+    });
+
+    map.on('load', () => {
+      map.addSource('states', {
+        type: 'geojson',
+        data: '/assets/map-data/KEDC.geojson' // Ensure this path is correct
+      });
+
+      map.addLayer({
+        id: 'states-layer',
+        type: 'fill',
+        source: 'states',
+        paint: {
+          'fill-color': '#888888',
+          'fill-opacity': 0.5
+        }
+      });
+
+      map.on('click', 'states-layer', (e) => {
+        if (e.features.length > 0) {
+          const feature = e.features[0];
+          const selectedPcod = feature.properties.admin1Pcod;
+
+          if (selectedPcod) {
+            setSelectedPcod(selectedPcod);
+            const data = financialData[selectedPcod] || { name: 'Unknown', revenueRequired: 0, revenueBilled: 0, collections: 0 };
+            setSelectedStateData(data);
+
+            // Reset all state colors
+            map.setPaintProperty('states-layer', 'fill-color', '#888888');
+
+            // Highlight the selected state
+            map.setPaintProperty('states-layer', 'fill-color', [
+              'case',
+              ['==', ['get', 'admin1Pcod'], selectedPcod],
+              primary, // Highlight color
+              '#888888' // Default color
+            ]);
+          } else {
+            console.error('Selected property code is undefined');
+          }
+        }
+      });
+
+      // Change the cursor to a pointer when the mouse is over the states layer
+      map.on('mouseenter', 'states-layer', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+
+      // Change it back to default when it leaves
+      map.on('mouseleave', 'states-layer', () => {
+        map.getCanvas().style.cursor = '';
+      });
+    });
+
+    return () => map.remove();
+  }, [theme, primary]);
 
   return (
-    <DashboardCard 
-      title="Financial Breakdown By State"
-      subtitle="Select a state"
-      
-    >
+    <DashboardCard title="Financial Breakdown By State" subtitle="Select a state">
       <Grid container spacing={3}>
-        {/* column */}
         <Grid item xs={12} sm={8}>
-          <Box className="rounded-bars" bgcolor='#f7f8f9' height={500} >
-            
+          <Box className="rounded-bars" bgcolor='#f7f8f9' height={500} id="mapContainer">
+            {/* Map will be rendered here */}
           </Box>
         </Grid>
-        {/* column */}
         <Grid item xs={12} sm={4} alignContent='center' alignItems='flex-end'>
           <Stack spacing={3} mt={3}>
             <Stack direction="row" spacing={2} alignItems="center">
               <Box>
-                <Typography variant="h3" fontWeight="700">
-                ₦63,242,094,983
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Revenue Reqiured
+                <Typography variant="h4" fontWeight="700">
+                  {selectedStateData ? selectedStateData.name : 'Select a state'}
                 </Typography>
               </Box>
             </Stack>
-          </Stack>
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2}>
-            <Box>
-                <Typography variant="h3" fontWeight="700">
-                    ₦80,137,421,022
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Revenue Billed
-                </Typography>
-              </Box>
-            </Stack>
-            <Stack direction="row" spacing={3} mt={3} mb={9}>
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                ₦43,042,464,340
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Collections
-                </Typography>
-              </Box>
+            <Stack spacing={3} mt={3}>
+              <Stack direction="row" spacing={2}>
+                <Box>
+                  <Typography variant="h5" fontWeight="700">
+                    {selectedStateData ? `₦${selectedStateData.revenueRequired.toLocaleString()}` : '₦0'}
+                  </Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    Revenue Required
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" spacing={2} mt={3}>
+                <Box>
+                  <Typography variant="h5" fontWeight="700">
+                    {selectedStateData ? `₦${selectedStateData.revenueBilled.toLocaleString()}` : '₦0'}
+                  </Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    Revenue Billed
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" spacing={2} mt={3} mb={9}>
+                <Box>
+                  <Typography variant="h5" fontWeight="700">
+                    {selectedStateData ? `₦${selectedStateData.collections.toLocaleString()}` : '₦0'}
+                  </Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    Collections
+                  </Typography>
+                </Box>
+              </Stack>
             </Stack>
           </Stack>
         </Grid>

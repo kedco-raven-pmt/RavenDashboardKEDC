@@ -27,7 +27,7 @@ const RevenueCostFinancialAS = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -67,7 +67,7 @@ const RevenueCostFinancialAS = () => {
         show:false,
     },
     xaxis: {
-      categories: [['TotalCost'], ['Revenue Billed'], ['Collections']],
+      categories: [['Total Cost'], ['Revenue Billed'], ['Collections']],
       axisBorder: {
         show: false,
       },
@@ -75,7 +75,7 @@ const RevenueCostFinancialAS = () => {
         show: false,
       },
       labels: {
-        show: false,
+        show: true,
       },
     },
     yaxis: {
@@ -111,7 +111,7 @@ const RevenueCostFinancialAS = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -151,7 +151,7 @@ const RevenueCostFinancialAS = () => {
         show:false,
     },
     xaxis: {
-      categories: [['TotalCost'], ['Revenue Billed'], ['Collections']],
+      categories: [['Total Cost'], ['Revenue Billed'], ['Collections']],
       axisBorder: {
         show: false,
       },
@@ -159,7 +159,7 @@ const RevenueCostFinancialAS = () => {
         show: false,
       },
       labels: {
-        show: false,
+        show: true,
       },
     },
     yaxis: {
@@ -195,7 +195,7 @@ const RevenueCostFinancialAS = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -235,7 +235,7 @@ const RevenueCostFinancialAS = () => {
         show:false,
     },
     xaxis: {
-      categories: [['TotalCost'], ['Revenue Billed'], ['Collections']],
+      categories: [['Total Cost'], ['Revenue Billed'], ['Collections']],
       axisBorder: {
         show: false,
       },
@@ -243,7 +243,7 @@ const RevenueCostFinancialAS = () => {
         show: false,
       },
       labels: {
-        show: false,
+        show: true,
       },
     },
     yaxis: {
@@ -270,11 +270,13 @@ const RevenueCostFinancialAS = () => {
   return (
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
+      <Stack direction="row" spacing={2} justifyContent="space-between">
+      <Typography variant="h5">Expenditure and Collections Metrics</Typography>
         <Stack direction="row" spacing={2} justifyContent="center">
           <Stack direction="row" spacing={3}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#3B80B2', svg: { display: 'none' } }}
+              sx={{ width: 9, height: 9, bgcolor: '#0074BA', svg: { display: 'none' } }}
             ></Avatar>
             <Box>
               <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
@@ -284,7 +286,7 @@ const RevenueCostFinancialAS = () => {
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#599BC8', svg: { display: 'none' } }}
+              sx={{ width: 9, height: 9, bgcolor: '#02B7FA', svg: { display: 'none' } }}
             ></Avatar>
             <Box>
               <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
@@ -294,7 +296,7 @@ const RevenueCostFinancialAS = () => {
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#77ADD2', svg: { display: 'none' } }}
+              sx={{ width: 9, height: 9, bgcolor: '#ABC4C9', svg: { display: 'none' } }}
             ></Avatar>
             <Box>
               <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
@@ -302,6 +304,7 @@ const RevenueCostFinancialAS = () => {
               </Typography>
             </Box>
           </Stack>
+        </Stack>
         </Stack>
         </Stack>
 
