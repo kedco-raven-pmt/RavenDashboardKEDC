@@ -7,7 +7,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import StateMapBoxDataCards from './statemapbox-datacards-bs';
 import { TechnicalDataMapbox } from "./dataroom-technical-bs/dataroom-technical-bs";
 
-mapboxgl.accessToken = 'your-mapbox-access-token';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
 
 const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
   const [selectedStateData, setSelectedStateData] = useState(null);
