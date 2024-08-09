@@ -24,7 +24,7 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
       console.log('Initializing map...');
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: 'mapbox://styles/mapbox/light-v10',
+        style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
         center: [longitude, latitude],
         zoom: 6.6
       });
