@@ -90,9 +90,10 @@ const Ribbon = ({ onFilterChange }) => {
           onChange={handleWeekChange}
         >
           <MenuItem value={0}>Week</MenuItem>
-          <MenuItem value={1}>Week 1</MenuItem>
-          <MenuItem value={2}>Week 2</MenuItem>
-          <MenuItem value={3}>Week 3</MenuItem>
+          <MenuItem value={21}>Week 1</MenuItem>
+          <MenuItem value={22}>Week 2</MenuItem>
+          <MenuItem value={23}>Week 3</MenuItem>
+          <MenuItem value={23}>Week 4</MenuItem>
         </CustomSelect>
 
         <CustomSelect
@@ -106,6 +107,15 @@ const Ribbon = ({ onFilterChange }) => {
           <MenuItem value={1}>January</MenuItem>
           <MenuItem value={2}>February</MenuItem>
           <MenuItem value={3}>March</MenuItem>
+          <MenuItem value={4}>April</MenuItem>
+          <MenuItem value={5}>May</MenuItem>
+          <MenuItem value={6}>June</MenuItem>
+          <MenuItem value={7}>July</MenuItem>
+          <MenuItem value={8}>August</MenuItem>
+          <MenuItem value={9}>September</MenuItem>
+          <MenuItem value={10}>October</MenuItem>
+          <MenuItem value={11}>November</MenuItem>
+          <MenuItem value={12}>December</MenuItem>
         </CustomSelect>
 
         <CustomSelect

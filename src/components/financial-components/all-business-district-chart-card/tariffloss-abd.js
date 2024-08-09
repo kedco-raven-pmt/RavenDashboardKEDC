@@ -1,30 +1,20 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Grid, Stack, Typography, Button, Avatar, Box } from '@mui/material';
-import { IconGridDots } from '@tabler/icons';
+import { Grid, Box, CardContent, Typography, Stack } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
-import { color, positions } from '@mui/system';
+import { TariffData } from './dataroom-financial-abd/dataroom-financial-abd';
 
-const TariffLossFinancialABD = () => {
-  const [month, setMonth] = React.useState('1');
-
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
-
-  // chart color
+const TariffLossFinancialABD = ({ selectedState }) => {
   const theme = useTheme();
-  const primary = theme.palette.primary.main;
-  const primarylight = theme.palette.primary.light;
-  const error = theme.palette.error.main;
-  const errorlight = theme.palette.error.light;
-  const secondary = theme.palette.success.main;
-  const secondarylight = theme.palette.success.light;
 
+  const tariffLoss = selectedState
+    ? TariffData[selectedState] || []
+    : Object.values(TariffData).flat();
+  const categories = tariffLoss.map(data => [data.name.split(' ')[0], data.name.split(' ')[1]]);
+  
+  const seriesData = tariffLoss.map(data => data.tariffLoss);
 
-  // chart
   const optionscolumnchart = {
     chart: {
       type: 'area',
@@ -34,9 +24,7 @@ const TariffLossFinancialABD = () => {
         show: false,
       },
       height: 370,
-
     },
-    
     fill: {
       type: 'gradient',
       gradient: {
@@ -60,7 +48,6 @@ const TariffLossFinancialABD = () => {
         fontWeight: 700,
         color: '#000',
       },
-      
       background: '#fff'
     },
     legend: {
@@ -80,47 +67,31 @@ const TariffLossFinancialABD = () => {
       tickAmount: 4,
     },
     xaxis: {
-      categories: [['Jigawa', 'North'], ['Jigawa', 'South'], ['Kano', 'Central'], ['Kano' ,'East'], ['Kano', 'Industrial'], ['Kano' ,'North'], ['Kano', 'South'], ['Katsina', 'Central'], ['Katsina', 'North'], ['Katsina', 'South']],
-      labels:{
-        rotate: 0
-
-      },
-      axisBorder: {
-        show: false,
-      },
+      categories: categories,
+      labels: { rotate: 0 },
+      axisBorder: { show: false },
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
       fillSeriesColor: false,
     },
   };
+
   const seriescolumnchart = [
     {
       name: 'Avg. Tariff Loss',
-      data: [15, 27, 22, 36, 15, 10, 15, 27, 22, 36],
+      data: seriesData,
     },
   ];
 
   return (
-    <DashboardCard
-      title="Tariff Loss"
-      subtitle="₦/kWh"
-      
-    >
+    <DashboardCard title="Tariff Loss" subtitle="₦/kWh">
       <Grid container spacing={3}>
-        {/* column */}
-        <Grid item xs={12} >
+        <Grid item xs={12}>
           <Box className="rounded-bars">
-            <Chart
-              options={optionscolumnchart}
-              series={seriescolumnchart}
-              type="area"
-              height="390px"
-            />
+            <Chart options={optionscolumnchart} series={seriescolumnchart} type="area" height="390px" />
           </Box>
         </Grid>
-        {/* column */}
-        
       </Grid>
     </DashboardCard>
   );

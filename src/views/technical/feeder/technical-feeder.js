@@ -1,26 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Box } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
-import Projects from '../../../components/dashboards/modern/Projects';
-import Customers from '../../../components/dashboards/modern/Customers';
-import SalesTwo from '../../../components/dashboards/ecommerce/SalesTwo';
-import MonthlyEarnings from '../../../components/dashboards/modern/MonthlyEarnings';
-import SalesOverview from '../../../components/dashboards/ecommerce/SalesOverview';
-import RevenueUpdates from '../../../components/dashboards/modern/RevenueUpdates';
-import YearlySales from '../../../components/dashboards/ecommerce/YearlySales';
-import MostVisited from '../../../components/widgets/charts/MostVisited';
-import PageImpressions from '../../../components/widgets/charts/PageImpressions';
-import Followers from '../../../components/widgets/charts/Followers';
-import Views from '../../../components/widgets/charts/Views';
-import Earned from '../../../components/widgets/charts/Earned';
-import CurrentValue from '../../../components/widgets/charts/CurrentValue';
 import AvailabilityTechnicalFeeder from '../../../components/technical-components/feeder-charts-cards/availability-feeder';
-import StateMenuFilter from 'src/layouts/full/shared/breadcrumb/StateMenuFilter';
-import BusinessDistrictFilter from 'src/layouts/full/shared/breadcrumb/BusinessDistrictFilter';
-import FeederType from 'src/layouts/full/shared/breadcrumb/FeederType';
-
+import FeederFilterTechnical from '../../../components/technical-components/feeder-charts-cards/feeder-filter-tech';
+import { FeederData } from '../../../components/technical-components/feeder-charts-cards/dataroom-tech-feeder/dataroom-technical-feeder';
 
 const BCrumb = [
   {
@@ -36,35 +20,38 @@ const BCrumb = [
 ];
 
 const TechnicalFeeder = () => {
-  const buttonStyles = {
-    minWidth: '100px', // Adjust this value as needed
-    margin: '5px',
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedBusinessDistrict, setSelectedBusinessDistrict] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+
+  const handleFilterChange = ({ state, businessDistrict }) => {
+    setSelectedState(state);
+    setSelectedBusinessDistrict(businessDistrict);
+    console.log(`Selected State: ${state}, Selected Business District: ${businessDistrict}`);
   };
+
+  useEffect(() => {
+    if (selectedState && selectedBusinessDistrict) {
+      setFilteredData(FeederData[selectedState].businessDistricts[selectedBusinessDistrict]);
+    } else if (selectedState) {
+      const data = Object.values(FeederData[selectedState].businessDistricts).flat();
+      setFilteredData(data);
+    } else {
+      const data = Object.values(FeederData).flatMap(state => Object.values(state.businessDistricts).flat());
+      setFilteredData(data);
+    }
+  }, [selectedState, selectedBusinessDistrict]);
+
   return (
     <PageContainer title="Technical Feeder" description="this is Charts page">
-      {/* breadcrumb */}
       <Breadcrumb title="Technical Feeder" items={BCrumb} />
-      {/* end breadcrumb */}
-      <Grid container item xs={12} justifyContent="space-between" alignItems="center">
-          <Grid item xs={12} sm={6}>
-            <Box display="flex" flexWrap="wrap">
-              <BusinessDistrictFilter buttonStyles={buttonStyles} />
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box display="flex" justifyContent="flex-end" alignItems="center">
-              <Box style={{ marginRight: '10px' }}>
-                <StateMenuFilter />
-              </Box>
-              <Box>
-                <FeederType buttonStyles={buttonStyles} />
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
+
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <AvailabilityTechnicalFeeder />
+          <FeederFilterTechnical onFilterChange={handleFilterChange} selectedState={selectedState} selectedBusinessDistrict={selectedBusinessDistrict} />
+        </Grid>
+        <Grid item xs={12}>
+          <AvailabilityTechnicalFeeder filteredData={filteredData} />
         </Grid>
       </Grid>
     </PageContainer>

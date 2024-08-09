@@ -1,12 +1,16 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, CardContent, Grid, Typography, Stack, Avatar, ButtonGroup, Chip, Tooltip } from '@mui/material';
+import { Box, CardContent, Grid, Typography, Stack, Avatar, Tooltip, Chip } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
+import { TechnicalData } from './dataroom-technical-abd/dataroom-technical-abd';
 
-const AvailabilityTechnicalABD = () => {
+const AvailabilityTechnicalABD = ({ selectedState }) => {
   const theme = useTheme();
-  const textColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#2A3547';
+
+  const businessdistricts = selectedState
+    ? TechnicalData[selectedState] || []
+    : Object.values(TechnicalData).flat();
 
   const BusinessDistrrictChartOptions = {
     chart: {
@@ -17,7 +21,7 @@ const AvailabilityTechnicalABD = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#70c78d', '#00734d', '#c5c770', '#ebebeb'],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -30,7 +34,7 @@ const AvailabilityTechnicalABD = () => {
     },
     dataLabels: {
       enabled: true,
-      formatter: val =>  val + " Hrs",
+      formatter: val => val + " Hrs",
       position: 'top',
       style: {
         fontSize: '10px',
@@ -42,7 +46,7 @@ const AvailabilityTechnicalABD = () => {
     legend: { show: false },
     grid: { show: false },
     xaxis: {
-      categories: [['Total Cost'], ['Revenue Billed'], ['Collections']],
+      categories: [['Avg. Hours of Supply'], ['Duration of Interruption'], ['Turnaround Time']],
       axisBorder: { show: false },
       axisTicks: { show: false },
       labels: { show: false },
@@ -56,43 +60,15 @@ const AvailabilityTechnicalABD = () => {
     tooltip: { theme: theme.palette.mode === 'dark' ? 'dark' : 'light' },
   };
 
-  const BusinessDistrictSeries = [
-    { name: '', data: [11, 6, 9] },
-    { name: '', data: [21, 3, 12] },
-    { name: '', data: [14, 6, 10] },
-    { name: '', data: [14, 6, 10] },
-    { name: '', data: [14, 6, 7] },
-    { name: '', data: [14, 6, 9] },
-    { name: '', data: [14, 6, 11] },
-    { name: '', data: [14, 6, 14] },
-    { name: '', data: [14, 6, 9] },
-    { name: '', data: [14, 6, 2] },
-  ];
-
-  const businessdistricts = [
-    { name: "Jigawa North", series: BusinessDistrictSeries[0], id: "01", ftc: [3000] },
-    { name: "Jigawa South", series: BusinessDistrictSeries[1], id: "02", ftc: [3000] },
-    { name: "Kano Central", series: BusinessDistrictSeries[2], id: "03", ftc: [3000] },
-    { name: "Kano East", series: BusinessDistrictSeries[3], id: "04", ftc: [3000] },
-    { name: "Kano Industrial", series: BusinessDistrictSeries[4], id: "05", ftc: [3000] },
-    { name: "Kano North", series: BusinessDistrictSeries[5], id: "06", ftc: [3000] },
-    { name: "Kano West", series: BusinessDistrictSeries[6], id: "07", ftc: [3000] },
-    { name: "Katsina Central", series: BusinessDistrictSeries[7], id: "08", ftc: [3000]},
-    { name: "Katsina North", series: BusinessDistrictSeries[8], id: "09" , ftc: [3000]},
-    { name: "Katsina South", series: BusinessDistrictSeries[9], id: "10" , ftc: [3000]},
-  ];
-
   return (
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
-          
+          <Typography variant="h5">Technical Availability by Business District</Typography>
           <Stack direction="row" spacing={3}>
-            {['Total Cost', 'Revenue Billed', 'Collections'].map((label, index) => (
+            {['Avg. Hours of Supply', 'Duration of Interruption', 'Turnaround Time', 'FTC'].map((label, index) => (
               <Stack direction="row" alignItems="center" spacing={1} key={index}>
-                <Avatar
-                  sx={{ width: 9, height: 9, bgcolor: BusinessDistrrictChartOptions.colors[index], svg: { display: 'none' } }}
-                ></Avatar>
+                <Avatar sx={{ width: 9, height: 9, bgcolor: BusinessDistrrictChartOptions.colors[index], svg: { display: 'none' } }}></Avatar>
                 <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
                   {label}
                 </Typography>
@@ -106,15 +82,15 @@ const AvailabilityTechnicalABD = () => {
             <Grid item xs={12} sm={4} key={index}>
               <BlankCard>
                 <CardContent sx={{ p: '20px' }}>
-                <Box justifyContent="center" textAlign="right">
-                  <Tooltip title="Feeder Tripping Count">
-                    <Chip justifyContent="center" mb={2} label={[region.ftc]} size="small"/>
-                  </Tooltip>
-                </Box>
+                  <Box justifyContent="center" textAlign="right">
+                    <Tooltip title="Feeder Tripping Count">
+                      <Chip justifyContent="center" mb={2} label={[3000]} size="small" />
+                    </Tooltip>
+                  </Box>
                   <Box>
                     <Chart
                       options={BusinessDistrrictChartOptions}
-                      series={[region.series]}
+                      series={[{ name: '', data: [region.avgSupply, region.durationInterruption, region.turnaroundTime] }]}
                       type="bar"
                       height="220px"
                     />
@@ -125,7 +101,7 @@ const AvailabilityTechnicalABD = () => {
                     </Typography>
                     <Avatar sx={{ bgcolor: '#f7f8f9', width: 30, height: 30 }}>
                       <Typography variant="subtitle1" color="#000">
-                        {region.id}
+                        {index + 1}
                       </Typography>
                     </Avatar>
                   </Stack>

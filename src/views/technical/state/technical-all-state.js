@@ -1,49 +1,44 @@
-import React from 'react';
-import { Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid, Box, FormControlLabel } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
-import Projects from '../../../components/dashboards/modern/Projects';
-import Customers from '../../../components/dashboards/modern/Customers';
-import SalesTwo from '../../../components/dashboards/ecommerce/SalesTwo';
-import MonthlyEarnings from '../../../components/dashboards/modern/MonthlyEarnings';
-import SalesOverview from '../../../components/dashboards/ecommerce/SalesOverview';
-import RevenueUpdates from '../../../components/dashboards/modern/RevenueUpdates';
-import YearlySales from '../../../components/dashboards/ecommerce/YearlySales';
-import MostVisited from '../../../components/widgets/charts/MostVisited';
-import PageImpressions from '../../../components/widgets/charts/PageImpressions';
-import Followers from '../../../components/widgets/charts/Followers';
-import Views from '../../../components/widgets/charts/Views';
-import Earned from '../../../components/widgets/charts/Earned';
-import CurrentValue from '../../../components/widgets/charts/CurrentValue';
 import AvailabilityTechnicalAS from '../../../components/technical-components/all-state-charts-cards/availability-as';
 import FeederInfoTechnicalAS from '../../../components/technical-components/all-state-charts-cards/feeder-info-as';
+import AvailabilityCompareTechnicalAS from '../../../components/technical-components/all-state-charts-cards/availability-compare-as';
+import FeederInfoCompareTechnicalAS from '../../../components/technical-components/all-state-charts-cards/feeder-info-compare-as';
+import CustomSwitch from '../../../components/forms/theme-elements/CustomSwitch';
 
 const BCrumb = [
-  {
-    to: '/',
-    title: 'Home',
-  },
-  {
-    title: 'State',
-  },
-  {
-    title: 'Technical All State',
-  },
+  { to: '/', title: 'Home' },
+  { title: 'State' },
+  { title: 'Technical All State' },
 ];
 
 const TechnicalAllState = () => {
+  const [compare, setCompare] = useState(false);
+
+  const handleCompareChange = (event) => {
+    setCompare(event.target.checked);
+  };
+
   return (
-    <PageContainer title="Technical All State" description="this is Charts page">
-      {/* breadcrumb */}
+    <PageContainer title="Technical All State" description="This is the Technical All State page">
       <Breadcrumb title="Technical All State" items={BCrumb} />
-      {/* end breadcrumb */}
-      <Grid container spacing={3}>
+      <Grid container spacing={5}>
         <Grid item xs={12}>
-          <AvailabilityTechnicalAS />
+          <Box textAlign="right">
+            <FormControlLabel
+              control={<CustomSwitch checked={compare} onChange={handleCompareChange} />}
+              label="Compare"
+            />
+          </Box>
+        </Grid>
+
+        <Grid item xs={12}>
+          {compare ? <AvailabilityCompareTechnicalAS /> : <AvailabilityTechnicalAS />}
         </Grid>
         <Grid item xs={12}>
-          <FeederInfoTechnicalAS />
+          {compare ? <FeederInfoCompareTechnicalAS /> : <FeederInfoTechnicalAS />}
         </Grid>
       </Grid>
     </PageContainer>

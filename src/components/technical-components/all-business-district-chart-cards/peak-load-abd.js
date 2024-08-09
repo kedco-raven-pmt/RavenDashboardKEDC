@@ -1,30 +1,19 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Grid, Stack, Typography, Button, Avatar, Box } from '@mui/material';
-import { IconGridDots } from '@tabler/icons';
+import { Grid, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
-import { color, positions } from '@mui/system';
+import { PeakLoadData } from './dataroom-technical-abd/dataroom-technical-abd';
 
-const PeakLoadTechnicalABD = () => {
-  const [month, setMonth] = React.useState('1');
-
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
-
-  // chart color
+const PeakLoadTechnicalABD = ({ selectedState }) => {
   const theme = useTheme();
-  const primary = theme.palette.primary.main;
-  const primarylight = theme.palette.primary.light;
-  const error = theme.palette.error.main;
-  const errorlight = theme.palette.error.light;
-  const secondary = theme.palette.success.main;
-  const secondarylight = theme.palette.success.light;
 
+  const peakLoads = selectedState
+    ? PeakLoadData[selectedState] || []
+    : Object.values(PeakLoadData).flat();
+  const categories = peakLoads.map(data => [data.name.split(' ')[0], data.name.split(' ')[1]]);
+  const seriesData = peakLoads.map(data => data.peakLoad);
 
-  // chart
   const optionscolumnchart = {
     chart: {
       type: 'area',
@@ -33,10 +22,8 @@ const PeakLoadTechnicalABD = () => {
       toolbar: {
         show: false,
       },
-      height: 300,
-
+      height: 370,
     },
-    
     fill: {
       type: 'gradient',
       gradient: {
@@ -60,7 +47,6 @@ const PeakLoadTechnicalABD = () => {
         fontWeight: 700,
         color: '#000',
       },
-      
       background: '#fff'
     },
     legend: {
@@ -80,48 +66,33 @@ const PeakLoadTechnicalABD = () => {
       tickAmount: 4,
     },
     xaxis: {
-      categories: [['Jigawa', 'North'], ['Jigawa', 'South'], ['Kano', 'Central'], ['Kano' ,'East'], ['Kano', 'Industrial'], ['Kano' ,'North'], ['Kano', 'South'], ['Katsina', 'Central'], ['Katsina', 'North'], ['Katsina', 'South']],
-      labels:{
-        rotate: 0,
+      categories: categories,
+      labels: { rotate: 0, 
         style: {
-            fontSize: '10px',
-          },
-      },
-      axisBorder: {
-        show: false,
-      },
+        fontSize: '10px',} },
+      axisBorder: { show: false },
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
       fillSeriesColor: false,
     },
   };
+
   const seriescolumnchart = [
     {
       name: 'Peak Load',
-      data: [1.5, 2.7, 2.2, 3.6, 1.5, 1.0, 1.5, 2.7, 2.2, 3.6],
+      data: seriesData,
     },
   ];
 
   return (
-    <DashboardCard
-      title="Peak Load By Business District"
-      
-    >
+    <DashboardCard title="Peak Load By Business District">
       <Grid container spacing={3}>
-        {/* column */}
-        <Grid item xs={12} >
+        <Grid item xs={12}>
           <Box className="rounded-bars">
-            <Chart
-              options={optionscolumnchart}
-              series={seriescolumnchart}
-              type="area"
-              height="390px"
-            />
+            <Chart options={optionscolumnchart} series={seriescolumnchart} type="area" height="390px" />
           </Box>
         </Grid>
-        {/* column */}
-        
       </Grid>
     </DashboardCard>
   );

@@ -72,9 +72,9 @@ const WelcomeCard = () => {
   };
 
   // Hardcoded data for sparklines
-  const seriesEnergyDelivered = [{ data: [150, 160, 145, 175, 180, 155, 160, 170, 165, 150, 140, 175], name: '' }];
-  const seriesEnergyBilled = [{ data: [100, 110, 105, 115, 120, 95, 100, 110, 105, 90, 95, 115], name: '' }];
-  const seriesEnergyCollected = [{ data: [70, 65, 60, 75, 80, 55, 60, 70, 65, 52, 55, 89], name: '' }];
+  const seriesEnergyDelivered = [{ data: [150, 160, 145, 175], name: '' }];
+  const seriesEnergyBilled = [{ data: [100, 110, 105, 115], name: '' }];
+  const seriesEnergyCollected = [{ data: [70, 85, 60, 65 ], name: '' }];
 
   return (
     <Card elevation={0} sx={{ backgroundColor: primaryLight, py: 0 }}>
@@ -181,66 +181,6 @@ const WelcomeCard = () => {
           </Grid>
           <Grid sm={5}>
             <Box mb="-30px" mt="50px">
-              <Stack direction="row" spacing={4} sx={{ mb: 2 }}>
-                <FormControl size="small" sx={{ minWidth: 200 }}>
-                  <InputLabel
-                    id="year-label"
-                    sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
-                  >
-                    Year
-                  </InputLabel>
-                  <CustomSelect
-                    labelId="year-label"
-                    id="year-select"
-                    value={year}
-                    onChange={handleYearChange}
-                    label="Year"
-                    sx={{
-                      backgroundColor: theme.palette.mode === 'dark' ? '#424242' : 'white',
-                      color: theme.palette.mode === 'dark' ? 'white' : 'black',
-                    }}
-                  >
-                    {years.map((y) => (
-                      <MenuItem
-                        key={y}
-                        value={y}
-                        sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
-                      >
-                        {y}
-                      </MenuItem>
-                    ))}
-                  </CustomSelect>
-                </FormControl>
-                <FormControl size="small" sx={{ minWidth: 200 }}>
-                  <InputLabel
-                    id="month-label"
-                    sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
-                  >
-                    Month
-                  </InputLabel>
-                  <CustomSelect
-                    labelId="month-label"
-                    id="month-select"
-                    value={month}
-                    onChange={handleMonthChange}
-                    label="Month"
-                    sx={{
-                      backgroundColor: theme.palette.mode === 'dark' ? '#424242' : 'white',
-                      color: theme.palette.mode === 'dark' ? 'white' : 'black',
-                    }}
-                  >
-                    {availableMonths.map((m) => (
-                      <MenuItem
-                        key={m}
-                        value={m}
-                        sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}
-                      >
-                        {m}
-                      </MenuItem>
-                    ))}
-                                    </CustomSelect>
-                </FormControl>
-              </Stack>
               <img src={welcomeImg} alt="Welcome Background" width={'400px'} />
             </Box>
           </Grid>

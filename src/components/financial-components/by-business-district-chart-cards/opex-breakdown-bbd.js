@@ -1,52 +1,71 @@
 import React from 'react';
-import { Box, Avatar, Typography, Card, CardContent, Grid, Divider, Stack, MenuItem } from '@mui/material';
+import { Box, Typography, Card, CardContent, Divider, Stack, Chip } from '@mui/material';
 import { IconArrowUpRight, IconArrowDownLeft } from '@tabler/icons';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
-import welcomeImg from 'src/assets/images/backgrounds/overveiw-bg.svg';
-import userImg from 'src/assets/images/profile/user-1.jpg';
+import { FinancialDataOpex } from './dataroom-financial-by-bd/dataroom-financial-bbd';
 
-const OpexBreakdownFinancialBBD = () => {
-  const [month, setMonth] = React.useState('1');
+const formatAmount = (amount) => {
+  if (amount >= 1000000000) {
+    return `₦${(amount / 1000000000).toFixed(1)}B`;
+  }
+  return `₦${(amount / 1000000).toFixed(1)}M`;
+};
 
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
+const OpexBreakdownFinancialBBD = ({ selectedBusinessDistrict }) => {
+  console.log("Selected Business District: ", selectedBusinessDistrict);
+
+  const expenses = selectedBusinessDistrict 
+    ? Object.values(FinancialDataOpex).find(district => district.name === selectedBusinessDistrict)?.expenses || []
+    : Object.values(FinancialDataOpex).flatMap(district => district.expenses);
+
+  console.log("Expenses before aggregation: ", expenses);
+
+  const aggregatedExpenses = expenses.reduce((acc, expense) => {
+    const existing = acc.find(item => item.label === expense.label);
+    if (existing) {
+      existing.amount += expense.amount;
+    } else {
+      acc.push({ ...expense });
+    }
+    return acc;
+  }, []);
+
+  console.log("Aggregated Expenses: ", aggregatedExpenses);
+
+  const otherExpenses = Array(3).fill({ label: 'Other Expenses', amount: 0, trend: 'down' });
+
   return (
-    <Card elevation={0} sx={{ backgroundColor: '#f2f5f6', py: 0, boxShadow: 'rgb(145 158 171 / 30%) 0px 0px 2px 0px,rgb(145 158 171 / 12%) 0px 12px 24px -4px',}}>
+    <Card elevation={0} sx={{ backgroundColor: '#f2f5f6', py: 0, boxShadow: 'rgb(145 158 171 / 30%) 0px 0px 2px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px' }}>
       <CardContent sx={{ py: 2, px: 2 }}>
-        <Grid container justifyContent="space-between">
-          <Grid item xs={12} sm={12} display="flex" alignItems="center" textAlign="center">
-            <Box width="100%">
-                <Typography gap="16px" mb={8} mt={3} justifyContent="center" variant="h4" whiteSpace="nowrap">
-                  Opex Breakdown
-                </Typography>
+        <Box mb={4} mt={3} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+          <Typography mb={2} variant="h4">
+            Opex Breakdown
+          </Typography>
+          <Chip alignItems="right" label={selectedBusinessDistrict || "All business districts"} size="small" />
+        </Box>
 
-                <Stack spacing={2} justifyContent="space-between" direction="row" divider={<Divider sx={{ borderColor: "#959697" }} orientation="vertical" flexItem   />}>
-                    <Box>
-                        <Typography variant="h2" whiteSpace="nowrap">₦1.5B <span><IconArrowUpRight width={18} color="#39B69A" /></span></Typography>
-                        <Typography mt={2} variant="subtitle1" whiteSpace="nowrap">Administrative Expenses</Typography>
-                    </Box>
-                    <Box>
-                        <Typography variant="h2" whiteSpace="nowrap">₦5.7B <span><IconArrowDownLeft width={18} color="#b63939" /></span></Typography>
-                        <Typography mt={2} variant="subtitle1" whiteSpace="nowrap">Collection Losses</Typography>
-                    </Box>
-                    
-                    <Box>
-                        <Typography variant="h2" whiteSpace="nowrap">₦750M <span><IconArrowUpRight width={18} color="#39B69A" /></span></Typography>
-                        <Typography mt={2} variant="subtitle1" whiteSpace="nowrap">General Repairs</Typography>
-                    </Box>
-                    <Box>
-                        <Typography variant="h2" whiteSpace="nowrap">₦405M <span><IconArrowDownLeft width={18} color="#b63939" /></span></Typography>
-                        <Typography mt={2} variant="subtitle1" whiteSpace="nowrap">Customer Related</Typography>
-                    </Box>
-                    <Box>
-                        <Typography variant="h2" whiteSpace="nowrap">600M <span><IconArrowDownLeft width={18} color="#b63939" /></span></Typography>
-                        <Typography mt={2} variant="subtitle1" whiteSpace="nowrap">Salaries</Typography>
-                    </Box>
-                </Stack>
+        <Stack spacing={2} justifyContent="space-between" direction="row" divider={<Divider sx={{ borderColor: "#959697" }} orientation="vertical" flexItem />} alignItems="center">
+          {aggregatedExpenses.slice(0, 5).map((expense, index) => (
+            <Box key={index} sx={{ textAlign: 'center', width: '20%' }}>
+              <Typography variant="h2" whiteSpace="nowrap">
+                {formatAmount(expense.amount)} <span>{expense.trend === 'up' ? <IconArrowUpRight width={18} color="#39B69A" /> : <IconArrowDownLeft width={18} color="#b63939" />}</span>
+              </Typography>
+              <Typography mt={2} variant="subtitle1" whiteSpace="nowrap">{expense.label}</Typography>
             </Box>
-          </Grid>
-        </Grid>
+          ))}
+        </Stack>
+
+        <Divider sx={{ borderColor: "#cdd2da", marginTop: "20px", marginBottom: "20px" }} orientation="horizontal" flexItem />
+
+        <Stack spacing={2} justifyContent="space-between" direction="row" divider={<Divider sx={{ borderColor: "#959697" }} orientation="vertical" flexItem />} alignItems="center">
+          {aggregatedExpenses.slice(5).concat(otherExpenses).map((expense, index) => (
+            <Box key={index} sx={{ textAlign: 'center', width: '20%' }}>
+              <Typography variant="h2" whiteSpace="nowrap">
+                {formatAmount(expense.amount)} <span>{expense.trend === 'up' ? <IconArrowUpRight width={18} color="#39B69A" /> : <IconArrowDownLeft width={18} color="#b63939" />}</span>
+              </Typography>
+              <Typography mt={2} variant="subtitle1" whiteSpace="nowrap">{expense.label}</Typography>
+            </Box>
+          ))}
+        </Stack>
       </CardContent>
     </Card>
   );

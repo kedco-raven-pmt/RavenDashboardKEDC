@@ -1,299 +1,136 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, CardContent, Grid, Typography, Stack, Avatar } from '@mui/material';
-import GreyCard from '../../shared/greycard';
-import DashboardWidgetCard from '../../shared/DashboardWidgetCard';
-import CostBreakdownCards from '../../shared/costbreakdowncard';
-import { color, fontSize, fontWeight, padding, width } from '@mui/system';
+import { Box, CardContent, Grid, Typography, Stack, Avatar } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
 
 const FeederInfoTechnicalAS = () => {
-  // chart color
   const theme = useTheme();
-  const primary = theme.palette.primary.main;
-  const primarylight = theme.palette.primary.light;
-  const secondary = theme.palette.secondary.main;
-  const textColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#2A3547';
 
-  // chart
-  const feedernumber = {
+  const commonChartOptions = {
     chart: {
-        type: 'donut',
-        fontFamily: "'Plus Jakarta Sans', sans-serif;",
-  
-        toolbar: {
-          show: false,
-        },
-        height: 275,
+      type: 'bar',
+      fontFamily: "'Plus Jakarta Sans', sans-serif;",
+      foreColor: '#adb0bb',
+      toolbar: { show: false },
+      height: 200,
+      width: "100%",
+    },
+    colors: ['#70c78d', '#00734d', '#c5c770'],
+    plotOptions: {
+      bar: {
+        borderRadius: 3,
+        columnWidth: '60%',
+        barHeight: '60%',
+        distributed: true,
+        endingShape: 'rounded',
+        dataLabels: { position: 'top' },
       },
-      labels: ["Kano", "Katsina", "Jigawa"],
-      colors: [primary, primarylight, secondary],
-      plotOptions: {
-        pie: {
-          
-          donut: {
-            size: '89%',
-            background: 'transparent',
-  
-            labels: {
-              show: true,
-              name: {
-                show: true,
-                offsetY: 7,
-              },
-              value: {
-                show: false,
-              },
-              total: {
-                show: true,
-                color: textColor,
-                fontSize: '20px',
-                fontWeight: '600',
-                label: '185',
-              },
-            },
-          },
-        },
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: val => val ,
+      position: 'top',
+      style: {
+        fontSize: '10px',
+        colors: ['#304758'],
+        fontWeight: 700,
       },
-      dataLabels: {
-        enabled: false,
-
-      },
-      stroke: {
+      offsetY: -20,
+    },
+    legend: { show: false },
+    grid: { show: false },
+    xaxis: {
+      categories: [['Avg. Hours of Supply'], ['Duration of interruption'], ['Peak Load']],
+      axisBorder: { show: false },
+      axisTicks: { show: false },
+      labels: { show: false },
+    },
+    yaxis: {
+      labels: {
         show: false,
+        formatter: val => val + " Hrs",
       },
-      legend: {
-        show: false,
-      },
-      tooltip: {
-        theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-        fillSeriesColor: false,
-      },
+    },
+    tooltip: { theme: theme.palette.mode === 'dark' ? 'dark' : 'light' },
   };
-  
-  const feedernumberseries = [42, 62, 30];
 
-  //   chart 2
-  const peakload = {
-    chart: {
-        type: 'donut',
-        fontFamily: "'Plus Jakarta Sans', sans-serif;",
-  
-        toolbar: {
-          show: false,
-        },
-        height: 275,
-      },
-      labels: ["Kano", "Katsina", "Jigawa"],
-      colors: [primary, primarylight, secondary],
-      plotOptions: {
-        pie: {
-          
-          donut: {
-            size: '89%',
-            background: 'transparent',
-  
-            labels: {
-              show: true,
-              name: {
-                show: true,
-                offsetY: 7,
-                
-              },
-              value: {
-                show: false,
-              },
-              total: {
-                show: true,
-                color: textColor,
-                fontSize: '20px',
-                fontWeight: '600',
-                label: ['3.22 MW' ],
-
-              },
-            },
-          },
-        },
-      },
-      dataLabels: {
-        enabled: false,
-
-      },
-      stroke: {
-        show: false,
-      },
-      legend: {
-        show: false,
-      },
-      tooltip: {
-        theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-        fillSeriesColor: false,
-        
-      },
-  };
-  
-  const peakloadseries = [4.2, 6.2, 3.0];
-  //   chart 3
-  const customernumber = {
-    chart: {
-        type: 'donut',
-        fontFamily: "'Plus Jakarta Sans', sans-serif;",
-  
-        toolbar: {
-          show: false,
-        },
-        height: 275,
-      },
-      labels: ["Kano", "Katsina", "Jigawa"],
-      colors: [primary, primarylight, secondary],
-      plotOptions: {
-        pie: {
-          
-          donut: {
-            size: '89%',
-            background: 'transparent',
-  
-            labels: {
-              show: true,
-              name: {
-                show: true,
-                offsetY: 7,
-              },
-              value: {
-                show: false,
-              },
-              total: {
-                show: true,
-                color: textColor,
-                fontSize: '20px',
-                fontWeight: '600',
-                label: '5 M',
-              },
-            },
-          },
-        },
-      },
-      dataLabels: {
-        enabled: false,
-
-      },
-      stroke: {
-        show: false,
-      },
-      legend: {
-        show: false,
-      },
-      tooltip: {
-        theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-        fillSeriesColor: false,
-      },
-  };
-  
-  const customernumberseries = [42, 62, 30];
+  const kanodataseries = [{ name: '', data: [94, 62, 38] }];
+  const katsinadataseries = [{ name: '', data: [21, 32, 12] }];
+  const jigawadataseries = [{ name: '', data: [14, 26, 20] }];
 
   return (
-    <BlankCard >
+    <BlankCard>
       <CardContent sx={{ p: '30px' }}>
-        
-      <Stack direction="row" spacing={2} justifyContent="space-between">
-          <Typography variant="h5">Tariff Metrics</Typography>
-          <Stack direction="row" spacing={2} mt={5} justifyContent="center">
+        <Stack direction="row" spacing={2} justifyContent="space-between">
+          <Typography variant="h5">Asset Overview</Typography>
           <Stack direction="row" spacing={3}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#3B80B2', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Kano
-              </Typography>
-            </Box>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Avatar sx={{ width: 9, height: 9, bgcolor: '#70c78d', svg: { display: 'none' } }}></Avatar>
+              <Box>
+                <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
+                  Feeder Number
+                </Typography>
+              </Box>
+            </Stack>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Avatar sx={{ width: 9, height: 9, bgcolor: '#00734d', svg: { display: 'none' } }}></Avatar>
+              <Box>
+                <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
+                  Customer Number
+                </Typography>
+              </Box>
+            </Stack>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Avatar sx={{ width: 9, height: 9, bgcolor: '#c5c770', svg: { display: 'none' } }}></Avatar>
+              <Box>
+                <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
+                  Avg. Peak Load
+                </Typography>
+              </Box>
+            </Stack>
           </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#599BC8', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Katsina
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#77ADD2', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Jigawa
-              </Typography>
-            </Box>
-          </Stack>
-        </Stack>
-        </Stack>
         </Stack>
 
         <Grid container spacing={3} mt={2}>
-          {/* 1 */}
           <Grid item xs={12} sm={4}>
             <BlankCard>
               <CardContent sx={{ p: '20px' }}>
-              <Box justifyContent="center" textAlign="center" mt={1} mb={3}>
-                  <Typography variant="h6" fontWeight={800} color='#273E76'>
-                    Feeder Number
-                  </Typography>
-                </Box>
-
                 <Box>
-                  <Chart
-                    options={feedernumber}
-                    series={feedernumberseries}
-                    type="donut"
-                    height="275px"   
-                  />
+                  <Chart options={commonChartOptions} series={kanodataseries} type="bar" height="220px" />
                 </Box>
-                
-              </CardContent>
-            </BlankCard>
-          </Grid>
-          {/* 2 */}
-          <Grid item xs={12} sm={4}>
-            <BlankCard>
-              <CardContent sx={{ p: '20px' }}>
-              <Box justifyContent="center" textAlign="center" mt={1} mb={3}>
-                  <Typography variant="h6" fontWeight={800} color='#273E76'>
-                    Avg. Peak Load
+                <Box justifyContent="center" mt={1}>
+                  <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
+                    Kano
                   </Typography>
-                </Box>
-
-                <Box>
-                  <Chart
-                    options={peakload}
-                    series={peakloadseries}
-                    type="donut"
-                    height="275px"
-                  />
                 </Box>
               </CardContent>
             </BlankCard>
           </Grid>
-          {/* 3 */}
           <Grid item xs={12} sm={4}>
             <BlankCard>
               <CardContent sx={{ p: '20px' }}>
-              <Box justifyContent="center" textAlign="center" mt={1} mb={3}>
-                  <Typography variant="h6" fontWeight={800} color='#273E76'>
-                    Customer Number
+                <Box>
+                  <Chart options={commonChartOptions} series={katsinadataseries} type="bar" height="220px" />
+                </Box>
+                <Box justifyContent="center" mt={1}>
+                  <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
+                    Katsina
                   </Typography>
                 </Box>
+              </CardContent>
+            </BlankCard>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <BlankCard>
+              <CardContent sx={{ p: '20px' }}>
                 <Box>
-                  <Chart
-                    options={customernumber}
-                    series={customernumberseries}
-                    type="donut"
-                    height="275px"
-                  />
+                  <Chart options={commonChartOptions} series={jigawadataseries} type="bar" height="220px" />
+                </Box>
+                <Box justifyContent="center" mt={1}>
+                  <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
+                    Jigawa
+                  </Typography>
                 </Box>
               </CardContent>
             </BlankCard>

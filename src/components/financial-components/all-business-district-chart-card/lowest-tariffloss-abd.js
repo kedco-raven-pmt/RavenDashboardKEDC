@@ -3,14 +3,20 @@ import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { CardContent, Typography, Stack } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
+import { TariffData } from './dataroom-financial-abd/dataroom-financial-abd';
 
-const LowestTariffLossFinancialABD = () => {
-  // chart color
+const LowestTariffLossFinancialABD = ({ selectedState }) => {
   const theme = useTheme();
   const secondary = theme.palette.secondary.main;
-  const secondarylight = theme.palette.secondary.light;
 
-  // chart
+  const tariffLoss = selectedState
+    ? TariffData[selectedState] || []
+    : Object.values(TariffData).flat();
+
+  const lowest5Data = tariffLoss.sort((a, b) => a.tariffLoss - b.tariffLoss).slice(0, 5);
+  const categories = lowest5Data.map(data => [data.name.split(' ')[0], data.name.split(' ')[1]]);
+  const seriesData = lowest5Data.map(data => data.tariffLoss);
+
   const optionscolumnchart = {
     chart: {
       type: 'bar',
@@ -27,18 +33,17 @@ const LowestTariffLossFinancialABD = () => {
       bar: {
         borderRadius: 3,
         columnWidth: '60%',
-        barHeight: '60%',
         distributed: true,
         endingShape: 'rounded',
         dataLabels: {
-            position: 'top', // Specify the position of data labels to be on top
-          },
+          position: 'top',
+        },
       },
     },
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return "₦" + val ;  // Display the value with "bn"
+        return "₦" + val;  
       },
       position: 'top',
       style: {
@@ -46,23 +51,22 @@ const LowestTariffLossFinancialABD = () => {
         colors: ['#304758'],
         fontWeight: 700,
       },
-      offsetY: -20 ,
-      
+      offsetY: -20,
     },
     legend: {
       show: false,
     },
     grid: {
-        padding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-          },
-        show:false,
+      padding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      },
+      show: false,
     },
     xaxis: {
-      categories: [['KC'], ['KN'], ['KTN'], ['JC'], ['KW']],
+      categories: categories,
       axisBorder: {
         show: false,
       },
@@ -77,20 +81,19 @@ const LowestTariffLossFinancialABD = () => {
       labels: {
         show: false,
         formatter: function (val) {
-          return val + "bn";  // Append "bn" to y-axis labels
+          return "₦" + val;  
         }
-        
       },
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
   };
-  
+
   const seriescolumnchart = [
     {
       name: '',
-      data: [42.0, 51.5, 45.1, 62/5, 41.0],
+      data: seriesData,
     },
   ];
 
@@ -103,7 +106,7 @@ const LowestTariffLossFinancialABD = () => {
             (₦/kWh)
           </Typography>
         </Stack>
-        <Chart options={optionscolumnchart} series={seriescolumnchart} type="bar" height="120px" />
+        <Chart options={optionscolumnchart} series={seriescolumnchart} type="bar" height={120} />
       </CardContent>
     </BlankCard>
   );

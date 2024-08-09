@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 
-import WelcomeCard from 'src/components/dashboards/ecommerce/CommercialWelcomeCard';
+import WelcomeCard from '../../components/commercial-components/overview-charts-cards/CommercialWelcomeCard';
 import ATCC from 'src/components/dashboards/ecommerce/ATCC';
 import BillingEfficiency from 'src/components/dashboards/ecommerce/BillingEfficiency';
 import CollectionEfficiency from 'src/components/dashboards/ecommerce/CollectionEfficiency';

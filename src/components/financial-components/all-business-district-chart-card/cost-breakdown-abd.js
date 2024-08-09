@@ -1,10 +1,18 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, CardContent, Grid, Typography, Stack, Avatar, ButtonGroup } from '@mui/material';
+import { Box, CardContent, Grid, Typography, Stack, Avatar } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
+import { CostData } from './dataroom-financial-abd/dataroom-financial-abd';
 
-const CostBreakdownFinancialABD = () => {
+const formatAmount = (amount) => {
+  if (amount >= 1000000000) {
+    return `₦${(amount / 1000000000).toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}B`;
+  }
+  return `₦${(amount / 1000000).toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}M`;
+};
+
+const CostBreakdownFinancialABD = ({ selectedState }) => {
   const theme = useTheme();
   const textColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#2A3547';
 
@@ -17,7 +25,7 @@ const CostBreakdownFinancialABD = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -30,7 +38,7 @@ const CostBreakdownFinancialABD = () => {
     },
     dataLabels: {
       enabled: true,
-      formatter: val => "₦" + val + "B",
+      formatter: val => formatAmount(val),
       position: 'top',
       style: {
         fontSize: '10px',
@@ -42,10 +50,10 @@ const CostBreakdownFinancialABD = () => {
     legend: { show: false },
     grid: { show: false },
     xaxis: {
-      categories: [['Total Cost'], ['Revenue Billed'], ['Collections']],
+      categories: [['Total Cost'], ['Rev. Billed'], ['Collections']],
       axisBorder: { show: false },
       axisTicks: { show: false },
-      labels: { show: false },
+      labels: { show: true },
     },
     yaxis: {
       labels: {
@@ -56,43 +64,19 @@ const CostBreakdownFinancialABD = () => {
     tooltip: { theme: theme.palette.mode === 'dark' ? 'dark' : 'light' },
   };
 
-  const BusinessDistrictSeries = [
-    { name: '', data: [42, 62, 38] },
-    { name: '', data: [21, 32, 12] },
-    { name: '', data: [14, 26, 20] },
-    { name: '', data: [14, 26, 20] },
-    { name: '', data: [14, 26, 20] },
-    { name: '', data: [14, 26, 20] },
-    { name: '', data: [14, 26, 20] },
-    { name: '', data: [14, 26, 20] },
-    { name: '', data: [14, 26, 20] },
-    { name: '', data: [14, 26, 20] },
-  ];
-
-  const businessdistricts = [
-    { name: "Jigawa North", series: BusinessDistrictSeries[0], id: "01" },
-    { name: "Jigawa South", series: BusinessDistrictSeries[1], id: "02" },
-    { name: "Kano Central", series: BusinessDistrictSeries[2], id: "03" },
-    { name: "Kano East", series: BusinessDistrictSeries[3], id: "04" },
-    { name: "Kano Industrial", series: BusinessDistrictSeries[4], id: "05" },
-    { name: "Kano North", series: BusinessDistrictSeries[5], id: "06" },
-    { name: "Kano West", series: BusinessDistrictSeries[6], id: "07" },
-    { name: "Katsina Central", series: BusinessDistrictSeries[7], id: "08" },
-    { name: "Katsina North", series: BusinessDistrictSeries[8], id: "09" },
-    { name: "Katsina South", series: BusinessDistrictSeries[9], id: "10" },
-  ];
+  const businessdistricts = selectedState
+    ? CostData[selectedState] || []
+    : Object.values(CostData).flat();
 
   return (
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
-         
+          <Typography variant="h5">Expenditure and Collections</Typography>
           <Stack direction="row" spacing={3}>
             {['Total Cost', 'Revenue Billed', 'Collections'].map((label, index) => (
               <Stack direction="row" alignItems="center" spacing={1} key={index}>
-                <Avatar
-                  sx={{ width: 9, height: 9, bgcolor: BusinessDistrrictChartOptions.colors[index], svg: { display: 'none' } }}
-                ></Avatar>
+                <Avatar sx={{ width: 9, height: 9, bgcolor: BusinessDistrrictChartOptions.colors[index], svg: { display: 'none' } }}></Avatar>
                 <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
                   {label}
                 </Typography>
@@ -109,7 +93,7 @@ const CostBreakdownFinancialABD = () => {
                   <Box>
                     <Chart
                       options={BusinessDistrrictChartOptions}
-                      series={[region.series]}
+                      series={[{ name: '', data: [region.totalCost, region.revenueBilled, region.collections] }]}
                       type="bar"
                       height="220px"
                     />
@@ -120,7 +104,7 @@ const CostBreakdownFinancialABD = () => {
                     </Typography>
                     <Avatar sx={{ bgcolor: '#f7f8f9', width: 30, height: 30 }}>
                       <Typography variant="subtitle1" color="#000">
-                        {region.id}
+                        {index + 1}
                       </Typography>
                     </Avatar>
                   </Stack>

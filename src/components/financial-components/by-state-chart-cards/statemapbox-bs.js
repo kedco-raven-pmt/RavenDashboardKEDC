@@ -1,145 +1,168 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { useTheme } from '@mui/material/styles';
-import { Grid, Stack, Typography, Box } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import StateMapBoxDataCards from './statemapbox-datacards-bs';
+import { FinancialDataMapbox } from "./dataroom-financial-by-state/dataroom-financial-bs";
 
-// Replace with your Mapbox access token
 mapboxgl.accessToken = 'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
 
-const financialData = {
-  'NG018': { name: 'Jigawa', revenueRequired: 63242094983, revenueBilled: 80137421022, collections: 43042464340 },
-  'NG020': { name: 'Kano', revenueRequired: 50000000000, revenueBilled: 60000000000, collections: 35000000000 },
-  'NG021': { name: 'Katsina', revenueRequired: 70000000000, revenueBilled: 80000000000, collections: 45000000000 }
-  // Add more states as needed
-};
-
-const StateMapboxFinancialBS = () => {
+const StateMapboxFinancialBS = ({ selectedState, onStateClick }) => {
   const [selectedStateData, setSelectedStateData] = useState(null);
-  const [selectedPcod, setSelectedPcod] = useState(null);
   const theme = useTheme();
   const primary = theme.palette.primary.main;
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
 
-  // Define the initial center of the map
-  const longitude = 8.582; // Central longitude for Nigeria
-  const latitude = 12.075;  // Central latitude for Nigeria
+  const longitude = 8.582;
+  const latitude = 12.075;
 
   useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: 'mapContainer',
-      style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
-      center: [longitude, latitude], // Set the initial center of the map
-      zoom: 6.6 // Set the initial zoom level
-    });
-
-    map.on('load', () => {
-      map.addSource('states', {
-        type: 'geojson',
-        data: '/assets/map-data/KEDC.geojson' // Ensure this path is correct
+    if (!mapRef.current) {
+      console.log('Initializing map...');
+      const map = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
+        center: [longitude, latitude],
+        zoom: 6.6
       });
 
-      map.addLayer({
-        id: 'states-layer',
-        type: 'fill',
-        source: 'states',
-        paint: {
-          'fill-color': '#888888',
-          'fill-opacity': 0.5
-        }
-      });
+      mapRef.current = map;
 
-      map.on('click', 'states-layer', (e) => {
-        if (e.features.length > 0) {
-          const feature = e.features[0];
-          const selectedPcod = feature.properties.admin1Pcod;
+      map.on('load', () => {
+        console.log('Map loaded');
+        map.addSource('states', {
+          type: 'geojson',
+          data: '/assets/map-data/KEDC.geojson'
+        });
 
-          if (selectedPcod) {
-            setSelectedPcod(selectedPcod);
-            const data = financialData[selectedPcod] || { name: 'Unknown', revenueRequired: 0, revenueBilled: 0, collections: 0 };
-            setSelectedStateData(data);
-
-            // Reset all state colors
-            map.setPaintProperty('states-layer', 'fill-color', '#888888');
-
-            // Highlight the selected state
-            map.setPaintProperty('states-layer', 'fill-color', [
-              'case',
-              ['==', ['get', 'admin1Pcod'], selectedPcod],
-              primary, // Highlight color
-              '#888888' // Default color
-            ]);
-          } else {
-            console.error('Selected property code is undefined');
+        map.addLayer({
+          id: 'states-layer',
+          type: 'fill',
+          source: 'states',
+          paint: {
+            'fill-color': '#888888',
+            'fill-opacity': 0.5
           }
-        }
-      });
+        });
 
-      // Change the cursor to a pointer when the mouse is over the states layer
-      map.on('mouseenter', 'states-layer', () => {
-        map.getCanvas().style.cursor = 'pointer';
-      });
+        map.on('click', 'states-layer', (e) => {
+          console.log('Map clicked', e);
+          if (e.features.length > 0) {
+            const feature = e.features[0];
+            const selectedPcod = feature.properties.admin1Pcod;
+            console.log('Selected feature', feature);
 
-      // Change it back to default when it leaves
-      map.on('mouseleave', 'states-layer', () => {
-        map.getCanvas().style.cursor = '';
-      });
-    });
+            if (selectedPcod) {
+              const data = FinancialDataMapbox[selectedPcod] || { name: 'Unknown', revenueRequired: [0, 0, 0, 0], revenueBilled: [0, 0, 0, 0], collections: [0, 0, 0, 0] };
+              setSelectedStateData(data);
+              onStateClick(data.name);
 
-    return () => map.remove();
-  }, [theme, primary]);
+              // Update fill color immediately
+              map.setPaintProperty('states-layer', 'fill-color', [
+                'case',
+                ['==', ['get', 'admin1Pcod'], selectedPcod],
+                primary,
+                '#888888'
+              ]);
+            } else {
+              console.error('Selected property code is undefined');
+            }
+          }
+        });
+
+        map.on('mouseenter', 'states-layer', () => {
+          map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', 'states-layer', () => {
+          map.getCanvas().style.cursor = '';
+        });
+      });
+    }
+
+    return () => {
+      console.log('Cleaning up map initialization effect');
+    };
+  }, [theme, primary, onStateClick]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    console.log('Updating map layer for selectedState:', selectedState);
+    const map = mapRef.current;
+
+    const updateMapLayer = () => {
+      const selectedPcod = Object.keys(FinancialDataMapbox).find(key => FinancialDataMapbox[key].name === selectedState);
+
+      if (selectedPcod) {
+        console.log('Setting fill color for selectedPcod:', selectedPcod);
+        map.setPaintProperty('states-layer', 'fill-color', [
+          'case',
+          ['==', ['get', 'admin1Pcod'], selectedPcod],
+          primary,
+          '#888888'
+        ]);
+      } else {
+        console.log('Resetting fill color');
+        map.setPaintProperty('states-layer', 'fill-color', '#888888');
+      }
+    };
+
+    if (map.isStyleLoaded()) {
+      updateMapLayer();
+    } else {
+      map.once('styledata', updateMapLayer);
+    }
+  }, [selectedState, primary]);
+
+  useEffect(() => {
+    console.log('Selected state changed:', selectedState);
+    if (selectedState) {
+      const stateData = Object.values(FinancialDataMapbox).find(state => state.name === selectedState);
+      setSelectedStateData(stateData);
+      console.log('State data:', stateData);
+    } else {
+      setSelectedStateData(null);
+    }
+  }, [selectedState]);
 
   return (
     <DashboardCard title="Financial Breakdown By State" subtitle="Select a state">
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={8}>
-          <Box className="rounded-bars" bgcolor='#f7f8f9' height={500} id="mapContainer">
-            {/* Map will be rendered here */}
-          </Box>
+        <Grid item xs={12}>
+          <Box className="rounded-bars" bgcolor='#f7f8f9' height={350} ref={mapContainerRef} />
         </Grid>
-        <Grid item xs={12} sm={4} alignContent='center' alignItems='flex-end'>
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h4" fontWeight="700">
-                  {selectedStateData ? selectedStateData.name : 'Select a state'}
-                </Typography>
-              </Box>
-            </Stack>
-            <Stack spacing={3} mt={3}>
-              <Stack direction="row" spacing={2}>
-                <Box>
-                  <Typography variant="h5" fontWeight="700">
-                    {selectedStateData ? `₦${selectedStateData.revenueRequired.toLocaleString()}` : '₦0'}
-                  </Typography>
-                  <Typography variant="subtitle2" color="textSecondary">
-                    Revenue Required
-                  </Typography>
-                </Box>
-              </Stack>
-              <Stack direction="row" spacing={2} mt={3}>
-                <Box>
-                  <Typography variant="h5" fontWeight="700">
-                    {selectedStateData ? `₦${selectedStateData.revenueBilled.toLocaleString()}` : '₦0'}
-                  </Typography>
-                  <Typography variant="subtitle2" color="textSecondary">
-                    Revenue Billed
-                  </Typography>
-                </Box>
-              </Stack>
-              <Stack direction="row" spacing={2} mt={3} mb={9}>
-                <Box>
-                  <Typography variant="h5" fontWeight="700">
-                    {selectedStateData ? `₦${selectedStateData.collections.toLocaleString()}` : '₦0'}
-                  </Typography>
-                  <Typography variant="subtitle2" color="textSecondary">
-                    Collections
-                  </Typography>
-                </Box>
-              </Stack>
-            </Stack>
-          </Stack>
-        </Grid>
+        {selectedStateData && (
+          <>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Total Cost"
+                value={`₦${selectedStateData.revenueRequired[selectedStateData.revenueRequired.length - 1].toLocaleString()}`}
+                chartData={selectedStateData.revenueRequired}
+                stateName={selectedStateData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Revenue Billed"
+                value={`₦${selectedStateData.revenueBilled[selectedStateData.revenueBilled.length - 1].toLocaleString()}`}
+                chartData={selectedStateData.revenueBilled}
+                stateName={selectedStateData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Collections"
+                value={`₦${selectedStateData.collections[selectedStateData.collections.length - 1].toLocaleString()}`}
+                chartData={selectedStateData.collections}
+                stateName={selectedStateData.name}
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
     </DashboardCard>
   );

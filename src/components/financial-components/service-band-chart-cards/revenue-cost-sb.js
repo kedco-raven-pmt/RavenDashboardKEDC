@@ -23,7 +23,7 @@ const RevenueCostFinancialSB = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9','#97BEDC', '#B3CEE6'],
     plotOptions: {
       bar: {
         borderRadius: 3,

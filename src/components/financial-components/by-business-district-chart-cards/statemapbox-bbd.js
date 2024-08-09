@@ -1,158 +1,168 @@
-import React from 'react';
-import Chart from 'react-apexcharts';
+import React, { useEffect, useRef, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Grid, Stack, Typography, Button, Avatar, Box, ButtonGroup } from '@mui/material';
-import { IconGridDots } from '@tabler/icons';
+import { Grid, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import StateMapBoxDataCards from './statemapbox-datacards-bbd';
+import { FinancialDataMapbox, FinancialDataBusinessDistrict } from "./dataroom-financial-by-bd/dataroom-financial-bbd";
 
-const StateMapboxFinancialBBD = () => {
-  const [month, setMonth] = React.useState('1');
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
 
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
-
-  // chart color
+const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictClick }) => {
+  const [selectedDistrictData, setSelectedDistrictData] = useState(null);
   const theme = useTheme();
   const primary = theme.palette.primary.main;
-  const secondary = theme.palette.secondary.main;
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
 
-  // chart
-  const optionscolumnchart = {
-    chart: {
-      type: 'bar',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: true,
-      },
-      height: 370,
-      stacked: true,
-    },
-    colors: [primary, secondary],
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        barHeight: '60%',
-        columnWidth: '20%',
-        borderRadius: [6],
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'all',
-      },
-    },
+  const longitude = 8.582;
+  const latitude = 12.075;
 
-    stroke: {
-      show: false,
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: false,
-    },
-    grid: {
-      borderColor: 'rgba(0,0,0,0.1)',
-      strokeDashArray: 3,
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
-    },
-    yaxis: {
-      min: -5,
-      max: 5,
-      tickAmount: 4,
-    },
-    xaxis: {
-      categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08'],
-      axisBorder: {
-        show: false,
-      },
-    },
-    tooltip: {
-      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-      fillSeriesColor: false,
-    },
-  };
-  const seriescolumnchart = [
-    {
-      name: 'Eanings this month',
-      data: [1.5, 2.7, 2.2, 3.6, 1.5, 1.0],
-    },
-    {
-      name: 'Expense this month',
-      data: [-1.8, -1.1, -2.5, -1.5, -0.6, -1.8],
-    },
-  ];
+  useEffect(() => {
+    if (!mapRef.current) {
+      console.log('Initializing map...');
+      const map = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
+        center: [longitude, latitude],
+        zoom: 6.6
+      });
+
+      mapRef.current = map;
+
+      map.on('load', () => {
+        console.log('Map loaded');
+        map.addSource('states', {
+          type: 'geojson',
+          data: '/assets/map-data/KEDCBUSINESSDISTRICTS.geojson'
+        });
+
+        map.addLayer({
+          id: 'states-layer',
+          type: 'fill',
+          source: 'states',
+          paint: {
+            'fill-color': '#888888',
+            'fill-opacity': 0.5
+          }
+        });
+
+        map.on('click', 'states-layer', (e) => {
+          console.log('Map clicked', e);
+          if (e.features.length > 0) {
+            const feature = e.features[0];
+            const selectedPcod = feature.properties.BusinessDistrict1Pcod;
+            console.log('Selected feature', feature);
+
+            if (selectedPcod) {
+              const data = FinancialDataBusinessDistrict[selectedPcod] || { name: 'Unknown', revenueRequired: [0, 0, 0, 0], revenueBilled: [0, 0, 0, 0], collections: [0, 0, 0, 0] };
+              setSelectedDistrictData(data);
+              onBusinessDistrictClick(data.name);
+
+              // Update fill color immediately
+              map.setPaintProperty('states-layer', 'fill-color', [
+                'case',
+                ['==', ['get', 'BusinessDistrict1Pcod'], selectedPcod],
+                primary,
+                '#888888'
+              ]);
+            } else {
+              console.error('Selected property code is undefined');
+            }
+          }
+        });
+
+        map.on('mouseenter', 'states-layer', () => {
+          map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', 'states-layer', () => {
+          map.getCanvas().style.cursor = '';
+        });
+      });
+    }
+
+    return () => {
+      console.log('Cleaning up map initialization effect');
+    };
+  }, [theme, primary, onBusinessDistrictClick]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    console.log('Updating map layer for selectedBusinessDistrict:', selectedBusinessDistrict);
+    const map = mapRef.current;
+
+    const updateMapLayer = () => {
+      const selectedPcod = Object.keys(FinancialDataBusinessDistrict).find(key => FinancialDataBusinessDistrict[key].name === selectedBusinessDistrict);
+
+      if (selectedPcod) {
+        console.log('Setting fill color for selectedPcod:', selectedPcod);
+        map.setPaintProperty('states-layer', 'fill-color', [
+          'case',
+          ['==', ['get', 'BusinessDistrict1Pcod'], selectedPcod],
+          primary,
+          '#888888'
+        ]);
+      } else {
+        console.log('Resetting fill color');
+        map.setPaintProperty('states-layer', 'fill-color', '#888888');
+      }
+    };
+
+    if (map.isStyleLoaded()) {
+      updateMapLayer();
+    } else {
+      map.once('styledata', updateMapLayer);
+    }
+  }, [selectedBusinessDistrict, primary]);
+
+  useEffect(() => {
+    console.log('Selected business district changed:', selectedBusinessDistrict);
+    if (selectedBusinessDistrict) {
+      const districtData = Object.values(FinancialDataBusinessDistrict).find(district => district.name === selectedBusinessDistrict);
+      setSelectedDistrictData(districtData);
+      console.log('District data:', districtData);
+    } else {
+      setSelectedDistrictData(null);
+    }
+  }, [selectedBusinessDistrict]);
 
   return (
-    <DashboardCard 
-      title="Financial Breakdown By Business District"
-      subtitle="Select a business district"
-
-    >
+    <DashboardCard title="Financial Breakdown By Business District" subtitle="Select a business district">
       <Grid container spacing={3}>
-        {/* column */}
-        <Grid item xs={12} sm={8}>
-          <Box className="rounded-bars" bgcolor='#f7f8f9' height={500} >
-            
-          </Box>
+        <Grid item xs={12}>
+          <Box className="rounded-bars" bgcolor='#f7f8f9' height={350} ref={mapContainerRef} />
         </Grid>
-        {/* column */}
-        <Grid item xs={12} sm={4} alignContent='center' alignItems='flex-end'>
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                ₦63,242,094,983
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Revenue Reqiured
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2}>
-            <Box>
-                <Typography variant="h3" fontWeight="700">
-                    ₦80,137,421,022
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Revenue Billed
-                </Typography>
-              </Box>
-            </Stack>
-            <Stack direction="row" spacing={3} mt={3} mb={9}>
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                ₦43,042,464,340
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Collections
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-          <Stack spacing={1} mt={3}>
-        <ButtonGroup variant="outlined"  aria-label="outlined button group">
-        <Button>Kano</Button>
-        <Button>Katsina</Button>
-        <Button>Jigawa</Button>
-        <Button>Katsina</Button>
-        <Button>Jigawa</Button>
-      </ButtonGroup>
-      <ButtonGroup variant="outlined"  aria-label="outlined button group">
-      <Button>Kano</Button>
-      <Button>Katsina</Button>
-      <Button>Jigawa</Button>
-      <Button>Katsina</Button>
-      <Button>Jigawa</Button>
-    </ButtonGroup>
-    </Stack>
-        </Grid>
+        {selectedDistrictData && (
+          <>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Total Cost"
+                value={`₦${selectedDistrictData.revenueRequired[selectedDistrictData.revenueRequired.length - 1].toLocaleString()}`}
+                chartData={selectedDistrictData.revenueRequired}
+                stateName={selectedDistrictData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Revenue Billed"
+                value={`₦${selectedDistrictData.revenueBilled[selectedDistrictData.revenueBilled.length - 1].toLocaleString()}`}
+                chartData={selectedDistrictData.revenueBilled}
+                stateName={selectedDistrictData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Collections"
+                value={`₦${selectedDistrictData.collections[selectedDistrictData.collections.length - 1].toLocaleString()}`}
+                chartData={selectedDistrictData.collections}
+                stateName={selectedDistrictData.name}
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
     </DashboardCard>
   );

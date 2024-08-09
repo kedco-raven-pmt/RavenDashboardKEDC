@@ -1,23 +1,13 @@
-import React from 'react';
-import { Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid, Box, FormControlLabel } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
-import Projects from '../../../components/dashboards/modern/Projects';
-import Customers from '../../../components/dashboards/modern/Customers';
-import SalesTwo from '../../../components/dashboards/ecommerce/SalesTwo';
-import MonthlyEarnings from '../../../components/dashboards/modern/MonthlyEarnings';
-import SalesOverview from '../../../components/dashboards/ecommerce/SalesOverview';
-import RevenueUpdates from '../../../components/dashboards/modern/RevenueUpdates';
-import YearlySales from '../../../components/dashboards/ecommerce/YearlySales';
-import MostVisited from '../../../components/widgets/charts/MostVisited';
-import PageImpressions from '../../../components/widgets/charts/PageImpressions';
-import Followers from '../../../components/widgets/charts/Followers';
-import Views from '../../../components/widgets/charts/Views';
-import Earned from '../../../components/widgets/charts/Earned';
-import CurrentValue from '../../../components/widgets/charts/CurrentValue';
 import RevenueCostFinancialAS from '../../../components/financial-components/all-state-chart-cards/revenue-cost-as';
 import TariffFinancialAS from '../../../components/financial-components/all-state-chart-cards/tariff-as';
+import RevenueCostCompareFinancialAS from '../../../components/financial-components/all-state-chart-cards/revenue-cost-compare-as';
+import TariffCompareFinancialAS from '../../../components/financial-components/all-state-chart-cards/tariff-compare-as';
+import CustomSwitch from '../../../components/forms/theme-elements/CustomSwitch';
+
 const BCrumb = [
   {
     to: '/',
@@ -32,19 +22,32 @@ const BCrumb = [
 ];
 
 const FinancialAllState = () => {
-  
+  const [compare, setCompare] = useState(false);
+
+  const handleCompareChange = (event) => {
+    setCompare(event.target.checked);
+  };
+
   return (
-    <PageContainer title="Financial All State" description="this is Charts page">
+    <PageContainer title="Financial All State" description="This is the Financial All State page">
       {/* breadcrumb */}
       <Breadcrumb title="Financial All State" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={5}>
-        
         <Grid item xs={12}>
-          <RevenueCostFinancialAS />
+          <Box textAlign="right">
+            <FormControlLabel
+              control={<CustomSwitch checked={compare} onChange={handleCompareChange} />}
+              label="Compare"
+            />
+          </Box>
+        </Grid>
+
+        <Grid item xs={12}>
+          {compare ? <RevenueCostCompareFinancialAS /> : <RevenueCostFinancialAS />}
         </Grid>
         <Grid item xs={12}>
-          <TariffFinancialAS />
+          {compare ? <TariffCompareFinancialAS /> : <TariffFinancialAS />}
         </Grid>
       </Grid>
     </PageContainer>

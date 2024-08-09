@@ -17,7 +17,7 @@ import Welcome from 'src/layouts/full/shared/welcome/Welcome';
 const OverviewPage = () => {
   return (
     <Box>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} mt={2}>
         {/* column */}
         <Grid item sm={12} lg={4}>
           <ATCCWidgetOverview />

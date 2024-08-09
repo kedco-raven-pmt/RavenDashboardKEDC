@@ -1,14 +1,15 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, CardContent, Grid, Typography, Stack, Avatar } from '@mui/material';
+import { Box, Button, CardContent, Grid, Typography, Stack, Avatar, FormControlLabel } from '@mui/material';
 import GreyCard from '../../shared/greycard';
 import DashboardWidgetCard from '../../shared/DashboardWidgetCard';
 import CostBreakdownCards from '../../shared/costbreakdowncard';
 import { color, fontSize, fontWeight, padding, width } from '@mui/system';
 import BlankCard from '../../shared/BlankCard';
+import CustomSwitch from '../../forms/theme-elements/CustomSwitch';
 
-const TariffFinancialSB = () => {
+const TariffFinancialAS = () => {
   // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
@@ -17,234 +18,306 @@ const TariffFinancialSB = () => {
   const textColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#2A3547';
 
   // chart
-  const mytoallowedtariff = {
+  const kano = {
     chart: {
-        type: 'donut',
-        fontFamily: "'Plus Jakarta Sans', sans-serif;",
-  
-        toolbar: {
-          show: false,
-        },
-        height: 275,
+      type: 'bar',
+      fontFamily: "'Plus Jakarta Sans', sans-serif;",
+      foreColor: '#adb0bb',
+      toolbar: {
+        show: false,
       },
-      labels: ["Band A", "Band B", "Band C", "Band D", "Band E"],
-      colors: [primary, primarylight, secondary,],
-      plotOptions: {
-        pie: {
-          
-          donut: {
-            size: '89%',
-            background: 'transparent',
-  
-            labels: {
-              show: true,
-              name: {
-                show: true,
-                offsetY: 7,
-              },
-              value: {
-                show: false,
-              },
-              total: {
-                show: true,
-                color: textColor,
-                fontSize: '20px',
-                fontWeight: '600',
-                label: '₦ 75.22',
-              },
-            },
+      height: 200,
+      width: "100%",
+      
+    },
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
+    plotOptions: {
+      bar: {
+        borderRadius: 3,
+        columnWidth: '60%',
+        barHeight: '60%',
+        distributed: true,
+        endingShape: 'rounded',
+        dataLabels: {
+            position: 'top', 
+            
           },
-        },
       },
-      dataLabels: {
-        enabled: false,
-
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val) {
+        return "₦" + val + " /kWh";  
       },
-      stroke: {
+      position: 'top',
+      style: {
+        fontSize: '10px',
+        colors: ['#304758'],
+        fontWeight: 700,
+      },
+      offsetY: -20 ,
+      
+    },
+    legend: {
+      show: false,
+    },
+    grid: {
+        padding: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+          },
+        show:false,
+    },
+    xaxis: {
+      categories: [['MYTO' ,'Allowed Tariff'], ['Actual' ,'Tariff Collected'], ['Tariff','Loss']],
+      axisBorder: {
         show: false,
       },
-      legend: {
+      
+      axisTicks: {
         show: false,
       },
-      tooltip: {
-        theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-        fillSeriesColor: false,
+      labels: {
+        show: false,
       },
+    },
+    yaxis: {
+      labels: {
+        show: false,
+        formatter: function (val) {
+          return "₦"+ val + "/kWh";  
+        }
+        
+      },
+    },
+    tooltip: {
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
+    },
   };
   
-  const mytoallowedtariffseries = [42, 62, 30, 25, 14];
+  const kanoseries = [
+    {
+      name: '',
+      data: [59, 78, 45],
+    },
+  ];
 
   //   chart 2
-  const actualtariffcollected = {
+
+  const katsinachart = {
     chart: {
-        type: 'donut',
-        fontFamily: "'Plus Jakarta Sans', sans-serif;",
-  
-        toolbar: {
-          show: false,
-        },
-        height: 275,
+      type: 'bar',
+      fontFamily: "'Plus Jakarta Sans', sans-serif;",
+      foreColor: '#adb0bb',
+      toolbar: {
+        show: false,
       },
-      labels: ["Band A", "Band B", "Band C", "Band D", "Band E"],
-      colors: [primary, primarylight, secondary],
-      plotOptions: {
-        pie: {
-          
-          donut: {
-            size: '89%',
-            background: 'transparent',
-  
-            labels: {
-              show: true,
-              name: {
-                show: true,
-                offsetY: 7,
-              },
-              value: {
-                show: false,
-              },
-              total: {
-                show: true,
-                color: textColor,
-                fontSize: '20px',
-                fontWeight: '600',
-                label: ['₦ 93.22' ],
-
-              },
-            },
+      height: 200,
+      width: "100%",
+      
+    },
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
+    plotOptions: {
+      bar: {
+        borderRadius: 3,
+        columnWidth: '60%',
+        barHeight: '60%',
+        distributed: true,
+        endingShape: 'rounded',
+        dataLabels: {
+            position: 'top', 
+            
           },
-        },
       },
-      dataLabels: {
-        enabled: false,
-
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val) {
+        return "₦" + val + " /kWh";  
       },
-      stroke: {
+      position: 'top',
+      style: {
+        fontSize: '10px',
+        colors: ['#304758'],
+        fontWeight: 700,
+      },
+      offsetY: -20 ,
+      
+    },
+    legend: {
+      show: false,
+    },
+    grid: {
+        padding: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+          },
+        show:false,
+    },
+    xaxis: {
+      categories: [['MYTO', 'Allowed Tariff'], ['Actual' ,'Tariff Collected'], ['Tariff','Loss']],
+      axisBorder: {
         show: false,
       },
-      legend: {
+      
+      axisTicks: {
         show: false,
       },
-      tooltip: {
-        theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-        fillSeriesColor: false,
+      labels: {
+        show: false,
       },
+    },
+    yaxis: {
+      labels: {
+        show: false,
+        formatter: function (val) {
+          return "₦"+ val + "/kWh";  
+        }
+        
+      },
+    },
+    tooltip: {
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
+    },
   };
   
-  const actualtariffseries = [42, 62, 30, 25, 14];
+  const katsinaseries = [
+    {
+      name: '',
+      data: [59, 78, 45],
+    },
+  ];
+
   //   chart 3
-  const tariffloss = {
+  const jigawachart = {
     chart: {
-        type: 'donut',
-        fontFamily: "'Plus Jakarta Sans', sans-serif;",
-  
-        toolbar: {
-          show: false,
-        },
-        height: 275,
+      type: 'bar',
+      fontFamily: "'Plus Jakarta Sans', sans-serif;",
+      foreColor: '#adb0bb',
+      toolbar: {
+        show: false,
       },
-      labels: ["Band A", "Band B", "Band C", "Band D", "Band E"],
-      colors: [primary, primarylight, secondary],
-      plotOptions: {
-        pie: {
-          
-          donut: {
-            size: '89%',
-            background: 'transparent',
-  
-            labels: {
-              show: true,
-              name: {
-                show: true,
-                offsetY: 7,
-              },
-              value: {
-                show: false,
-              },
-              total: {
-                show: true,
-                color: textColor,
-                fontSize: '20px',
-                fontWeight: '600',
-                label: '₦ 18.22',
-              },
-            },
+      height: 200,
+      width: "100%",
+      
+    },
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
+    plotOptions: {
+      bar: {
+        borderRadius: 3,
+        columnWidth: '60%',
+        barHeight: '60%',
+        distributed: true,
+        endingShape: 'rounded',
+        dataLabels: {
+            position: 'top', 
+            
           },
-        },
       },
-      dataLabels: {
-        enabled: false,
-
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val) {
+        return "₦" + val + " /kWh";  
       },
-      stroke: {
+      position: 'top',
+      style: {
+        fontSize: '10px',
+        colors: ['#304758'],
+        fontWeight: 700,
+      },
+      offsetY: -20 ,
+      
+    },
+    legend: {
+      show: false,
+    },
+    grid: {
+        padding: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+          },
+        show:false,
+    },
+    xaxis: {
+      categories: [['MYTO', 'Allowed Tariff'], ['Actual' ,'Tariff Collected'], ['Tariff','Loss']],
+      axisBorder: {
         show: false,
       },
-      legend: {
+      
+      axisTicks: {
         show: false,
       },
-      tooltip: {
-        theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-        fillSeriesColor: false,
+      labels: {
+        show: false,
+        colors: ['#304758']
       },
+    },
+    yaxis: {
+      labels: {
+        show: false,
+        formatter: function (val) {
+          return "₦"+ val + "/kWh";  
+        }
+        
+      },
+    },
+    tooltip: {
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
+    },
   };
   
-  const tarifflossseries = [42, 62, 30, 25, 14];
+  const jigawachartseries = [
+    {
+      name: '',
+      data: [19, 18, 26],
+    },
+  ];
+
+
+
 
   return (
-    <BlankCard >
-      <CardContent sx={{ p: '30px' }}>
+    <BlankCard  >
+      <CardContent sx={{ p: '30px'}} >
         
       <Stack direction="row" spacing={2} justifyContent="space-between">
-          <Typography variant="h5">Tariff Metrics By Service Band</Typography>
+          <Typography variant="h5">Tariff Metrics</Typography>
           <Stack direction="row" spacing={2} mt={5} justifyContent="center">
           <Stack direction="row" spacing={3}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#3B80B2', svg: { display: 'none' } }}
+              sx={{ width: 9, height: 9, bgcolor: '#0074BA', svg: { display: 'none' } }}
             ></Avatar>
             <Box>
               <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Band A
+                MYTO Allowed Tariff
               </Typography>
             </Box>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#599BC8', svg: { display: 'none' } }}
+              sx={{ width: 9, height: 9, bgcolor: '#02B7FA', svg: { display: 'none' } }}
             ></Avatar>
             <Box>
               <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Band B
+              Actual Tariff Collected
               </Typography>
             </Box>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#599BC8', svg: { display: 'none' } }}
+              sx={{ width: 9, height: 9, bgcolor: '#ABC4C9', svg: { display: 'none' } }}
             ></Avatar>
             <Box>
               <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Band C
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#599BC8', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Band D
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#77ADD2', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Band E
+                Tariff Loss
               </Typography>
             </Box>
           </Stack>
@@ -254,67 +327,101 @@ const TariffFinancialSB = () => {
 
         <Grid container spacing={3} mt={2}>
           {/* 1 */}
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={2.4}>
             <BlankCard>
-              <CardContent sx={{ p: '20px' }}>
-              <Box justifyContent="center" textAlign="center" mt={1} mb={3}>
-                  <Typography variant="h6" fontWeight={800} color='#273E76'>
-                    MYTO Allowed Tariff
-                  </Typography>
-                  <Typography  variant="subtitle1" fontWeight={800} color='#273E76' whiteSpace="nowrap"> Avg. (₦/kWh)</Typography>
-                </Box>
-
+              <CardContent sx={{ p: '10px' }}>
                 <Box>
                   <Chart
-                    options={mytoallowedtariff}
-                    series={mytoallowedtariffseries}
-                    type="donut"
-                    height="275px"   
+                    options={kano}
+                    series={kanoseries}
+                    type="bar"
+                    height="250px"   
                   />
                 </Box>
-                
+                <Box justifyContent="center" mt={1}>
+                  <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
+                    Band A
+                  </Typography>
+                </Box>
               </CardContent>
             </BlankCard>
           </Grid>
           {/* 2 */}
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={2.4}>
             <BlankCard>
-              <CardContent sx={{ p: '20px' }}>
-              <Box justifyContent="center" textAlign="center" mt={1} mb={3}>
-                  <Typography variant="h6" fontWeight={800} color='#273E76'>
-                    Actual Tariff Collected
-                  </Typography>
-                  <Typography  variant="subtitle1" fontWeight={800} color='#273E76' whiteSpace="nowrap">Avg. (₦/kWh)</Typography>
-                </Box>
-
-                <Box>
+              <CardContent sx={{ p: '10px' }}>
+                <Box >
                   <Chart
-                    options={actualtariffcollected}
-                    series={actualtariffseries}
-                    type="donut"
-                    height="275px"
+                    options={katsinachart}
+                    series={katsinaseries}
+                    type="bar"
+                    height="250px"
                   />
+                </Box>
+                <Box justifyContent="center" mt={1}>
+                  <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
+                    Band B
+                  </Typography>
                 </Box>
               </CardContent>
             </BlankCard>
           </Grid>
           {/* 3 */}
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={2.4}>
             <BlankCard>
-              <CardContent sx={{ p: '20px' }}>
-              <Box justifyContent="center" textAlign="center" mt={1} mb={3}>
-                  <Typography variant="h6" fontWeight={800} color='#273E76'>
-                    Tariff Loss
-                  </Typography>
-                  <Typography  variant="subtitle1" fontWeight={800} color='#273E76' whiteSpace="nowrap">Avg. (₦/kWh)</Typography>
-                </Box>
+              <CardContent sx={{ p: '10px' }}>
                 <Box>
                   <Chart
-                    options={tariffloss}
-                    series={tarifflossseries}
-                    type="donut"
-                    height="275px"
+                    options={jigawachart}
+                    series={jigawachartseries}
+                    type="bar"
+                    height="250px"
                   />
+                </Box>
+                <Box justifyContent="center" mt={1}>
+                  <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
+                    Band C
+                  </Typography>
+                </Box>
+              </CardContent>
+            </BlankCard>
+          </Grid>
+          {/* 3 */}
+          <Grid item xs={12} sm={2.4}>
+            <BlankCard>
+              <CardContent sx={{ p: '10px' }}>
+                <Box>
+                  <Chart
+                    options={jigawachart}
+                    series={jigawachartseries}
+                    type="bar"
+                    height="250px"
+                  />
+                </Box>
+                <Box justifyContent="center" mt={1}>
+                  <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
+                    Band D
+                  </Typography>
+                </Box>
+              </CardContent>
+            </BlankCard>
+          </Grid>
+          {/* 3 */}
+          <Grid item xs={12} sm={2.4}>
+            <BlankCard>
+              <CardContent sx={{ p: '10px' }}>
+                <Box>
+                  <Chart
+                    options={jigawachart}
+                    series={jigawachartseries}
+                    type="bar"
+                    height="250px"
+                  />
+                </Box>
+                <Box justifyContent="center" mt={1}>
+                  <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
+                    Band E
+                  </Typography>
                 </Box>
               </CardContent>
             </BlankCard>
@@ -325,4 +432,4 @@ const TariffFinancialSB = () => {
   );
 };
 
-export default TariffFinancialSB;
+export default TariffFinancialAS;

@@ -85,8 +85,8 @@ const CollectionEfficiency = () => {
         <Stack direction="row" spacing={2} justifyContent="space-between" mt={7}>
           <Stack direction="row" spacing={2} alignItems="center">
             <Box
-              width={38}
-              height={38}
+              width={19}
+              height={19}
               bgcolor="primary.light"
               display="flex"
               alignItems="center"
@@ -98,22 +98,22 @@ const CollectionEfficiency = () => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <IconGridDots width={22} />
+                <IconGridDots width={11} />
               </Typography>
             </Box>
             <Box>
-              <Typography variant="h6" fontWeight="600">
-                48%
+              <Typography variant="h6" fontSize="12px" fontWeight="600">
+                56%
               </Typography>
-              <Typography variant="subtitle2" color="textSecondary">
-                This Month
+              <Typography variant="subtitle2" fontSize="10px" color="textSecondary">
+                July
               </Typography>
             </Box>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
             <Box
-              width={38}
-              height={38}
+              width={19}
+              height={19}
               bgcolor="secondary.light"
               display="flex"
               alignItems="center"
@@ -125,15 +125,69 @@ const CollectionEfficiency = () => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <IconGridDots width={22} />
+                <IconGridDots width={11} />
               </Typography>
             </Box>
             <Box>
-              <Typography variant="h6" fontWeight="600">
-                45%
+              <Typography variant="h6" fontSize="12px" fontWeight="600">
+                65%
               </Typography>
-              <Typography variant="subtitle2" color="textSecondary">
-                Last Month
+              <Typography variant="subtitle2" fontSize="10px" color="textSecondary">
+                June
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Box
+              width={19}
+              height={19}
+              bgcolor="primary.light"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography
+                color="primary.main"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <IconGridDots width={11} />
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="h6" fontSize="12px" fontWeight="600">
+                56%
+              </Typography>
+              <Typography variant="subtitle2" fontSize="10px" color="textSecondary">
+                May
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Box
+              width={19}
+              height={19}
+              bgcolor="secondary.light"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography
+                color="secondary.main"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <IconGridDots width={11} />
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="h6" fontSize="12px" fontWeight="600">
+                65%
+              </Typography>
+              <Typography variant="subtitle2" fontSize="10px" color="textSecondary">
+                April
               </Typography>
             </Box>
           </Stack>

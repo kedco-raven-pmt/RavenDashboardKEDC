@@ -1,25 +1,13 @@
-import React from 'react';
-import { Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid, Box, FormControlLabel } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
-import Projects from '../../../components/dashboards/modern/Projects';
-import Customers from '../../../components/dashboards/modern/Customers';
-import SalesTwo from '../../../components/dashboards/ecommerce/SalesTwo';
-import MonthlyEarnings from '../../../components/dashboards/modern/MonthlyEarnings';
-import SalesOverview from '../../../components/dashboards/ecommerce/SalesOverview';
-import RevenueUpdates from '../../../components/dashboards/modern/RevenueUpdates';
-import YearlySales from '../../../components/dashboards/ecommerce/YearlySales';
-import MostVisited from '../../../components/widgets/charts/MostVisited';
-import PageImpressions from '../../../components/widgets/charts/PageImpressions';
-import Followers from '../../../components/widgets/charts/Followers';
-import Views from '../../../components/widgets/charts/Views';
-import Earned from '../../../components/widgets/charts/Earned';
-import CurrentValue from '../../../components/widgets/charts/CurrentValue';
 import AvailabilityTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/availability-abd';
+import AvailabilityCompareTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/availability-compare-abd';
 import FeederNumberTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/feeder-number-abd';
 import PeakLoadTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/peak-load-abd';
-import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter';
+import CustomSwitch from '../../../components/forms/theme-elements/CustomSwitch';
+import StateFilterTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/state-filters-tech-abd';
 
 const BCrumb = [
   {
@@ -35,27 +23,46 @@ const BCrumb = [
 ];
 
 const TechnicalAllBusinessDistricts = () => {
+  const [selectedState, setSelectedState] = useState('');
+  const [compare, setCompare] = useState(false);
+
+  const handleStateClick = (stateName) => {
+    setSelectedState(stateName);
+  };
+
+  const handleFilterChange = (stateName) => {
+    setSelectedState(stateName);
+  };
+
+  const handleCompareChange = (event) => {
+    setCompare(event.target.checked);
+  };
+
   return (
     <PageContainer title="Technical All Business District" description="this is Charts page">
-      {/* breadcrumb */}
       <Breadcrumb title="Technical All Business District" items={BCrumb} />
-      {/* end breadcrumb */}
       <Grid container spacing={3}>
-      <Grid item xs={4}>
-          <StateFilter />
+        <Grid item xs={4}>
+          <StateFilterTechnicalABD onFilterChange={handleFilterChange} selectedState={selectedState} />
         </Grid>
-      
+        <Grid item xs={8}>
+          <Box textAlign="right">
+            <FormControlLabel
+              control={<CustomSwitch checked={compare} onChange={handleCompareChange} />}
+              label="Compare"
+            />
+          </Box>
+        </Grid>
         <Grid item xs={12}>
-          <AvailabilityTechnicalABD />
+          {compare ? <AvailabilityCompareTechnicalABD selectedState={selectedState} /> : <AvailabilityTechnicalABD selectedState={selectedState} />}
         </Grid>
-
         <Grid item xs={12}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <FeederNumberTechnicalABD />
+              <FeederNumberTechnicalABD selectedState={selectedState} />
             </Grid>
             <Grid item xs={12} sm={6}>
-            <PeakLoadTechnicalABD />
+              <PeakLoadTechnicalABD selectedState={selectedState} />
             </Grid>
           </Grid>
         </Grid>

@@ -1,195 +1,195 @@
-import React from 'react';
-import Chart from 'react-apexcharts';
+import React, { useEffect, useRef, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Grid, Stack, Typography, Button, Avatar, Box, ButtonGroup } from '@mui/material';
-import { IconGridDots } from '@tabler/icons';
+import { Grid, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import StateMapBoxDataCards from './statemapbox-datacards-bbd';
+import { TechnicalDataMapbox, TechnicalDataBusinessDistrict } from "./dataroom-tech-by-bd/dataroom-tech-bbd";
 
-const BDMapboxTechnicalBBD = () => {
-  const [month, setMonth] = React.useState('1');
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
 
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
-
-  // chart color
+const StateMapboxTechnicalBBD = ({ selectedBusinessDistrict, onBusinessDistrictClick }) => {
+  const [selectedDistrictData, setSelectedDistrictData] = useState(null);
   const theme = useTheme();
   const primary = theme.palette.primary.main;
-  const secondary = theme.palette.secondary.main;
-  const primarylight = theme.palette.grey[100];
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
 
-  // chart
-  const optionscolumnchart = {
-    chart: {
-      type: 'bar',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: true,
-      },
-      height: 370,
-      stacked: true,
-    },
-    colors: [primary, secondary],
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        barHeight: '60%',
-        columnWidth: '20%',
-        borderRadius: [6],
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'all',
-      },
-    },
+  const longitude = 8.582;
+  const latitude = 12.075;
 
-    stroke: {
-      show: false,
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: false,
-    },
-    grid: {
-      borderColor: 'rgba(0,0,0,0.1)',
-      strokeDashArray: 3,
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
-    },
-    yaxis: {
-      min: -5,
-      max: 5,
-      tickAmount: 4,
-    },
-    xaxis: {
-      categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08'],
-      axisBorder: {
-        show: false,
-      },
-    },
-    tooltip: {
-      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-      fillSeriesColor: false,
-    },
-  };
-  const seriescolumnchart = [
-    {
-      name: 'Eanings this month',
-      data: [1.5, 2.7, 2.2, 3.6, 1.5, 1.0],
-    },
-    {
-      name: 'Expense this month',
-      data: [-1.8, -1.1, -2.5, -1.5, -0.6, -1.8],
-    },
-  ];
+  useEffect(() => {
+    if (!mapRef.current) {
+      console.log('Initializing map...');
+      const map = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
+        center: [longitude, latitude],
+        zoom: 6.6
+      });
+
+      mapRef.current = map;
+
+      map.on('load', () => {
+        console.log('Map loaded');
+        map.addSource('states', {
+          type: 'geojson',
+          data: '/assets/map-data/KEDCBUSINESSDISTRICTS.geojson'
+        });
+
+        map.addLayer({
+          id: 'states-layer',
+          type: 'fill',
+          source: 'states',
+          paint: {
+            'fill-color': '#888888',
+            'fill-opacity': 0.5
+          }
+        });
+
+        map.on('click', 'states-layer', (e) => {
+          console.log('Map clicked', e);
+          if (e.features.length > 0) {
+            const feature = e.features[0];
+            const selectedPcod = feature.properties.BusinessDistrict1Pcod;
+            console.log('Selected feature', feature);
+
+            if (selectedPcod) {
+              const data = TechnicalDataBusinessDistrict[selectedPcod] || { name: 'Unknown', metrics: {} };
+              setSelectedDistrictData(data);
+              onBusinessDistrictClick(data.name);
+
+              // Update fill color immediately
+              map.setPaintProperty('states-layer', 'fill-color', [
+                'case',
+                ['==', ['get', 'BusinessDistrict1Pcod'], selectedPcod],
+                primary,
+                '#888888'
+              ]);
+            } else {
+              console.error('Selected property code is undefined');
+            }
+          }
+        });
+
+        map.on('mouseenter', 'states-layer', () => {
+          map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', 'states-layer', () => {
+          map.getCanvas().style.cursor = '';
+        });
+      });
+    }
+
+    return () => {
+      console.log('Cleaning up map initialization effect');
+    };
+  }, [theme, primary, onBusinessDistrictClick]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    console.log('Updating map layer for selectedBusinessDistrict:', selectedBusinessDistrict);
+    const map = mapRef.current;
+
+    const updateMapLayer = () => {
+      const selectedPcod = Object.keys(TechnicalDataBusinessDistrict).find(key => TechnicalDataBusinessDistrict[key].name === selectedBusinessDistrict);
+
+      if (selectedPcod) {
+        console.log('Setting fill color for selectedPcod:', selectedPcod);
+        map.setPaintProperty('states-layer', 'fill-color', [
+          'case',
+          ['==', ['get', 'BusinessDistrict1Pcod'], selectedPcod],
+          primary,
+          '#888888'
+        ]);
+      } else {
+        console.log('Resetting fill color');
+        map.setPaintProperty('states-layer', 'fill-color', '#888888');
+      }
+    };
+
+    if (map.isStyleLoaded()) {
+      updateMapLayer();
+    } else {
+      map.once('styledata', updateMapLayer);
+    }
+  }, [selectedBusinessDistrict, primary]);
+
+  useEffect(() => {
+    console.log('Selected business district changed:', selectedBusinessDistrict);
+    if (selectedBusinessDistrict) {
+      const districtData = Object.values(TechnicalDataBusinessDistrict).find(district => district.name === selectedBusinessDistrict);
+      setSelectedDistrictData(districtData);
+      console.log('District data:', districtData);
+    } else {
+      setSelectedDistrictData(null);
+    }
+  }, [selectedBusinessDistrict]);
 
   return (
-    <DashboardCard 
-      title="Technical Peformance By State"
-      subtitle="Select a state"
-
-
-    >
+    <DashboardCard title="Technical Performance By Business District" subtitle="Select a business district">
       <Grid container spacing={3}>
-        {/* column */}
-        <Grid item xs={12} justifyContent='center' textAlign='center' >
-            
+        <Grid item xs={12}>
+          <Box className="rounded-bars" bgcolor='#f7f8f9' height={350} ref={mapContainerRef} />
         </Grid>
-
-        <Grid item xs={12} sm={8}>
-          <Box className="rounded-bars" bgcolor='#f7f8f9' height={500} >
-            
-          </Box>
-        </Grid>
-        {/* column */}
-        <Grid item xs={12} sm={4} alignContent='center' alignItems='flex-end'>
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                 10 Hrs
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Avg. Hours of Supply
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-          
-
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2}>
-            <Box>
-                <Typography variant="h3" fontWeight="700">
-                    6 Hrs
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Duration of Interruption
-                </Typography>
-              </Box>
-            </Stack></Stack>
-
-
-            <Stack direction="row" spacing={3} mt={3}>
-            <Stack direction="row" spacing={2}>
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                15 Hrs
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Turnaround Time
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                14
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  No. Daily Interruptions
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                39011
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Number of Faults
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                185
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Number of Feeders
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-        </Grid>
+        {selectedDistrictData && (
+          <>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Average Supply Hours"
+                value={`${selectedDistrictData.metrics.avgSupplyHours[selectedDistrictData.metrics.avgSupplyHours.length - 1].toFixed(2)} Hrs`}
+                chartData={selectedDistrictData.metrics.avgSupplyHours}
+                stateName={selectedDistrictData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Interruption Duration"
+                value={`${selectedDistrictData.metrics.durationInterruptions[selectedDistrictData.metrics.durationInterruptions.length - 1].toFixed(2)} Hrs`}
+                chartData={selectedDistrictData.metrics.durationInterruptions}
+                stateName={selectedDistrictData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Turnaround Time"
+                value={`${selectedDistrictData.metrics.turnaroundTime[selectedDistrictData.metrics.turnaroundTime.length - 1].toFixed(2)} Hrs`}
+                chartData={selectedDistrictData.metrics.turnaroundTime}
+                stateName={selectedDistrictData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Daily Interruptions"
+                value={`${selectedDistrictData.metrics.dailyInterruptions[selectedDistrictData.metrics.dailyInterruptions.length - 1]} Times`}
+                chartData={selectedDistrictData.metrics.dailyInterruptions}
+                stateName={selectedDistrictData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Faults"
+                value={`${selectedDistrictData.metrics.faults[selectedDistrictData.metrics.faults.length - 1].toLocaleString()}`}
+                chartData={selectedDistrictData.metrics.faults}
+                stateName={selectedDistrictData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Feeders"
+                value={`${selectedDistrictData.metrics.feeders[selectedDistrictData.metrics.feeders.length - 1]}`}
+                chartData={selectedDistrictData.metrics.feeders}
+                stateName={selectedDistrictData.name}
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
     </DashboardCard>
   );
 };
 
-export default BDMapboxTechnicalBBD;
+export default StateMapboxTechnicalBBD;

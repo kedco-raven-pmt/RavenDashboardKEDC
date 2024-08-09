@@ -4,11 +4,19 @@ import { resolve } from 'path';
 import fs from 'fs/promises';
 import svgr from '@svgr/rollup';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
       src: resolve(__dirname, 'src'),
+    },
+  },
+  server: {
+    proxy: {
+      '/mapbox': {
+        target: 'https://api.mapbox.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/mapbox/, ''),
+      },
     },
   },
   esbuild: {
@@ -17,7 +25,7 @@ export default defineConfig({
     exclude: [],
   },
   build: {
-    outDir: 'dist' // Change this if your output directory is different
+    outDir: 'dist', // Change this if your output directory is different
   },
   optimizeDeps: {
     esbuildOptions: {
@@ -37,10 +45,5 @@ export default defineConfig({
       ],
     },
   },
-
-  // plugins: [react(),svgr({
-  //   exportAsDefault: true
-  // })],
-
   plugins: [svgr(), react()],
 });

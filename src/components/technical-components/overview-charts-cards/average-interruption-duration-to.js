@@ -77,7 +77,7 @@ const AverageDurationOfInterruptionTO = () => {
   return (
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
-        <Typography variant="h5">Avg. Hours Of Supply</Typography>
+        <Typography variant="h5">Avg. Duration of Interuption</Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={7}>

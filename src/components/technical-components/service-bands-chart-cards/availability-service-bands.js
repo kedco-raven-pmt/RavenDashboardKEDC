@@ -23,7 +23,7 @@ const AvailabilityTechnicalSBT = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#70c78d', '#00734d', '#c5c770', '#ebebeb', '#B3CEE6'],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -82,9 +82,10 @@ const AvailabilityTechnicalSBT = () => {
   return (
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
-        <Stack direction="row" spacing={2} justifyContent="center">
+        <Stack direction="row" spacing={2} justifyContent="space-between">
+        <Typography variant="h5">Availability Overview</Typography>
           <Stack direction="row" spacing={3}>
-            {['#3B80B2', '#599BC8', '#77ADD2', '#00000014'].map((color, index) => (
+            {['#70c78d', '#00734d', '#c5c770', '#00000014'].map((color, index) => (
               <Stack direction="row" alignItems="center" spacing={1} key={index}>
                 <Avatar sx={{ width: 9, height: 9, bgcolor: color, svg: { display: 'none' } }}></Avatar>
                 <Box>

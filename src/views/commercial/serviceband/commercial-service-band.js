@@ -36,9 +36,6 @@ const CommercialServiceBand = () => {
         <Grid item xs={12}>
           <BreakdownCommercialSBT />
         </Grid>
-        <Grid item xs={12}>
-          <ATCCCommercialSBT />
-        </Grid>
         
         <Grid item xs={12} lg={6}>
           <ATCCServiceBand />

@@ -1,186 +1,192 @@
-import React from 'react';
-import Chart from 'react-apexcharts';
+import React, { useEffect, useRef, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Grid, Stack, Typography, Button, Avatar, Box, ButtonGroup } from '@mui/material';
-import { IconGridDots } from '@tabler/icons';
+import { Grid, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import StateMapBoxDataCards from './statemapbox-datacards-bs';
+import { TechnicalDataMapbox } from "./dataroom-technical-bs/dataroom-technical-bs";
 
-const StateMapboxTechnicalBS = () => {
-  const [month, setMonth] = React.useState('1');
+mapboxgl.accessToken = 'your-mapbox-access-token';
 
-  const handleChange = (event) => {
-    setMonth(event.target.value);
-  };
-
-  // chart color
+const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
+  const [selectedStateData, setSelectedStateData] = useState(null);
   const theme = useTheme();
   const primary = theme.palette.primary.main;
-  const secondary = theme.palette.secondary.main;
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
 
-  // chart
-  const optionscolumnchart = {
-    chart: {
-      type: 'bar',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: true,
-      },
-      height: 370,
-      stacked: true,
-    },
-    colors: [primary, secondary],
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        barHeight: '60%',
-        columnWidth: '20%',
-        borderRadius: [6],
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'all',
-      },
-    },
+  const longitude = 8.582;
+  const latitude = 12.075;
 
-    stroke: {
-      show: false,
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: false,
-    },
-    grid: {
-      borderColor: 'rgba(0,0,0,0.1)',
-      strokeDashArray: 3,
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
-    },
-    yaxis: {
-      min: -5,
-      max: 5,
-      tickAmount: 4,
-    },
-    xaxis: {
-      categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08'],
-      axisBorder: {
-        show: false,
-      },
-    },
-    tooltip: {
-      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-      fillSeriesColor: false,
-    },
-  };
-  const seriescolumnchart = [
-    {
-      name: 'Eanings this month',
-      data: [1.5, 2.7, 2.2, 3.6, 1.5, 1.0],
-    },
-    {
-      name: 'Expense this month',
-      data: [-1.8, -1.1, -2.5, -1.5, -0.6, -1.8],
-    },
-  ];
+  useEffect(() => {
+    if (!mapRef.current) {
+      console.log('Initializing map...');
+      const map = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [longitude, latitude],
+        zoom: 6.6
+      });
+
+      mapRef.current = map;
+
+      map.on('load', () => {
+        console.log('Map loaded');
+        map.addSource('states', {
+          type: 'geojson',
+          data: '/assets/map-data/KEDC.geojson'
+        });
+
+        map.addLayer({
+          id: 'states-layer',
+          type: 'fill',
+          source: 'states',
+          paint: {
+            'fill-color': '#888888',
+            'fill-opacity': 0.5
+          }
+        });
+
+        map.on('click', 'states-layer', (e) => {
+          console.log('Map clicked', e);
+          if (e.features.length > 0) {
+            const feature = e.features[0];
+            const selectedPcod = feature.properties.admin1Pcod;
+            console.log('Selected feature', feature);
+
+            if (selectedPcod) {
+              const data = TechnicalDataMapbox[selectedPcod] || { name: 'Unknown', avgSupplyHours: [0, 0, 0, 0], durationInterruptions: [0, 0, 0, 0], turnaroundTime: [0, 0, 0, 0], dailyInterruptions: [0, 0, 0, 0], faults: [0, 0, 0, 0], feeders: [0, 0, 0, 0] };
+              setSelectedStateData(data);
+              onStateClick(data.name);
+
+              // Update fill color immediately
+              map.setPaintProperty('states-layer', 'fill-color', [
+                'case',
+                ['==', ['get', 'admin1Pcod'], selectedPcod],
+                primary,
+                '#888888'
+              ]);
+            } else {
+              console.error('Selected property code is undefined');
+            }
+          }
+        });
+
+        map.on('mouseenter', 'states-layer', () => {
+          map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', 'states-layer', () => {
+          map.getCanvas().style.cursor = '';
+        });
+      });
+    }
+
+    return () => {
+      console.log('Cleaning up map initialization effect');
+    };
+  }, [theme, primary, onStateClick]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    console.log('Updating map layer for selectedState:', selectedState);
+    const map = mapRef.current;
+
+    const updateMapLayer = () => {
+      const selectedPcod = Object.keys(TechnicalDataMapbox).find(key => TechnicalDataMapbox[key].name === selectedState);
+
+      if (selectedPcod) {
+        console.log('Setting fill color for selectedPcod:', selectedPcod);
+        map.setPaintProperty('states-layer', 'fill-color', [
+          'case',
+          ['==', ['get', 'admin1Pcod'], selectedPcod],
+          primary,
+          '#888888'
+        ]);
+      } else {
+        console.log('Resetting fill color');
+        map.setPaintProperty('states-layer', 'fill-color', '#888888');
+      }
+    };
+
+    if (map.isStyleLoaded()) {
+      updateMapLayer();
+    } else {
+      map.once('styledata', updateMapLayer);
+    }
+  }, [selectedState, primary]);
+
+  useEffect(() => {
+    console.log('Selected state changed:', selectedState);
+    if (selectedState) {
+      const stateData = Object.values(TechnicalDataMapbox).find(state => state.name === selectedState);
+      setSelectedStateData(stateData);
+      console.log('State data:', stateData);
+    } else {
+      setSelectedStateData(null);
+    }
+  }, [selectedState]);
 
   return (
-    <DashboardCard 
-      title="Technical Breakdown By State"
-      subtitle="Select a state"
-      
-    >
+    <DashboardCard title="Technical Breakdown By State" subtitle="Select a state">
       <Grid container spacing={3}>
-        {/* column */}
-        <Grid item xs={12} sm={8}>
-          <Box className="rounded-bars" bgcolor='#f7f8f9' height={500} >
-            
-          </Box>
+        <Grid item xs={12}>
+          <Box className="rounded-bars" bgcolor='#f7f8f9' height={350} ref={mapContainerRef} />
         </Grid>
-        {/* column */}
-        <Grid item xs={12} sm={4} alignContent='center' alignItems='flex-end'>
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                 10 Hrs
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Avg. Hours of Supply
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-          
-
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2}>
-            <Box>
-                <Typography variant="h3" fontWeight="700">
-                    6 Hrs
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Duration of Interruption
-                </Typography>
-              </Box>
-            </Stack></Stack>
-
-
-            <Stack direction="row" spacing={3} mt={3}>
-            <Stack direction="row" spacing={2}>
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                15 Hrs
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Turnaround Time
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                14
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  No. Daily Interruptions
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                39011
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Number of Faults
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-
-          <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight="700">
-                185
-                </Typography>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Number of Feeders
-                </Typography>
-              </Box>
-            </Stack>
-          </Stack>
-        </Grid>
+        {selectedStateData && (
+          <>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Average Supply Hours"
+                value={`${selectedStateData.avgSupplyHours[selectedStateData.avgSupplyHours.length - 1].toFixed(2)} Hrs`}
+                chartData={selectedStateData.avgSupplyHours}
+                stateName={selectedStateData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Duration of Interruptions"
+                value={`${selectedStateData.durationInterruptions[selectedStateData.durationInterruptions.length - 1].toFixed(2)} Hrs`}
+                chartData={selectedStateData.durationInterruptions}
+                stateName={selectedStateData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Turnaround Time"
+                value={`${selectedStateData.turnaroundTime[selectedStateData.turnaroundTime.length - 1].toFixed(2)} Hrs`}
+                chartData={selectedStateData.turnaroundTime}
+                stateName={selectedStateData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Daily Interruptions"
+                value={`${selectedStateData.dailyInterruptions[selectedStateData.dailyInterruptions.length - 1]} Times`}
+                chartData={selectedStateData.dailyInterruptions}
+                stateName={selectedStateData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Faults"
+                value={`${selectedStateData.faults[selectedStateData.faults.length - 1].toLocaleString()}`}
+                chartData={selectedStateData.faults}
+                stateName={selectedStateData.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <StateMapBoxDataCards
+                title="Feeders"
+                value={`${selectedStateData.feeders[selectedStateData.feeders.length - 1]}`}
+                chartData={selectedStateData.feeders}
+                stateName={selectedStateData.name}
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
     </DashboardCard>
   );

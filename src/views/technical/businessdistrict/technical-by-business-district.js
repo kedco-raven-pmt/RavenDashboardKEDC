@@ -1,28 +1,14 @@
-import React from 'react';
-import { Grid, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
-import Projects from '../../../components/dashboards/modern/Projects';
-import Customers from '../../../components/dashboards/modern/Customers';
-import SalesTwo from '../../../components/dashboards/ecommerce/SalesTwo';
-import MonthlyEarnings from '../../../components/dashboards/modern/MonthlyEarnings';
-import SalesOverview from '../../../components/dashboards/ecommerce/SalesOverview';
-import RevenueUpdates from '../../../components/dashboards/modern/RevenueUpdates';
-import YearlySales from '../../../components/dashboards/ecommerce/YearlySales';
-import MostVisited from '../../../components/widgets/charts/MostVisited';
-import PageImpressions from '../../../components/widgets/charts/PageImpressions';
-import Followers from '../../../components/widgets/charts/Followers';
-import Views from '../../../components/widgets/charts/Views';
-import Earned from '../../../components/widgets/charts/Earned';
-import CurrentValue from '../../../components/widgets/charts/CurrentValue';
 import BDMapboxTechnicalBBD from '../../../components/technical-components/by-business-district-chart-cards/business-district-mapbox-bbd';
 import HighestPeakFeedersBBD from '../../../components/technical-components/by-business-district-chart-cards/highest-peak-feeders-bbd';
 import LowestPeakFeedersBBD from '../../../components/technical-components/by-business-district-chart-cards/lowest-peak-feeders-bbd';
-import BusinessDistrictFilter from '/src/layouts/full/shared/breadcrumb/BusinessDistrictFilter';
+import BusinessDistrictFilterTechnicalBBD from '../../../components/technical-components/by-business-district-chart-cards/business-district-filters-tech-bbd';
+import { TechnicalDataBusinessDistrict } from '../../../components/technical-components/by-business-district-chart-cards/dataroom-tech-by-bd/dataroom-tech-bbd';
 
 const BCrumb = [
-  
   {
     to: '/',
     title: 'Home',
@@ -36,24 +22,46 @@ const BCrumb = [
 ];
 
 const TechnicalByBusinessDistricts = () => {
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedBusinessDistrict, setSelectedBusinessDistrict] = useState('');
+
   const handleFilterChange = (filter) => {
-    // Implement the filter change logic here
-    console.log(filter);
+    if (filter === 'Kano' || filter === 'Katsina' || filter === 'Jigawa') {
+      setSelectedState(filter);
+      setSelectedBusinessDistrict('');
+    } else {
+      setSelectedBusinessDistrict(filter);
+      const state = Object.keys(TechnicalDataBusinessDistrict).find(state =>
+        Object.keys(TechnicalDataBusinessDistrict[state].businessDistricts).includes(filter)
+      );
+      setSelectedState(state);
+    }
+  };
+
+  const handleBusinessDistrictClick = (district) => {
+    setSelectedBusinessDistrict(district);
+    const state = Object.keys(TechnicalDataBusinessDistrict).find(state =>
+      Object.keys(TechnicalDataBusinessDistrict[state].businessDistricts).includes(district)
+    );
+    setSelectedState(state);
   };
 
   return (
     <PageContainer title="Technical By Business District" description="this is Charts page">
-      {/* breadcrumb */}
       <Breadcrumb title="Technical By Business District" items={BCrumb} />
-      {/* end breadcrumb */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <Box sx={{ width: 'fit-content' }}>
-          <BusinessDistrictFilter onFilterChange={handleFilterChange} />
-        </Box>
-      </Box>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <BDMapboxTechnicalBBD />
+          <BusinessDistrictFilterTechnicalBBD
+            onFilterChange={handleFilterChange}
+            selectedState={selectedState}
+            selectedBusinessDistrict={selectedBusinessDistrict}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <BDMapboxTechnicalBBD
+            selectedBusinessDistrict={selectedBusinessDistrict}
+            onBusinessDistrictClick={handleBusinessDistrictClick}
+          />
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={3}>

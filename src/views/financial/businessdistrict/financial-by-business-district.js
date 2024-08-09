@@ -1,26 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Box } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import YearlyBreakup from '../../../components/dashboards/modern/YearlyBreakup';
-import Projects from '../../../components/dashboards/modern/Projects';
-import Customers from '../../../components/dashboards/modern/Customers';
-import SalesTwo from '../../../components/dashboards/ecommerce/SalesTwo';
-import MonthlyEarnings from '../../../components/dashboards/modern/MonthlyEarnings';
-import SalesOverview from '../../../components/dashboards/ecommerce/SalesOverview';
-import RevenueUpdates from '../../../components/dashboards/modern/RevenueUpdates';
-import YearlySales from '../../../components/dashboards/ecommerce/YearlySales';
-import MostVisited from '../../../components/widgets/charts/MostVisited';
-import PageImpressions from '../../../components/widgets/charts/PageImpressions';
-import Followers from '../../../components/widgets/charts/Followers';
-import Views from '../../../components/widgets/charts/Views';
-import Earned from '../../../components/widgets/charts/Earned';
-import CurrentValue from '../../../components/widgets/charts/CurrentValue';
 import StateMapboxFinancialBBD from '../../../components/financial-components/by-business-district-chart-cards/statemapbox-bbd';
 import StateCostBreakdownFinancialBBD from '../../../components/financial-components/by-business-district-chart-cards/statecost-breakdown-bbd';
 import TariffFinancialBBD from '../../../components/financial-components/by-business-district-chart-cards/tarrifs-bbd';
-import BusinessDistrictFilter from '/src/layouts/full/shared/breadcrumb/BusinessDistrictFilter';
+import BusinessDistrictFilterFinancialBBD from '../../../components/financial-components/by-business-district-chart-cards/business-district-filters-fin-bbd';
 import OpexBreakdownFinancialBBD from '../../../components/financial-components/by-business-district-chart-cards/opex-breakdown-bbd';
+import { FinancialDataBusinessDistrict } from '../../../components/financial-components/by-business-district-chart-cards/dataroom-financial-by-bd/dataroom-financial-bbd';
 
 const BCrumb = [
   {
@@ -36,39 +23,74 @@ const BCrumb = [
 ];
 
 const FinancialByBusinessDistricts = () => {
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedBusinessDistrict, setSelectedBusinessDistrict] = useState('');
+
   const handleFilterChange = (filter) => {
-    // Implement the filter change logic here
-    console.log(filter);
+    console.log('Filter change triggered:', filter);
+    if (filter === 'Kano' || filter === 'Katsina' || filter === 'Jigawa') {
+      setSelectedState(filter);
+      setSelectedBusinessDistrict('');
+    } else {
+      setSelectedBusinessDistrict(filter);
+      // Determine the state based on the business district
+      const state = Object.keys(FinancialDataBusinessDistrict).find(state =>
+        Object.keys(FinancialDataBusinessDistrict[state].businessDistricts).includes(filter)
+      );
+      setSelectedState(state);
+      console.log('State set from business district:', state);
+    }
+  };
+
+  const handleBusinessDistrictClick = (district) => {
+    console.log('Business district clicked on map:', district);
+    setSelectedBusinessDistrict(district);
+    const state = Object.keys(FinancialDataBusinessDistrict).find(state =>
+      Object.keys(FinancialDataBusinessDistrict[state].businessDistricts).includes(district)
+    );
+    setSelectedState(state);
+    console.log('State set from map click:', state);
   };
 
   return (
     <PageContainer title="Financial By Business District" description="this is Charts page">
-      {/* breadcrumb */}
       <Breadcrumb title="Financial By Business District" items={BCrumb} />
-      {/* end breadcrumb */}
-
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <Box sx={{ width: 'fit-content' }}>
-          <BusinessDistrictFilter onFilterChange={handleFilterChange} />
-        </Box>
-      </Box>
+      
       
       <Grid container spacing={3}>
+
+        <Grid item xs={12} >
+          <BusinessDistrictFilterFinancialBBD 
+            onFilterChange={handleFilterChange} 
+            selectedState={selectedState}
+            selectedBusinessDistrict={selectedBusinessDistrict}
+          />
+        </Grid>
+
         <Grid item xs={12}>
-          <StateMapboxFinancialBBD />
+          <StateMapboxFinancialBBD 
+            selectedBusinessDistrict={selectedBusinessDistrict} 
+            onBusinessDistrictClick={handleBusinessDistrictClick} 
+          />
         </Grid>
         
         <Grid item xs={12}>
-          <OpexBreakdownFinancialBBD />
+          <OpexBreakdownFinancialBBD 
+            selectedBusinessDistrict={selectedBusinessDistrict}
+          />
         </Grid>
 
         <Grid item xs={12}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <StateCostBreakdownFinancialBBD />
+              <StateCostBreakdownFinancialBBD 
+                selectedBusinessDistrict={selectedBusinessDistrict}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TariffFinancialBBD />
+              <TariffFinancialBBD 
+                selectedBusinessDistrict={selectedBusinessDistrict}
+              />
             </Grid>
           </Grid>
         </Grid>
