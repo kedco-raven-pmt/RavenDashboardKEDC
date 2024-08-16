@@ -7,7 +7,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import StateMapBoxDataCards from './statemapbox-datacards-bs';
 import { TechnicalDataMapbox } from "./dataroom-technical-bs/dataroom-technical-bs";
 
-mapboxgl.accessToken = 'your-mapbox-access-token';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
 
 const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
   const [selectedStateData, setSelectedStateData] = useState(null);
@@ -24,7 +24,7 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
       console.log('Initializing map...');
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: 'mapbox://styles/mapbox/light-v10',
+        style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
         center: [longitude, latitude],
         zoom: 6.6
       });
