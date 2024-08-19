@@ -11,6 +11,7 @@ const TotalCostFinancial = () => {
   const secondary = theme.palette.secondary.main;
   const secondarylight = theme.palette.secondary.light;
 
+
   // chart
   const optionscolumnchart = {
     chart: {
@@ -20,22 +21,36 @@ const TotalCostFinancial = () => {
       toolbar: {
         show: false,
       },
-      height: 100,
+      height: 70,
       sparkline: {
         enabled: true,
       },
     },
-    colors: ['#e4e9ec', '#e4e9ec', '#e4e9ec', '#b8c0c6'],
+    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC'],
     plotOptions: {
       bar: {
         borderRadius: 4,
         columnWidth: '50%',
+        
         distributed: true,
         endingShape: 'rounded',
+        dataLabels: {
+          position: 'top',
+        },
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      formatter: function (val) {
+        return "₦" + val + "B";  
+      },
+      position: 'top',
+      style: {
+        fontSize: '10px',
+        colors: ['#304758'],
+        fontWeight: 700,
+      },
+      offsetY: -20,
     },
     legend: {
       show: false,
@@ -48,9 +63,7 @@ const TotalCostFinancial = () => {
       },
     },
     xaxis: {
-      labels: {
-        show: false,
-      },
+      categories: [['Aug'], ['Jul'], ['Jun'], ['May']],
       axisBorder: {
         show: false,
       },
@@ -66,11 +79,21 @@ const TotalCostFinancial = () => {
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
+    title: {
+      text: '',
+      align: 'center',
+      style: {
+        fontSize: '12px',
+        fontWeight: 'bold',
+        color: '#263238',
+        padding: '10px',
+      },
+    },
   };
   const seriescolumnchart = [
     {
       name: '',
-      data: [20, 15, 30, 25],
+      data: [48, 37, 42, 32],
     },
   ];
 
@@ -80,12 +103,9 @@ const TotalCostFinancial = () => {
         <Typography variant="h5">Total Cost</Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={7}>
+          <Grid item xs={12}>
             
             <Typography variant="h4" mt={3} fontWeight={600}>₦59,929,679,975</Typography>
-            <Typography variant="subtitle2"  mt={1} fontSize="12px" color="textSecondary">
-              (MTD: <strong>₦56,456 M </strong>)
-            </Typography>
             <Stack direction="row" spacing={1} mt={1} alignItems="center">
               <Avatar sx={{ bgcolor: 'success.light', width: 20, height: 20 }}>
                 <IconArrowUpRight width={16} color="#39b69a" />
@@ -95,12 +115,15 @@ const TotalCostFinancial = () => {
               </Typography>
             </Stack>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={12}>
+            <Typography mb={2} variant="subtitle2" whiteSpace="nowrap" fontWeight={600} textAlign="center">
+              Previous 4 Months
+            </Typography>
             <Chart
               options={optionscolumnchart}
               series={seriescolumnchart}
               type="bar"
-              height="100px"
+              height="70px"
             />
           </Grid>
         </Grid>

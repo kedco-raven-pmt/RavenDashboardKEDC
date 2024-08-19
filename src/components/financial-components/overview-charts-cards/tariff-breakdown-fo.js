@@ -7,7 +7,7 @@ import DashboardWidgetCard from '../../shared/DashboardWidgetCard';
 import CostBreakdownCards from '../../shared/costbreakdowncard';
 import { fontSize, fontWeight, padding, width } from '@mui/system';
 
-const CostBreakdownFinancial = () => {
+const TariffBreakdownFinancial = () => {
   // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
@@ -27,7 +27,7 @@ const CostBreakdownFinancial = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#000', '#B3CEE6','#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#0074BA', '#B3CEE6', '#000', '#ABC4C9',],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -43,7 +43,7 @@ const CostBreakdownFinancial = () => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return "₦" + val + "B";  
+        return "₦" + val ;  
       },
       position: 'top',
       style: {
@@ -67,7 +67,7 @@ const CostBreakdownFinancial = () => {
         show:false,
     },
     xaxis: {
-      categories: [['NBET', 'Invoice'], ['MO' ,'Invoice'], ['Salaries'], ['Disco' ,'Opex'], ['Others']],
+      categories: [['MYTO', 'Tariff'], ['Billing' ,'Tariff'], ['Collection','Tariff'], ['Tariff' ,'Loss']],
       axisBorder: {
         show: false,
       },
@@ -82,7 +82,7 @@ const CostBreakdownFinancial = () => {
       labels: {
         show: false,
         formatter: function (val) {
-          return val + "bn";  // Append "bn" to y-axis labels
+          return val + " /kWh";  
         }
         
       },
@@ -95,7 +95,7 @@ const CostBreakdownFinancial = () => {
   const seriescolumnchart = [
     {
       name: '',
-      data: [2.0, 1.5, 5.1, 2/5, 1.0],
+      data: [49, 51, 45, 9],
     },
   ];
 
@@ -111,7 +111,7 @@ const CostBreakdownFinancial = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#000', '#B3CEE6','#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#0074BA', '#B3CEE6', '#000', '#ABC4C9',],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -127,7 +127,7 @@ const CostBreakdownFinancial = () => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return "₦" + val + "B";  // Display the value with "bn"
+        return "₦" + val ;  // Display the value with " /kWh"
       },
       position: 'top',
       style: {
@@ -151,7 +151,7 @@ const CostBreakdownFinancial = () => {
         show:false,
     },
     xaxis: {
-      categories: [['NBET', 'Invoice'], ['MO' ,'Invoice'], ['Salaries'], ['Disco' ,'Opex'], ['Others']],
+      categories: [['MYTO', 'Tariff'], ['Billing' ,'Tariff'], ['Collection','Tariff'], ['Tariff' ,'Loss']],
       axisBorder: {
         show: false,
       },
@@ -166,7 +166,7 @@ const CostBreakdownFinancial = () => {
       labels: {
         show: false,
         formatter: function (val) {
-          return val + "bn";  // Append "bn" to y-axis labels
+          return val + " /kWh";  
         }
         
       },
@@ -178,7 +178,7 @@ const CostBreakdownFinancial = () => {
   const seriescolumn2chart = [
     {
       name: '',
-      data: [2.0, 1.5, 5.1, 2/5, 1.0],
+      data: [49, 51, 45, 9],
     },
   ];
 
@@ -194,7 +194,7 @@ const CostBreakdownFinancial = () => {
       height: 200,
       width: "100%",
     },
-    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#000', '#B3CEE6','#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: ['#0074BA', '#B3CEE6', '#000', '#ABC4C9',],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -210,7 +210,7 @@ const CostBreakdownFinancial = () => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return "₦" + val + "B";  // Display the value with "bn"
+        return "₦" + val ;  // Display the value with " /kWh"
       },
       position: 'top',
       style: {
@@ -234,7 +234,7 @@ const CostBreakdownFinancial = () => {
         show:false,
     },
     xaxis: {
-      categories: [['NBET', 'Invoice'], ['MO' ,'Invoice'], ['Salaries'], ['Disco' ,'Opex'], ['Others']],
+      categories: [['MYTO', 'Tariff'], ['Billing' ,'Tariff'], ['Collection', 'Tariff'], ['Tariff' ,'Loss']],
       axisBorder: {
         show: false,
       },
@@ -249,7 +249,7 @@ const CostBreakdownFinancial = () => {
       labels: {
         show: false,
         formatter: function (val) {
-          return val + "bn";  // Append "bn" to y-axis labels
+          return val + " /kWh";  
         }
         
       },
@@ -262,7 +262,7 @@ const CostBreakdownFinancial = () => {
   const seriescolumn3chart = [
     {
       name: '',
-      data: [2.0, 1.5, 5.1, 2/5, 1.0],
+      data: [49, 51, 45, 9],
     },
   ];
 
@@ -270,7 +270,7 @@ const CostBreakdownFinancial = () => {
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
-          <Typography variant="h5">Previous 4 Months Perfomance - Total Expenses</Typography>
+          <Typography variant="h5">Previous 4 Months Perfomance - Tariff</Typography>
           <Stack direction="row" spacing={3}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
@@ -278,37 +278,7 @@ const CostBreakdownFinancial = () => {
             ></Avatar>
             <Box>
               <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                NBET Invoice
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#02B7FA', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                MO Invoice
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#ABC4C9', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Salaries
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#000', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Disco Opex
+                MYTO Tariff
               </Typography>
             </Box>
           </Stack>
@@ -318,7 +288,27 @@ const CostBreakdownFinancial = () => {
             ></Avatar>
             <Box>
               <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Others
+                Billing Tariff
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Avatar
+              sx={{ width: 9, height: 9, bgcolor: '#000', svg: { display: 'none' } }}
+            ></Avatar>
+            <Box>
+              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
+                Collection Tariff
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Avatar
+              sx={{ width: 9, height: 9, bgcolor: '#ABC4C9', svg: { display: 'none' } }}
+            ></Avatar>
+            <Box>
+              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
+                Tariff Loss
               </Typography>
             </Box>
           </Stack>
@@ -340,10 +330,10 @@ const CostBreakdownFinancial = () => {
                 </Box>
                 <Box mt={2}>
                   <Typography variant="h6" fontWeight={400} mb={1}>
-                    September 
+                    August 
                   </Typography>
                   <Stack direction="row" spacing={2} justifyContent="space-between">
-                    <Typography variant="h4">₦4.7B</Typography>
+                    <Typography variant="h4">₦47 /kWh</Typography>
                     <Typography variant="subtitle1" color="success.main">
                       +1.25%
                     </Typography>
@@ -366,10 +356,10 @@ const CostBreakdownFinancial = () => {
                 </Box>
                 <Box mt={2}>
                   <Typography variant="h6" fontWeight={400} mb={1}>
-                    October 
+                    July 
                   </Typography>
                   <Stack direction="row" spacing={2} justifyContent="space-between">
-                    <Typography variant="h4">₦4.8B</Typography>
+                    <Typography variant="h4">₦48 /kWh</Typography>
                     <Typography variant="subtitle1" color="success.main">
                       +4.25%
                     </Typography>
@@ -392,10 +382,10 @@ const CostBreakdownFinancial = () => {
                 </Box>
                 <Box mt={2}>
                   <Typography variant="h6" fontWeight={400} mb={1}>
-                    November 
+                    June 
                   </Typography>
                   <Stack direction="row" spacing={2} justifyContent="space-between">
-                    <Typography variant="h4">₦5.5B</Typography>
+                    <Typography variant="h4">₦55 /kWh</Typography>
                     <Typography variant="subtitle1" color="success.main">
                       +2.5%
                     </Typography>
@@ -413,10 +403,10 @@ const CostBreakdownFinancial = () => {
                 </Box>
                 <Box mt={2}>
                   <Typography variant="h6" fontWeight={400} mb={1}>
-                    December 
+                    May 
                   </Typography>
                   <Stack direction="row" spacing={2} justifyContent="space-between">
-                    <Typography variant="h4">₦5.6B</Typography>
+                    <Typography variant="h4">₦56 /kWh</Typography>
                     <Typography variant="subtitle1" color="success.main">
                       +2.5%
                     </Typography>
@@ -431,4 +421,4 @@ const CostBreakdownFinancial = () => {
   );
 };
 
-export default CostBreakdownFinancial;
+export default TariffBreakdownFinancial;

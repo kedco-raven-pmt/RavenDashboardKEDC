@@ -41,7 +41,7 @@ const FeederInterruptionsTO = () => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return "₦" + val ;  
+        return  val ;  
       },
       position: 'top',
       style: {
@@ -94,7 +94,7 @@ const FeederInterruptionsTO = () => {
   const seriescolumnchart = [
     {
       name: '',
-      data: [39, 40, 38, 45],
+      data: [39, 40, 38, 46],
     },
   ];
 

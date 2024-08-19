@@ -54,9 +54,6 @@ const FinancialAllBusinessDistricts = () => {
             />
           </Box>
         </Grid>
-        <Grid item xs={12}>
-          {compare ? <CostBreakdownCompareFinancialABD selectedState={selectedState} /> : <CostBreakdownFinancialABD selectedState={selectedState} />}
-        </Grid>
         <Grid item xs={12} lg={8}>
           <TariffLossFinancialABD selectedState={selectedState} />
         </Grid>
@@ -70,6 +67,10 @@ const FinancialAllBusinessDistricts = () => {
             </Grid>
           </Grid>
         </Grid>
+        <Grid item xs={12}>
+          {compare ? <CostBreakdownCompareFinancialABD selectedState={selectedState} /> : <CostBreakdownFinancialABD selectedState={selectedState} />}
+        </Grid>
+        
       </Grid>
     </PageContainer>
   );

@@ -7,6 +7,9 @@ import StateCostBreakdownFinancialBS from '../../../components/financial-compone
 import StateFilterFinancialBS from '../../../components/financial-components/by-state-chart-cards/state-filters-fin-bs';
 import TariffFinancialBS from '../../../components/financial-components/by-state-chart-cards/tarrifs-bs';
 import OpexBreakdownFinancialBS from '../../../components/financial-components/by-state-chart-cards/opex-breakdown-bs';
+import AgentCollectionByState from '../../../components/financial-components/by-state-chart-cards/agent-collections-bs';
+import DailyCollectionPrePaidBS from '../../../components/financial-components/by-state-chart-cards/daily-collections-prepaid-bs';
+import DailyCollectionPostPaidBS from '../../../components/financial-components/by-state-chart-cards/daily-collections-postpaid-bs';
 
 const BCrumb = [
   { to: '/', title: 'Home' },
@@ -35,19 +38,26 @@ const FinancialByState = () => {
         <Grid item xs={12}>
           <StateMapboxFinancialBS selectedState={selectedState} onStateClick={handleStateClick} />
         </Grid>
+        
+        <Grid item xs={12}>
+          <DailyCollectionPrePaidBS selectedState={selectedState} />
+        </Grid>
+        <Grid item xs={12}>
+          <DailyCollectionPostPaidBS selectedState={selectedState} />
+        </Grid>
+        <Grid item xs={12}>
+          <AgentCollectionByState selectedState={selectedState} />
+        </Grid>
         <Grid item xs={12}>
           <OpexBreakdownFinancialBS selectedState={selectedState} />
         </Grid>
         <Grid item xs={12}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <StateCostBreakdownFinancialBS selectedState={selectedState} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TariffFinancialBS selectedState={selectedState} />
-            </Grid>
-          </Grid>
+          <StateCostBreakdownFinancialBS selectedState={selectedState} />
         </Grid>
+        <Grid item xs={12}>
+          <TariffFinancialBS selectedState={selectedState} />
+        </Grid>
+        
       </Grid>
     </PageContainer>
   );

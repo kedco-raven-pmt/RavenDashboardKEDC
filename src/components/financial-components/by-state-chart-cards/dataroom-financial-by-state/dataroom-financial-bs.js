@@ -44,19 +44,22 @@ export const FinancialDataOpex = {
       name: 'Jigawa',
       revenueRequired: [6000000000, 6500000000, 7000000000, 7500000000],
       revenueBilled: [5500000000, 6000000000, 6500000000, 7600000000],
-      collections: [4300000000, 4600000000, 4900000000, 5200000000]
+      collections: [4300000000, 4600000000, 4900000000, 5200000000],
+      vendorCollections: [5, 7, 12, 16, 15, 10, 15]
     },
     'NG020': {
       name: 'Kano',
       revenueRequired: [5000000000, 5200000000, 5400000000, 5600000000],
       revenueBilled: [4800000000, 5000000000, 5200000000, 5400000000],
-      collections: [3500000000, 3600000000, 3700000000, 3800000000]
+      collections: [3500000000, 3600000000, 3700000000, 3800000000],
+      vendorCollections: [35, 27, 92, 65, 55, 20, 5]
     },
     'NG021': {
       name: 'Katsina',
       revenueRequired: [7000000000, 7300000000, 7600000000, 7900000000],
       revenueBilled: [6800000000, 7100000000, 7400000000, 7700000000],
-      collections: [4500000000, 4700000000, 4900000000, 5100000000]
+      collections: [4500000000, 4700000000, 4900000000, 5100000000],
+      vendorCollections: [15, 27, 22, 36, 15, 10, 25]
     }
   };
   
@@ -113,3 +116,21 @@ export const FinancialDataOpex = {
     }
   };
   
+  // Financial data for collections (Post-Paid and Pre-Paid)
+export const collectionData = {
+  'NG018': {
+    name: 'Jigawa',
+    dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), // Generating random data between 10 and 60
+    dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
+  },
+  'NG020': {
+    name: 'Kano',
+    dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 70) + 20), // Generating random data between 20 and 90
+    dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 70) + 20),
+  },
+  'NG021': {
+    name: 'Katsina',
+    dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 30) + 5), // Generating random data between 5 and 35
+    dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 30) + 5),
+  }
+};

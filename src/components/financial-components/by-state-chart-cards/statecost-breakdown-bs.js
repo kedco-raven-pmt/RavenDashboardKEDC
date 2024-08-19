@@ -1,8 +1,8 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Box, Stack, Typography, Chip } from '@mui/material';
-import DashboardCard from '../../shared/DashboardCard';
+import { Box, Grid, Typography, Stack, Avatar, CardContent, Chip } from '@mui/material';
+import BlankCard from '../../shared/BlankCard';
 import { stateCostData } from './dataroom-financial-by-state/dataroom-financial-bs';
 
 const aggregateCosts = () => {
@@ -11,55 +11,62 @@ const aggregateCosts = () => {
     'MO Invoice': 0,
     'Salaries': 0,
     'Disco Opex': 0,
-    'Others': 0
+    'Others': 0,
   };
 
-  Object.values(stateCostData).forEach(state => {
-    Object.keys(state.costs).forEach(key => {
-      aggregated[key] += state.costs[key];
-    });
+  Object.values(stateCostData).forEach((state) => {
+    if (state && state.costs) {
+      Object.keys(state.costs).forEach((key) => {
+        aggregated[key] += state.costs[key] || 0;
+      });
+    }
   });
 
   return aggregated;
 };
 
-const formatAmount = (amount) => {
-  if (amount >= 1000000000) {
-    return `₦${(amount / 1000000000).toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}B`;
-  }
-  return `₦${(amount / 1000000).toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}M`;
-};
 
-const formatNumberWithCommas = (number) => {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-};
 
 const StateCostBreakdownFinancialBS = ({ selectedState }) => {
   const theme = useTheme();
 
-  const state = Object.values(stateCostData).find(state => state.name === selectedState);
+  const state = selectedState
+    ? Object.values(stateCostData).find((state) => state.name === selectedState)
+    : null;
+
   const costs = state ? state.costs : aggregateCosts();
 
+  const totalCost = Object.values(costs).reduce((sum, val) => sum + val, 0);
+
   const categories = Object.keys(costs);
-  const data = categories.map(category => costs[category]);
+  const data = categories.map((category) => costs[category]);
 
-  console.log("Selected State:", selectedState);
-  console.log("Costs:", costs);
-  console.log("Categories:", categories);
-  console.log("Data:", data);
+  const formatAmount = (amount) => {
+    return amount >= 1000000000
+      ? `₦${(amount / 1000000000).toFixed(1)}B`
+      : `₦${(amount / 1000000)}M`;
+  };
 
-  const totalCost = data.reduce((acc, val) => acc + val, 0);
+  const formatCategories = (categories) => {
+    return categories.map(category => {
+      const words = category.split(' ');
+      return words.length > 1 ? words : [category];
+    });
+  };
+  
+  // Example usage with your categories
+  const category = ['NBET Invoice', 'MO Invoice', 'Salaries', 'Disco Opex', 'Others'];
+  const formattedCategories = formatCategories(category);
+  
 
-  const stateCostBreakdownColumnChart = {
+  const chartOptions = {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
       foreColor: '#adb0bb',
-      toolbar: {
-        show: false,
-      },
+      toolbar: { show: false },
       height: 200,
-      width: "100%",
+      width: '100%',
     },
     colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#000', '#B3CEE6'],
     plotOptions: {
@@ -69,16 +76,12 @@ const StateCostBreakdownFinancialBS = ({ selectedState }) => {
         barHeight: '60%',
         distributed: true,
         endingShape: 'rounded',
-        dataLabels: {
-          position: 'top', 
-        },
+        dataLabels: { position: 'top' },
       },
     },
     dataLabels: {
       enabled: true,
-      formatter: function (val) {
-        return formatAmount(val);  
-      },
+      formatter: (val) => formatAmount(val),
       position: 'top',
       style: {
         fontSize: '10px',
@@ -87,80 +90,81 @@ const StateCostBreakdownFinancialBS = ({ selectedState }) => {
       },
       offsetY: -20,
     },
-    legend: {
-      show: false,
-    },
+    legend: { show: false },
     grid: {
-      padding: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      },
+      padding: { top: 0, right: 0, bottom: 0, left: 0 },
       show: false,
     },
     xaxis: {
-      categories: categories.map(category => [category]),
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
-      labels: {
-        show: false,
-      },
+      categories: formattedCategories,
+      axisBorder: { show: false },
+      axisTicks: { show: false },
+      labels: { show: true },
     },
     yaxis: {
-      labels: {
-        show: false,
-        formatter: function (val) {
-          return formatAmount(val);  
-        }
-      },
+      labels: { show: false },
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
   };
 
-  const stateCostBreakdownSeries = [
-    {
-      name: '',
-      data: data,
-    },
-  ];
+  const chartSeries = [{ name: '', data: data }];
 
   return (
-    <DashboardCard title="State Cost And Breakdown"
-      action={<Chip label={selectedState || "All state"} size="small" />}
-    >
-      <Stack direction="row" spacing={3} mb={3} mt={3}>
-        {categories.map((category, index) => (
-          <Stack direction="row" alignItems="center" spacing={1} key={index}>
-            <Avatar sx={{ width: 9, height: 9, bgcolor: stateCostBreakdownColumnChart.colors[index], svg: { display: 'none' } }} />
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                {category}
-              </Typography>
-            </Box>
-          </Stack>
-        ))}
-      </Stack>
-      <Chart options={stateCostBreakdownColumnChart} series={stateCostBreakdownSeries} type="bar" height="280px" />
-      <Stack spacing={3} mt={3}>
-        <Stack direction="row" spacing={2} alignItems="center" textAlign='center' justifyContent='center'>
-          <Box>
-            <Typography variant="h5" fontWeight="700">
-              ₦{formatNumberWithCommas(totalCost)}
-            </Typography>
-            <Typography variant="subtitle2" color="textSecondary">
-              Total cost
-            </Typography>
+    <BlankCard>
+      <CardContent sx={{ p: '30px' }}>
+        
+        <Stack direction="row" spacing={2} justifyContent="space-between">
+          <Typography variant="h5">State Cost And Breakdown</Typography>
+          <Box display="flex" alignItems="left">
+            <Chip label={selectedState || "All state"} size="small" /> 
           </Box>
         </Stack>
-      </Stack>
-    </DashboardCard>
+        <Stack direction="row" spacing={3}  mb={3} mt={3}>
+            {categories.map((category, index) => (
+              <Stack direction="row" alignItems="center" spacing={1} key={index}>
+                <Avatar sx={{ width: 9, height: 9, bgcolor: chartOptions.colors[index], svg: { display: 'none' } }} />
+                <Box>
+                  <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
+                    {category}
+                  </Typography>
+                </Box>
+              </Stack>
+            ))}
+          </Stack>
+
+        <Grid container spacing={3} mt={2}>
+          {['September', 'October', 'November', 'December'].map((month, index) => (
+            <Grid item xs={12} sm={3} key={index}>
+              <BlankCard>
+                <CardContent sx={{ p: '20px' }}>
+                  <Box>
+                    <Chart
+                      options={chartOptions}
+                      series={chartSeries}
+                      type="bar"
+                      height="190px"
+                    />
+                  </Box>
+                  <Box mt={2}>
+                    <Typography variant="h6" fontWeight={400} mb={1}>
+                      {month}
+                    </Typography>
+                    <Stack direction="row" spacing={2} justifyContent="space-between">
+                      <Typography variant="h4">{formatAmount(totalCost)}</Typography>
+                      <Typography variant="subtitle1" color="success.main">
+                        +2.5%
+                      </Typography>
+                    </Stack>
+                  </Box>
+                </CardContent>
+              </BlankCard>
+            </Grid>
+          ))}
+        </Grid>
+      </CardContent>
+    </BlankCard>
   );
 };
 
