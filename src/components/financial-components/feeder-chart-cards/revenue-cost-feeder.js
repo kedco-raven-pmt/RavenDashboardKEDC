@@ -12,13 +12,18 @@ const formatAmount = (amount) => {
   return `₦${(amount / 1000000).toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}M`;
 };
 
-const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict }) => {
+const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder }) => {
   const theme = useTheme();
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     if (selectedState && selectedBusinessDistrict) {
-      setFilteredData(FeederData[selectedState].businessDistricts[selectedBusinessDistrict]);
+      if (selectedFeeder) {
+        const feederData = FeederData[selectedState].businessDistricts[selectedBusinessDistrict].find(feeder => feeder.name === selectedFeeder);
+        setFilteredData(feederData ? [feederData] : []);
+      } else {
+        setFilteredData(FeederData[selectedState].businessDistricts[selectedBusinessDistrict]);
+      }
     } else if (selectedState) {
       const data = Object.values(FeederData[selectedState].businessDistricts).flat();
       setFilteredData(data);
@@ -26,7 +31,7 @@ const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict })
       const data = Object.values(FeederData).flatMap(state => Object.values(state.businessDistricts).flat());
       setFilteredData(data);
     }
-  }, [selectedState, selectedBusinessDistrict]);
+  }, [selectedState, selectedBusinessDistrict, selectedFeeder]);
 
   const FeederChartOptions = {
     chart: {
@@ -62,15 +67,15 @@ const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict })
     legend: { show: false },
     grid: { show: false },
     xaxis: {
-      categories: [['Total Cost'], ['Revenue Billed'], ['Collections']],
+      categories: [['Total', 'Cost'], ['Rev.' ,'Billed'], ['Rev.', 'Collect']],
       axisBorder: { show: false },
       axisTicks: { show: false },
-      labels: { show: false },
+      labels: { show: true },
     },
     yaxis: {
       labels: {
         show: false,
-        formatter: val => val + "bn",
+        formatter: val => formatAmount(val),
       },
     },
     tooltip: { theme: theme.palette.mode === 'dark' ? 'dark' : 'light'  },

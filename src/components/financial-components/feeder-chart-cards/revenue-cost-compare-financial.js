@@ -12,27 +12,32 @@ const formatAmount = (amount) => {
   return `₦${(amount / 1000000).toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}M`;
 };
 
-const FeederCompareFinancial = ({ selectedState, selectedBusinessDistrict }) => {
+const FeederCompareFinancial = ({ selectedState, selectedBusinessDistrict, selectedFeeder }) => {
   const theme = useTheme();
   const [comparisonData, setComparisonData] = useState([]);
 
   useEffect(() => {
     const calculateData = () => {
-      const data = [];
+      let data = [];
 
-      if (selectedState && selectedBusinessDistrict) {
-        data.push(...FeederData[selectedState].businessDistricts[selectedBusinessDistrict]);
+      if (selectedState && selectedBusinessDistrict && selectedFeeder) {
+        const feederData = FeederData[selectedState].businessDistricts[selectedBusinessDistrict].find(feeder => feeder.name === selectedFeeder);
+        data = feederData ? [feederData] : [];
+      } else if (selectedState && selectedBusinessDistrict) {
+        data = FeederData[selectedState].businessDistricts[selectedBusinessDistrict];
       } else if (selectedState) {
-        Object.values(FeederData[selectedState].businessDistricts).flat().forEach(feeder => data.push(feeder));
+        data = Object.values(FeederData[selectedState].businessDistricts).flat();
       } else {
-        Object.values(FeederData).flatMap(state => Object.values(state.businessDistricts).flat()).forEach(feeder => data.push(feeder));
+        data = Object.values(FeederData).flatMap(state => Object.values(state.businessDistricts).flat());
       }
 
       setComparisonData(data);
     };
 
     calculateData();
-  }, [selectedState, selectedBusinessDistrict]);
+  }, [selectedState, selectedBusinessDistrict, selectedFeeder]);
+
+  const visibleData = comparisonData.slice(0, 6); // Display only the first 6 feeders
 
   const FeederComparisonChart = {
     chart: {
@@ -42,7 +47,7 @@ const FeederCompareFinancial = ({ selectedState, selectedBusinessDistrict }) => 
       toolbar: { show: false },
       height: 265,
       width: "100%",
-      zoom: { enabled: false }
+      zoom: { enabled: false },
     },
     colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
     plotOptions: {
@@ -68,7 +73,7 @@ const FeederCompareFinancial = ({ selectedState, selectedBusinessDistrict }) => 
     legend: { show: true },
     grid: { yaxis: { lines: { show: false } } },
     xaxis: {
-      categories: comparisonData.map(feeder => feeder.name),
+      categories: visibleData.map(feeder => feeder.name), // Only show categories for visible feeders
       axisBorder: { show: false },
       labels: { rotate: -45 },
     },
@@ -83,9 +88,9 @@ const FeederCompareFinancial = ({ selectedState, selectedBusinessDistrict }) => 
   };
 
   const FeederComparisonSeries = [
-    { name: 'Total Cost', data: comparisonData.map(feeder => feeder.totalCost) },
-    { name: 'Revenue Billed', data: comparisonData.map(feeder => feeder.revenueBilled) },
-    { name: 'Collections', data: comparisonData.map(feeder => feeder.collections) },
+    { name: 'Total Cost', data: visibleData.map(feeder => feeder.totalCost) },
+    { name: 'Revenue Billed', data: visibleData.map(feeder => feeder.revenueBilled) },
+    { name: 'Collections', data: visibleData.map(feeder => feeder.collections) },
   ];
 
   return (
@@ -123,8 +128,8 @@ const FeederCompareFinancial = ({ selectedState, selectedBusinessDistrict }) => 
           </Stack>
         </Stack>
 
-        <Box sx={{ overflow: 'auto' }}>
-          <Box>
+        <Box sx={{ overflowX: 'auto', whiteSpace: 'nowrap', width: '100%' }}>
+          <Box sx={{ width: '100%', minWidth: '1000px' }}> {/* Ensure minimum width for 6 feeders */}
             <Chart options={FeederComparisonChart} series={FeederComparisonSeries} type="bar" height="265px" />
           </Box>
         </Box>

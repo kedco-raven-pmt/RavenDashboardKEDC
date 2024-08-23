@@ -5,9 +5,10 @@ import { Grid, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import StateMapBoxDataCards from './statemapbox-datacards-bs';
-import { TechnicalDataMapbox } from "./dataroom-technical-bs/dataroom-technical-bs";
+import { TechnicalDataMapbox } from './dataroom-technical-bs/dataroom-technical-bs';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
+mapboxgl.accessToken =
+  'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
 
 const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
   const [selectedStateData, setSelectedStateData] = useState(null);
@@ -26,7 +27,7 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
         container: mapContainerRef.current,
         style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
         center: [longitude, latitude],
-        zoom: 6.6
+        zoom: 6.6,
       });
 
       mapRef.current = map;
@@ -35,7 +36,7 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
         console.log('Map loaded');
         map.addSource('states', {
           type: 'geojson',
-          data: '/assets/map-data/KEDC.geojson'
+          data: '/assets/map-data/KEDC.geojson',
         });
 
         map.addLayer({
@@ -44,8 +45,8 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
           source: 'states',
           paint: {
             'fill-color': '#888888',
-            'fill-opacity': 0.5
-          }
+            'fill-opacity': 0.5,
+          },
         });
 
         map.on('click', 'states-layer', (e) => {
@@ -56,7 +57,15 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
             console.log('Selected feature', feature);
 
             if (selectedPcod) {
-              const data = TechnicalDataMapbox[selectedPcod] || { name: 'Unknown', avgSupplyHours: [0, 0, 0, 0], durationInterruptions: [0, 0, 0, 0], turnaroundTime: [0, 0, 0, 0], dailyInterruptions: [0, 0, 0, 0], faults: [0, 0, 0, 0], feeders: [0, 0, 0, 0] };
+              const data = TechnicalDataMapbox[selectedPcod] || {
+                name: 'Unknown',
+                avgSupplyHours: [0, 0, 0, 0],
+                durationInterruptions: [0, 0, 0, 0],
+                turnaroundTime: [0, 0, 0, 0],
+                dailyInterruptions: [0, 0, 0, 0],
+                energy: [0, 0, 0, 0],
+                feeders: [0, 0, 0, 0],
+              };
               setSelectedStateData(data);
               onStateClick(data.name);
 
@@ -65,7 +74,7 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
                 'case',
                 ['==', ['get', 'admin1Pcod'], selectedPcod],
                 primary,
-                '#888888'
+                '#888888',
               ]);
             } else {
               console.error('Selected property code is undefined');
@@ -95,7 +104,9 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
     const map = mapRef.current;
 
     const updateMapLayer = () => {
-      const selectedPcod = Object.keys(TechnicalDataMapbox).find(key => TechnicalDataMapbox[key].name === selectedState);
+      const selectedPcod = Object.keys(TechnicalDataMapbox).find(
+        (key) => TechnicalDataMapbox[key].name === selectedState,
+      );
 
       if (selectedPcod) {
         console.log('Setting fill color for selectedPcod:', selectedPcod);
@@ -103,7 +114,7 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
           'case',
           ['==', ['get', 'admin1Pcod'], selectedPcod],
           primary,
-          '#888888'
+          '#888888',
         ]);
       } else {
         console.log('Resetting fill color');
@@ -121,7 +132,9 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
   useEffect(() => {
     console.log('Selected state changed:', selectedState);
     if (selectedState) {
-      const stateData = Object.values(TechnicalDataMapbox).find(state => state.name === selectedState);
+      const stateData = Object.values(TechnicalDataMapbox).find(
+        (state) => state.name === selectedState,
+      );
       setSelectedStateData(stateData);
       console.log('State data:', stateData);
     } else {
@@ -133,14 +146,16 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
     <DashboardCard title="Technical Breakdown By State" subtitle="Select a state">
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Box className="rounded-bars" bgcolor='#f7f8f9' height={350} ref={mapContainerRef} />
+          <Box className="rounded-bars" bgcolor="#f7f8f9" height={350} ref={mapContainerRef} />
         </Grid>
         {selectedStateData && (
           <>
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Average Supply Hours"
-                value={`${selectedStateData.avgSupplyHours[selectedStateData.avgSupplyHours.length - 1].toFixed(2)} Hrs`}
+                value={`${selectedStateData.avgSupplyHours[
+                  selectedStateData.avgSupplyHours.length - 1
+                ].toFixed(2)} Hrs`}
                 chartData={selectedStateData.avgSupplyHours}
                 stateName={selectedStateData.name}
               />
@@ -148,7 +163,9 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Duration of Interruptions"
-                value={`${selectedStateData.durationInterruptions[selectedStateData.durationInterruptions.length - 1].toFixed(2)} Hrs`}
+                value={`${selectedStateData.durationInterruptions[
+                  selectedStateData.durationInterruptions.length - 1
+                ].toFixed(2)} Hrs`}
                 chartData={selectedStateData.durationInterruptions}
                 stateName={selectedStateData.name}
               />
@@ -156,7 +173,9 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Turnaround Time"
-                value={`${selectedStateData.turnaroundTime[selectedStateData.turnaroundTime.length - 1].toFixed(2)} Hrs`}
+                value={`${selectedStateData.turnaroundTime[
+                  selectedStateData.turnaroundTime.length - 1
+                ].toFixed(2)} Hrs`}
                 chartData={selectedStateData.turnaroundTime}
                 stateName={selectedStateData.name}
               />
@@ -164,16 +183,20 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Daily Interruptions"
-                value={`${selectedStateData.dailyInterruptions[selectedStateData.dailyInterruptions.length - 1]} Times`}
+                value={`${
+                  selectedStateData.dailyInterruptions[
+                    selectedStateData.dailyInterruptions.length - 1
+                  ]
+                } Times`}
                 chartData={selectedStateData.dailyInterruptions}
                 stateName={selectedStateData.name}
               />
             </Grid>
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
-                title="Faults"
-                value={`${selectedStateData.faults[selectedStateData.faults.length - 1].toLocaleString()}`}
-                chartData={selectedStateData.faults}
+                title="Energy Delivered"
+                value={`${selectedStateData.energy[selectedStateData.energy.length - 1]} MW`}
+                chartData={selectedStateData.energy}
                 stateName={selectedStateData.name}
               />
             </Grid>
