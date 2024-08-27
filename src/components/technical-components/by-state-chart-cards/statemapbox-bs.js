@@ -32,6 +32,13 @@ const StateMapboxTechnicalBS = ({ selectedState, onStateClick }) => {
 
       mapRef.current = map;
 
+      mapRef.current.scrollZoom.disable();
+      map.touchZoomRotate.enable();
+      map.touchZoomRotate.enableRotation();
+      map.dragRotate.enable();
+      map.boxZoom.enable();
+      map.keyboard.enable();
+
       map.on('load', () => {
         console.log('Map loaded');
         map.addSource('states', {

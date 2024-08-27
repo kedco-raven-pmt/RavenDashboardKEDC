@@ -5,9 +5,13 @@ import { Grid, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import StateMapBoxDataCards from './statemapbox-datacards-bbd';
-import { FinancialDataMapbox, FinancialDataBusinessDistrict } from "./dataroom-financial-by-bd/dataroom-financial-bbd";
+import {
+  FinancialDataMapbox,
+  FinancialDataBusinessDistrict,
+} from './dataroom-financial-by-bd/dataroom-financial-bbd';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
+mapboxgl.accessToken =
+  'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
 
 const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictClick }) => {
   const [selectedDistrictData, setSelectedDistrictData] = useState(null);
@@ -26,16 +30,23 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
         container: mapContainerRef.current,
         style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
         center: [longitude, latitude],
-        zoom: 6.6
+        zoom: 6.6,
       });
 
       mapRef.current = map;
+
+      mapRef.current.scrollZoom.disable();
+      map.touchZoomRotate.enable();
+      map.touchZoomRotate.enableRotation();
+      map.dragRotate.enable();
+      map.boxZoom.enable();
+      map.keyboard.enable();
 
       map.on('load', () => {
         console.log('Map loaded');
         map.addSource('states', {
           type: 'geojson',
-          data: '/assets/map-data/KEDCBUSINESSDISTRICTS.geojson'
+          data: '/assets/map-data/KEDCBUSINESSDISTRICTS.geojson',
         });
 
         map.addLayer({
@@ -44,8 +55,8 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
           source: 'states',
           paint: {
             'fill-color': '#888888',
-            'fill-opacity': 0.5
-          }
+            'fill-opacity': 0.5,
+          },
         });
 
         map.on('click', 'states-layer', (e) => {
@@ -56,7 +67,12 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
             console.log('Selected feature', feature);
 
             if (selectedPcod) {
-              const data = FinancialDataBusinessDistrict[selectedPcod] || { name: 'Unknown', revenueRequired: [0, 0, 0, 0], revenueBilled: [0, 0, 0, 0], collections: [0, 0, 0, 0] };
+              const data = FinancialDataBusinessDistrict[selectedPcod] || {
+                name: 'Unknown',
+                revenueRequired: [0, 0, 0, 0],
+                revenueBilled: [0, 0, 0, 0],
+                collections: [0, 0, 0, 0],
+              };
               setSelectedDistrictData(data);
               onBusinessDistrictClick(data.name);
 
@@ -65,7 +81,7 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
                 'case',
                 ['==', ['get', 'BusinessDistrict1Pcod'], selectedPcod],
                 primary,
-                '#888888'
+                '#888888',
               ]);
             } else {
               console.error('Selected property code is undefined');
@@ -95,7 +111,9 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
     const map = mapRef.current;
 
     const updateMapLayer = () => {
-      const selectedPcod = Object.keys(FinancialDataBusinessDistrict).find(key => FinancialDataBusinessDistrict[key].name === selectedBusinessDistrict);
+      const selectedPcod = Object.keys(FinancialDataBusinessDistrict).find(
+        (key) => FinancialDataBusinessDistrict[key].name === selectedBusinessDistrict,
+      );
 
       if (selectedPcod) {
         console.log('Setting fill color for selectedPcod:', selectedPcod);
@@ -103,7 +121,7 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
           'case',
           ['==', ['get', 'BusinessDistrict1Pcod'], selectedPcod],
           primary,
-          '#888888'
+          '#888888',
         ]);
       } else {
         console.log('Resetting fill color');
@@ -121,7 +139,9 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
   useEffect(() => {
     console.log('Selected business district changed:', selectedBusinessDistrict);
     if (selectedBusinessDistrict) {
-      const districtData = Object.values(FinancialDataBusinessDistrict).find(district => district.name === selectedBusinessDistrict);
+      const districtData = Object.values(FinancialDataBusinessDistrict).find(
+        (district) => district.name === selectedBusinessDistrict,
+      );
       setSelectedDistrictData(districtData);
       console.log('District data:', districtData);
     } else {
@@ -130,17 +150,22 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
   }, [selectedBusinessDistrict]);
 
   return (
-    <DashboardCard title="Financial Breakdown By Business District" subtitle="Select a business district">
+    <DashboardCard
+      title="Financial Breakdown By Business District"
+      subtitle="Select a business district"
+    >
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Box className="rounded-bars" bgcolor='#f7f8f9' height={350} ref={mapContainerRef} />
+          <Box className="rounded-bars" bgcolor="#f7f8f9" height={350} ref={mapContainerRef} />
         </Grid>
         {selectedDistrictData && (
           <>
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Total Cost"
-                value={`₦${selectedDistrictData.revenueRequired[selectedDistrictData.revenueRequired.length - 1].toLocaleString()}`}
+                value={`₦${selectedDistrictData.revenueRequired[
+                  selectedDistrictData.revenueRequired.length - 1
+                ].toLocaleString()}`}
                 chartData={selectedDistrictData.revenueRequired}
                 stateName={selectedDistrictData.name}
               />
@@ -148,7 +173,9 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Revenue Billed"
-                value={`₦${selectedDistrictData.revenueBilled[selectedDistrictData.revenueBilled.length - 1].toLocaleString()}`}
+                value={`₦${selectedDistrictData.revenueBilled[
+                  selectedDistrictData.revenueBilled.length - 1
+                ].toLocaleString()}`}
                 chartData={selectedDistrictData.revenueBilled}
                 stateName={selectedDistrictData.name}
               />
@@ -156,7 +183,9 @@ const StateMapboxFinancialBBD = ({ selectedBusinessDistrict, onBusinessDistrictC
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Collections"
-                value={`₦${selectedDistrictData.collections[selectedDistrictData.collections.length - 1].toLocaleString()}`}
+                value={`₦${selectedDistrictData.collections[
+                  selectedDistrictData.collections.length - 1
+                ].toLocaleString()}`}
                 chartData={selectedDistrictData.collections}
                 stateName={selectedDistrictData.name}
               />

@@ -8,11 +8,11 @@ const BlankCardTransparent = ({ children, className }) => {
 
   return (
     <Card
-      sx={{ 
-        p: 0, 
+      sx={{
+        p: 0,
         position: 'relative',
-        backgroundColor: 'transparent', 
-        boxShadow:  'none' 
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
       }}
       className={className}
       elevation={customizer.isCardShadow ? 9 : 0}

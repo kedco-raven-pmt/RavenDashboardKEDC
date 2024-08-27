@@ -5,9 +5,10 @@ import { Grid, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import StateMapBoxDataCards from './statemapbox-datacards-bbd';
-import { FinancialDataBusinessDistrict } from "./dataroom-commercial-by-bd/dataroom-commercial-bbd";
+import { FinancialDataBusinessDistrict } from './dataroom-commercial-by-bd/dataroom-commercial-bbd';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
+mapboxgl.accessToken =
+  'pk.eyJ1IjoiZHZvLXJlZ2lzIiwiYSI6ImNseXNsdzYzZTBsMTYycnM2bXY5dDh2M2sifQ.w7XKnvlxVxtWiYIFEVbz2g';
 
 const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrictClick }) => {
   const [selectedDistrictData, setSelectedDistrictData] = useState(null);
@@ -25,15 +26,22 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
         container: mapContainerRef.current,
         style: 'mapbox://styles/dvo-regis/clyssb5i7002301pc2fajh6kt',
         center: [longitude, latitude],
-        zoom: 6.6
+        zoom: 6.6,
       });
 
       mapRef.current = map;
 
+      mapRef.current.scrollZoom.disable();
+      map.touchZoomRotate.enable();
+      map.touchZoomRotate.enableRotation();
+      map.dragRotate.enable();
+      map.boxZoom.enable();
+      map.keyboard.enable();
+
       map.on('load', () => {
         map.addSource('states', {
           type: 'geojson',
-          data: '/assets/map-data/KEDCBUSINESSDISTRICTS.geojson'
+          data: '/assets/map-data/KEDCBUSINESSDISTRICTS.geojson',
         });
 
         map.addLayer({
@@ -42,8 +50,8 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
           source: 'states',
           paint: {
             'fill-color': '#888888',
-            'fill-opacity': 0.5
-          }
+            'fill-opacity': 0.5,
+          },
         });
 
         map.on('click', 'states-layer', (e) => {
@@ -59,7 +67,7 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
                 energyCollected: [0, 0, 0, 0],
                 ATCC: [0, 0, 0, 0],
                 billingEfficiency: [0, 0, 0, 0],
-                collectionEfficiency: [0, 0, 0, 0]
+                collectionEfficiency: [0, 0, 0, 0],
               };
               setSelectedDistrictData(data);
               onBusinessDistrictClick(data.name);
@@ -68,7 +76,7 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
                 'case',
                 ['==', ['get', 'BusinessDistrict1Pcod'], selectedPcod],
                 primary,
-                '#888888'
+                '#888888',
               ]);
             } else {
               console.error('Selected property code is undefined');
@@ -95,14 +103,16 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
     const map = mapRef.current;
 
     const updateMapLayer = () => {
-      const selectedPcod = Object.keys(FinancialDataBusinessDistrict).find(key => FinancialDataBusinessDistrict[key].name === selectedBusinessDistrict);
+      const selectedPcod = Object.keys(FinancialDataBusinessDistrict).find(
+        (key) => FinancialDataBusinessDistrict[key].name === selectedBusinessDistrict,
+      );
 
       if (selectedPcod) {
         map.setPaintProperty('states-layer', 'fill-color', [
           'case',
           ['==', ['get', 'BusinessDistrict1Pcod'], selectedPcod],
           primary,
-          '#888888'
+          '#888888',
         ]);
       } else {
         map.setPaintProperty('states-layer', 'fill-color', '#888888');
@@ -118,7 +128,9 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
 
   useEffect(() => {
     if (selectedBusinessDistrict) {
-      const districtData = Object.values(FinancialDataBusinessDistrict).find(district => district.name === selectedBusinessDistrict);
+      const districtData = Object.values(FinancialDataBusinessDistrict).find(
+        (district) => district.name === selectedBusinessDistrict,
+      );
       setSelectedDistrictData(districtData);
     } else {
       setSelectedDistrictData(null);
@@ -126,17 +138,24 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
   }, [selectedBusinessDistrict]);
 
   return (
-    <DashboardCard title="Financial Breakdown By Business District" subtitle="Select a business district">
+    <DashboardCard
+      title="Financial Breakdown By Business District"
+      subtitle="Select a business district"
+    >
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Box className="rounded-bars" bgcolor='#f7f8f9' height={350} ref={mapContainerRef} />
+          <Box className="rounded-bars" bgcolor="#f7f8f9" height={350} ref={mapContainerRef} />
         </Grid>
         {selectedDistrictData && (
           <>
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Energy Delivered"
-                value={`${selectedDistrictData.energyDelivered[selectedDistrictData.energyDelivered.length - 1]} GWh`}
+                value={`${
+                  selectedDistrictData.energyDelivered[
+                    selectedDistrictData.energyDelivered.length - 1
+                  ]
+                } GWh`}
                 chartData={selectedDistrictData.energyDelivered}
                 unit="GWh"
                 businessDistrictName={selectedDistrictData.name}
@@ -145,7 +164,9 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Energy Billed"
-                value={`${selectedDistrictData.energyBilled[selectedDistrictData.energyBilled.length - 1]} GWh`}
+                value={`${
+                  selectedDistrictData.energyBilled[selectedDistrictData.energyBilled.length - 1]
+                } GWh`}
                 chartData={selectedDistrictData.energyBilled}
                 unit="GWh"
                 businessDistrictName={selectedDistrictData.name}
@@ -154,7 +175,11 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Energy Collected"
-                value={`${selectedDistrictData.energyCollected[selectedDistrictData.energyCollected.length - 1]} GWh`}
+                value={`${
+                  selectedDistrictData.energyCollected[
+                    selectedDistrictData.energyCollected.length - 1
+                  ]
+                } GWh`}
                 chartData={selectedDistrictData.energyCollected}
                 unit="GWh"
                 businessDistrictName={selectedDistrictData.name}
@@ -172,7 +197,11 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Billing Efficiency"
-                value={`${selectedDistrictData.billingEfficiency[selectedDistrictData.billingEfficiency.length - 1]}%`}
+                value={`${
+                  selectedDistrictData.billingEfficiency[
+                    selectedDistrictData.billingEfficiency.length - 1
+                  ]
+                }%`}
                 chartData={selectedDistrictData.billingEfficiency}
                 unit="%"
                 businessDistrictName={selectedDistrictData.name}
@@ -181,7 +210,11 @@ const StateMapboxCommercialBBD = ({ selectedBusinessDistrict, onBusinessDistrict
             <Grid item xs={12} sm={4}>
               <StateMapBoxDataCards
                 title="Collection Efficiency"
-                value={`${selectedDistrictData.collectionEfficiency[selectedDistrictData.collectionEfficiency.length - 1]}%`}
+                value={`${
+                  selectedDistrictData.collectionEfficiency[
+                    selectedDistrictData.collectionEfficiency.length - 1
+                  ]
+                }%`}
                 chartData={selectedDistrictData.collectionEfficiency}
                 unit="%"
                 businessDistrictName={selectedDistrictData.name}

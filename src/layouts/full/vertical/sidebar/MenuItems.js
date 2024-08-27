@@ -75,7 +75,7 @@ const Menuitems = [
     title: 'Overview',
     icon: IconChartDonut3,
     href: '/commercial/commercial-overview',
-  }, 
+  },
   {
     id: uniqueId(),
     title: 'State',
@@ -144,7 +144,7 @@ const Menuitems = [
     title: 'Overview',
     icon: IconChartDonut3,
     href: '/financial/financial-overview',
-  }, 
+  },
   {
     id: uniqueId(),
     title: 'State',
@@ -206,7 +206,7 @@ const Menuitems = [
     title: 'Overview',
     icon: IconChartDonut3,
     href: '/technical/technical-overview',
-  }, 
+  },
   {
     id: uniqueId(),
     title: 'State',
@@ -259,7 +259,7 @@ const Menuitems = [
     icon: IconChartDonut3,
     href: '/technical/technical-service-band',
   },
-  
+
   {
     navlabel: true,
     subheader: 'Staff Manager',
@@ -269,7 +269,7 @@ const Menuitems = [
     title: 'Overview',
     icon: IconChartDonut3,
     href: '/staff/staff-overview',
-  }, 
+  },
   {
     id: uniqueId(),
     title: 'State',
@@ -290,14 +290,33 @@ const Menuitems = [
       },
     ],
   },
-  
+
   {
     id: uniqueId(),
     title: 'Business Disrict',
     icon: IconChartDonut3,
     href: '/staff/staff-all-business-district',
   },
-  
+
+  {
+    navlabel: true,
+    subheader: 'Regulatory',
+  },
+
+  {
+    id: uniqueId(),
+    title: 'NERC Orders',
+    icon: IconChartDonut3,
+    href: '/regulatory/',
+    children: [
+      {
+        id: uniqueId(),
+        title: 'Performance Framework 24',
+        icon: IconPoint,
+        href: '/regulatory/performance-framework-2024',
+      },
+    ],
+  },
 ];
 
 export default Menuitems;

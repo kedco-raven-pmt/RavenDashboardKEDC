@@ -16,13 +16,13 @@ const RevenueBilledFinancial = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
       sparkline: {
-        enabled: true,
+        enabled: false,
       },
     },
     colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC'],
@@ -30,7 +30,7 @@ const RevenueBilledFinancial = () => {
       bar: {
         borderRadius: 4,
         columnWidth: '50%',
-        
+
         distributed: true,
         endingShape: 'rounded',
         dataLabels: {
@@ -41,7 +41,7 @@ const RevenueBilledFinancial = () => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return "₦" + val + "B";  
+        return '₦' + val + 'B';
       },
       position: 'top',
       style: {
@@ -62,8 +62,9 @@ const RevenueBilledFinancial = () => {
       },
     },
     xaxis: {
+      categories: [['Aug'], ['Jul'], ['Jun'], ['May']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -80,16 +81,6 @@ const RevenueBilledFinancial = () => {
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
-    }
   };
   const seriescolumnchart = [
     {
@@ -105,8 +96,9 @@ const RevenueBilledFinancial = () => {
 
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            
-            <Typography variant="h4" mt={3} fontWeight={600}>₦80,929,679,975</Typography>
+            <Typography variant="h4" mt={3} fontWeight={600}>
+              ₦80,929,679,975
+            </Typography>
             <Stack direction="row" spacing={1} mt={1} alignItems="center">
               <Avatar sx={{ bgcolor: 'success.light', width: 20, height: 20 }}>
                 <IconArrowUpRight width={16} color="#39b69a" />
@@ -117,14 +109,20 @@ const RevenueBilledFinancial = () => {
             </Stack>
           </Grid>
           <Grid item xs={12}>
-          <Typography mb={2} variant="subtitle2" whiteSpace="nowrap" fontWeight={600} textAlign="center">
+            <Typography
+              mb={2}
+              variant="subtitle2"
+              whiteSpace="nowrap"
+              fontWeight={600}
+              textAlign="center"
+            >
               Previous 4 Months
             </Typography>
             <Chart
               options={optionscolumnchart}
               series={seriescolumnchart}
               type="bar"
-              height="70px"
+              height="120px"
             />
           </Grid>
         </Grid>
