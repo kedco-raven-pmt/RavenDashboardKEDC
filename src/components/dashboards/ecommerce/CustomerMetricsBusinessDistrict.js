@@ -14,32 +14,34 @@ import {
 } from '@mui/material';
 
 const CustomerMetricsBusinessDistrict = () => {
-  // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const grey = theme.palette.grey[300];
+
+  // Helper function to get month initials
+  const getMonthInitials = (fullMonthName) => fullMonthName.substr(0, 1).toUpperCase();
 
   const getColumnChartOptions = (color, data, dataLabelFormat) => ({
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: theme.palette.mode === 'dark' ? '#fff' : '#000', // Adjusting color based on theme
       toolbar: {
         show: false,
       },
-      height: 75,
+      height: 100,
       sparkline: {
-        enabled: true,
+        enabled: false, // Disabling sparkline to show axis labels
       },
     },
     colors: [color],
     plotOptions: {
       bar: {
         borderRadius: 3,
-        columnWidth: '65%',
+        columnWidth: '95%',
         endingShape: 'rounded',
         dataLabels: {
-          position: 'top',
+          position: 'top', // Ensuring labels are on top
         },
       },
     },
@@ -54,19 +56,20 @@ const CustomerMetricsBusinessDistrict = () => {
         fontSize: '8px',
         colors: [theme.palette.mode === 'dark' ? '#fff' : '#000'],
       },
-      offsetY: -20,
+      offsetY: -20, 
     },
     xaxis: {
-      categories: ['March', 'April', 'May', 'June'],
+      categories: ['July', 'June', 'May', 'April'],
       labels: {
         style: {
           fontSize: '8px',
           fontWeight: 600,
+          colors: [theme.palette.mode === 'dark' ? '#fff' : '#000'],
         },
       },
     },
     yaxis: {
-      show: false,
+      show: false, 
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
@@ -123,8 +126,8 @@ const CustomerMetricsBusinessDistrict = () => {
                   options={getColumnChartOptions(primary, customerResponseRateSeries[0].data, 'percentage')}
                   series={customerResponseRateSeries}
                   type="bar"
-                  height="50px"
-                  width="100px"
+                  height="100px"
+                  width="200px"
                 />
               </TableCell>
             </TableRow>
@@ -146,11 +149,11 @@ const CustomerMetricsBusinessDistrict = () => {
               </TableCell>
               <TableCell>
                 <Chart
-                  options={getColumnChartOptions(grey, customerResponseMetricSeries[0].data, 'decimal')}
+                  options={getColumnChartOptions(primary, customerResponseMetricSeries[0].data, 'decimal')}
                   series={customerResponseMetricSeries}
                   type="bar"
-                  height="50px"
-                  width="100px"
+                  height="100px"
+                  width="200px"
                 />
               </TableCell>
             </TableRow>
@@ -175,8 +178,8 @@ const CustomerMetricsBusinessDistrict = () => {
                   options={getColumnChartOptions(primary, revenueBilledPerCustomerSeries[0].data, 'naira')}
                   series={revenueBilledPerCustomerSeries}
                   type="bar"
-                  height="50px"
-                  width="100px"
+                  height="100px"
+                  width="200px"
                 />
               </TableCell>
             </TableRow>
@@ -198,11 +201,11 @@ const CustomerMetricsBusinessDistrict = () => {
               </TableCell>
               <TableCell>
                 <Chart
-                  options={getColumnChartOptions(grey, collectionsPerCustomerSeries[0].data, 'naira')}
+                  options={getColumnChartOptions(primary, collectionsPerCustomerSeries[0].data, 'naira')}
                   series={collectionsPerCustomerSeries}
                   type="bar"
-                  height="50px"
-                  width="100px"
+                  height="100px"
+                  width="200px"
                 />
               </TableCell>
             </TableRow>

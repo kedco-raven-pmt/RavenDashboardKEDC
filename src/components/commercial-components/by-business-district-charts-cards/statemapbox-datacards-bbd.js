@@ -23,16 +23,16 @@ const StateMapBoxDataCards = ({ title, value, chartData, unit, businessDistrictN
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: theme.palette.mode === 'dark' ? '#fff' : '#adb0bb',
       toolbar: {
         show: false,
       },
-      height: 70,
+      height: 120,
       sparkline: {
-        enabled: true,
+        enabled: false,
       },
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6', '#e4e9ec', '#e4e9ec', '#e4e9ec', '#b8c0c6'],
+    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC'],
     plotOptions: {
       bar: {
         borderRadius: 4,
@@ -49,10 +49,9 @@ const StateMapBoxDataCards = ({ title, value, chartData, unit, businessDistrictN
       formatter: function (val) {
         return `${val} ${unit}`;
       },
-      position: 'top',
       style: {
         fontSize: '10px',
-        colors: ['#304758'],
+        colors: [theme.palette.mode === 'dark' ? '#fff' : '#304758'],
         fontWeight: 700,
       },
       offsetY: -20,
@@ -61,18 +60,15 @@ const StateMapBoxDataCards = ({ title, value, chartData, unit, businessDistrictN
       show: false,
     },
     grid: {
-      yaxis: {
-        lines: {
-          show: false,
-        },
-      },
+      show: false,
     },
     xaxis: {
-      categories: ['Apr', 'May', 'Jun', 'Jul'],
+      categories: ['July', 'June', 'May', 'April'],
       labels: {
         show: true,
         style: {
           fontSize: '10px',
+          colors: theme.palette.mode === 'dark' ? '#fff' : '#304758',
         },
       },
       axisBorder: {
@@ -95,16 +91,6 @@ const StateMapBoxDataCards = ({ title, value, chartData, unit, businessDistrictN
         },
       },
     },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
-    },
   };
 
   const seriescolumnchart = [
@@ -119,7 +105,7 @@ const StateMapBoxDataCards = ({ title, value, chartData, unit, businessDistrictN
       <CardContent sx={{ p: '30px' }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h5">{title}</Typography>
-          <Chip label={businessDistrictName || "All "} size="small" />
+          <Chip label={businessDistrictName || "All"} size="small" />
         </Box>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -138,15 +124,15 @@ const StateMapBoxDataCards = ({ title, value, chartData, unit, businessDistrictN
             </Stack>
           </Grid>
           <Grid item xs={12}>
-            <Typography mb={2} variant="subtitle2" whiteSpace="nowrap" fontWeight={600} textAlign="center">
-              Previous 4 Months
+            <Typography mb={2} variant="subtitle2" fontWeight={600} textAlign="center">
+              Past Four Months
             </Typography>
             <Box mt={2}>
               <Chart
                 options={optionscolumnchart}
                 series={seriescolumnchart}
                 type="bar"
-                height="70px"
+                height="120px"
               />
             </Box>
           </Grid>

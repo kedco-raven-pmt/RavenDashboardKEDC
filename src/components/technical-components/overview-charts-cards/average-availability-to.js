@@ -3,39 +3,56 @@ import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { CardContent, Typography, Avatar, Grid, Stack } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
-import { IconArrowDownRight, IconArrowUpRight } from '@tabler/icons';
+import { IconArrowUpRight } from '@tabler/icons';
 
 const AverageAvailabilityTechnicalOverview = () => {
-  // chart color
   const theme = useTheme();
-  const secondary = theme.palette.secondary.main;
-  const secondarylight = theme.palette.secondary.light;
+  const textColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.9)' : '#2A3547';
+  const primaryColor = theme.palette.primary.main;
 
-  // chart
+  const data = [
+    { month: 'July', value: 20 },
+    { month: 'June', value: 15 },
+    { month: 'May', value: 30 },
+    { month: 'April', value: 25 },
+  ];
+
   const optionscolumnchart = {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: textColor,
       toolbar: {
         show: false,
       },
-      height: 100,
+      height: 150,
       sparkline: {
-        enabled: true,
+        enabled: false,
       },
     },
-    colors: ['#e4e9ec', '#e4e9ec', '#e4e9ec', '#b8c0c6'],
+    colors: [primaryColor],
     plotOptions: {
       bar: {
         borderRadius: 4,
         columnWidth: '50%',
         distributed: true,
         endingShape: 'rounded',
+        dataLabels: {
+          position: 'top',
+        },
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      offsetY: -20,
+      style: {
+        fontSize: '10px',
+        colors: [textColor],
+        fontWeight: '600',
+      },
+      formatter: function(val) {
+        return val;
+      },
     },
     legend: {
       show: false,
@@ -46,16 +63,21 @@ const AverageAvailabilityTechnicalOverview = () => {
           show: false,
         },
       },
+      padding: { left: 0, right: 0 }
     },
     xaxis: {
+      categories: data.map(item => item.month),
       labels: {
-        show: false,
+        show: true,
+        style: {
+          colors: textColor,
+        },
       },
       axisBorder: {
-        show: false,
+        show: true,
       },
       axisTicks: {
-        show: false,
+        show: true,
       },
     },
     yaxis: {
@@ -67,10 +89,11 @@ const AverageAvailabilityTechnicalOverview = () => {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
   };
+
   const seriescolumnchart = [
     {
       name: '',
-      data: [20, 15, 30, 25],
+      data: data.map(item => item.value),
     },
   ];
 
@@ -80,9 +103,8 @@ const AverageAvailabilityTechnicalOverview = () => {
         <Typography variant="h5">Avg. Hours Of Supply</Typography>
         <Grid container spacing={3}>
           <Grid item xs={7}>
-            
             <Typography variant="h4" mt={3} fontWeight={600}>10 hrs</Typography>
-            <Typography variant="subtitle2"  mt={1} fontSize="12px" color="textSecondary">
+            <Typography variant="subtitle2" mt={1} fontSize="12px" color="textSecondary">
               (MTD: <strong>177.62 </strong>)
             </Typography>
             <Stack direction="row" spacing={1} mt={1} alignItems="center">
@@ -99,7 +121,7 @@ const AverageAvailabilityTechnicalOverview = () => {
               options={optionscolumnchart}
               series={seriescolumnchart}
               type="bar"
-              height="100px"
+              height="150px"
             />
           </Grid>
         </Grid>

@@ -23,20 +23,20 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: theme.palette.mode === 'dark' ? '#fff' : '#adb0bb',
       toolbar: {
         show: false,
       },
-      height: 100,
+      height: 200, // Increased height for better visibility
       sparkline: {
-        enabled: true,
+        enabled: false,
       },
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6','#e4e9ec', '#e4e9ec', '#e4e9ec', '#b8c0c6'],
+    colors: ['#3B80B2'],
     plotOptions: {
       bar: {
         borderRadius: 4,
-        columnWidth: '50%',
+        columnWidth: '60%',
         distributed: true,
         endingShape: 'rounded',
         dataLabels: {
@@ -47,32 +47,28 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return val + ' GWh';
-      },
-      position: 'top',
-      style: {
-        fontSize: '10px',
-        colors: ['#304758'],
-        fontWeight: 700,
+        return '₦' + val + 'm';
       },
       offsetY: -20,
+      style: {
+        fontSize: '12px',
+        colors: [theme.palette.mode === 'dark' ? '#fff' : '#304758'],
+        fontWeight: 600,
+      },
     },
     legend: {
       show: false,
     },
     grid: {
-      yaxis: {
-        lines: {
-          show: false,
-        },
-      },
+      show: false,
     },
     xaxis: {
-      categories: ['Apr', 'May', 'Jun', 'Jul'],
+      categories: ['July', 'June', 'May', 'April'],
       labels: {
         show: true,
         style: {
-          fontSize: '10px',
+          fontSize: '12px',
+          colors: theme.palette.mode === 'dark' ? '#fff' : '#304758',
         },
       },
       axisBorder: {
@@ -88,18 +84,13 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       },
     },
     tooltip: {
-      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-      y: {
-        formatter: function (val) {
-          return val + ' GWh';
-        },
-      },
+      enabled: false,
     },
   };
 
   const seriescolumnchart = [
     {
-      name: '',
+      name: 'Total Cost',
       data: chartData,
     },
   ];
@@ -128,15 +119,15 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
             </Stack>
           </Grid>
           <Grid item xs={12}>
-            <Typography mb={2} variant="subtitle2" whiteSpace="nowrap" fontWeight={600} textAlign="center">
-              Previous 4 Months
+            <Typography mb={2} variant="subtitle2" fontWeight={600} textAlign="center">
+              Past Four Months
             </Typography>
             <Box mt={2}>
               <Chart
                 options={optionscolumnchart}
                 series={seriescolumnchart}
                 type="bar"
-                height="70px"
+                height="200px"
               />
             </Box>
           </Grid>
