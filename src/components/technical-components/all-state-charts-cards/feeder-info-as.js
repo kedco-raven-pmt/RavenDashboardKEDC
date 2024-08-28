@@ -14,7 +14,7 @@ const FeederInfoTechnicalAS = () => {
       foreColor: '#adb0bb',
       toolbar: { show: false },
       height: 200,
-      width: "100%",
+      width: '100%',
     },
     colors: ['#70c78d', '#00734d', '#c5c770'],
     plotOptions: {
@@ -29,7 +29,7 @@ const FeederInfoTechnicalAS = () => {
     },
     dataLabels: {
       enabled: true,
-      formatter: val => val ,
+      formatter: (val) => val,
       position: 'top',
       style: {
         fontSize: '10px',
@@ -41,23 +41,25 @@ const FeederInfoTechnicalAS = () => {
     legend: { show: false },
     grid: { show: false },
     xaxis: {
-      categories: [['Avg. Hours of Supply'], ['Duration of interruption'], ['Peak Load']],
+      categories: [['Kano'], ['Katsina'], ['Jigawa']],
       axisBorder: { show: false },
       axisTicks: { show: false },
-      labels: { show: false },
+      labels: { show: true },
     },
     yaxis: {
       labels: {
         show: false,
-        formatter: val => val + " Hrs",
+        formatter: (val) => val + ' Hrs',
       },
     },
     tooltip: { theme: theme.palette.mode === 'dark' ? 'dark' : 'light' },
   };
 
-  const kanodataseries = [{ name: '', data: [94, 62, 38] }];
-  const katsinadataseries = [{ name: '', data: [21, 32, 12] }];
-  const jigawadataseries = [{ name: '', data: [14, 26, 20] }];
+  const bandAdataseries = [{ name: '', data: [94, 62, 38] }];
+  const bandBdataseries = [{ name: '', data: [21, 32, 12] }];
+  const bandCdataseries = [{ name: '', data: [14, 26, 20] }];
+  const bandDdataseries = [{ name: '', data: [14, 26, 20] }];
+  const bandEdataseries = [{ name: '', data: [14, 26, 20] }];
 
   return (
     <BlankCard>
@@ -66,26 +68,47 @@ const FeederInfoTechnicalAS = () => {
           <Typography variant="h5">Asset Overview</Typography>
           <Stack direction="row" spacing={3}>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <Avatar sx={{ width: 9, height: 9, bgcolor: '#70c78d', svg: { display: 'none' } }}></Avatar>
+              <Avatar
+                sx={{ width: 9, height: 9, bgcolor: '#70c78d', svg: { display: 'none' } }}
+              ></Avatar>
               <Box>
-                <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                  Feeder Number
+                <Typography
+                  variant="subtitle2"
+                  fontSize="12px"
+                  fontWeight={700}
+                  color="textSecondary"
+                >
+                  Kano
                 </Typography>
               </Box>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <Avatar sx={{ width: 9, height: 9, bgcolor: '#00734d', svg: { display: 'none' } }}></Avatar>
+              <Avatar
+                sx={{ width: 9, height: 9, bgcolor: '#00734d', svg: { display: 'none' } }}
+              ></Avatar>
               <Box>
-                <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                  Customer Number
+                <Typography
+                  variant="subtitle2"
+                  fontSize="12px"
+                  fontWeight={700}
+                  color="textSecondary"
+                >
+                  Katsina
                 </Typography>
               </Box>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <Avatar sx={{ width: 9, height: 9, bgcolor: '#c5c770', svg: { display: 'none' } }}></Avatar>
+              <Avatar
+                sx={{ width: 9, height: 9, bgcolor: '#c5c770', svg: { display: 'none' } }}
+              ></Avatar>
               <Box>
-                <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                  Avg. Peak Load
+                <Typography
+                  variant="subtitle2"
+                  fontSize="12px"
+                  fontWeight={700}
+                  color="textSecondary"
+                >
+                  Jigawa
                 </Typography>
               </Box>
             </Stack>
@@ -97,11 +120,16 @@ const FeederInfoTechnicalAS = () => {
             <BlankCard>
               <CardContent sx={{ p: '20px' }}>
                 <Box>
-                  <Chart options={commonChartOptions} series={kanodataseries} type="bar" height="220px" />
+                  <Chart
+                    options={commonChartOptions}
+                    series={bandAdataseries}
+                    type="bar"
+                    height="220px"
+                  />
                 </Box>
                 <Box justifyContent="center" mt={1}>
                   <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
-                    Kano
+                    Feeder Count
                   </Typography>
                 </Box>
               </CardContent>
@@ -111,11 +139,16 @@ const FeederInfoTechnicalAS = () => {
             <BlankCard>
               <CardContent sx={{ p: '20px' }}>
                 <Box>
-                  <Chart options={commonChartOptions} series={katsinadataseries} type="bar" height="220px" />
+                  <Chart
+                    options={commonChartOptions}
+                    series={bandBdataseries}
+                    type="bar"
+                    height="220px"
+                  />
                 </Box>
                 <Box justifyContent="center" mt={1}>
                   <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
-                    Katsina
+                    Peak Load
                   </Typography>
                 </Box>
               </CardContent>
@@ -125,11 +158,16 @@ const FeederInfoTechnicalAS = () => {
             <BlankCard>
               <CardContent sx={{ p: '20px' }}>
                 <Box>
-                  <Chart options={commonChartOptions} series={jigawadataseries} type="bar" height="220px" />
+                  <Chart
+                    options={commonChartOptions}
+                    series={bandCdataseries}
+                    type="bar"
+                    height="220px"
+                  />
                 </Box>
                 <Box justifyContent="center" mt={1}>
                   <Typography variant="h6" fontWeight={600} textAlign="center" mb={1}>
-                    Jigawa
+                    Customer Population
                   </Typography>
                 </Box>
               </CardContent>

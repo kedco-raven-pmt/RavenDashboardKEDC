@@ -134,3 +134,4 @@ export const collectionData = {
     dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 30) + 5),
   }
 };
+

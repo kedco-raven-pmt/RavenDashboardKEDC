@@ -7,7 +7,10 @@ import StateCostBreakdownFinancialBBD from '../../../components/financial-compon
 import TariffFinancialBBD from '../../../components/financial-components/by-business-district-chart-cards/tarrifs-bbd';
 import BusinessDistrictFilterFinancialBBD from '../../../components/financial-components/by-business-district-chart-cards/business-district-filters-fin-bbd';
 import OpexBreakdownFinancialBBD from '../../../components/financial-components/by-business-district-chart-cards/opex-breakdown-bbd';
+import AgentCollectionBBD from '../../../components/financial-components/by-business-district-chart-cards/agent-collections-bbd';
 import { FinancialDataBusinessDistrict } from '../../../components/financial-components/by-business-district-chart-cards/dataroom-financial-by-bd/dataroom-financial-bbd';
+import DailyCollectionPostPaidBBD from '../../../components/financial-components/by-business-district-chart-cards/daily-collections-postpaid-bbd';
+import DailyCollectionPrePaidBBD from '../../../components/financial-components/by-business-district-chart-cards/daily-collections-prepaid-bbd';
 
 const BCrumb = [
   {
@@ -73,27 +76,35 @@ const FinancialByBusinessDistricts = () => {
             onBusinessDistrictClick={handleBusinessDistrictClick} 
           />
         </Grid>
-        
+
+        <Grid item xs={12}>
+          <DailyCollectionPrePaidBBD selectedBusinessDistrict={selectedBusinessDistrict} />
+        </Grid>
+
+        <Grid item xs={12}>
+          <DailyCollectionPostPaidBBD selectedBusinessDistrict={selectedBusinessDistrict} />
+        </Grid>
+
+        <Grid item xs={12}>
+          <AgentCollectionBBD selectedBusinessDistrict={selectedBusinessDistrict} />
+        </Grid>
+
         <Grid item xs={12}>
           <OpexBreakdownFinancialBBD 
             selectedBusinessDistrict={selectedBusinessDistrict}
           />
         </Grid>
-
-        <Grid item xs={12}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <StateCostBreakdownFinancialBBD 
-                selectedBusinessDistrict={selectedBusinessDistrict}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TariffFinancialBBD 
-                selectedBusinessDistrict={selectedBusinessDistrict}
-              />
-            </Grid>
-          </Grid>
+        <Grid item xs={12} >
+          <StateCostBreakdownFinancialBBD 
+            selectedBusinessDistrict={selectedBusinessDistrict}
+          />
         </Grid>
+        <Grid item xs={12} >
+          <TariffFinancialBBD 
+            selectedBusinessDistrict={selectedBusinessDistrict}
+          />
+        </Grid>
+
       </Grid>
     </PageContainer>
   );

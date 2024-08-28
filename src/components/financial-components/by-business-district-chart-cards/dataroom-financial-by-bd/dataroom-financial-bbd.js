@@ -23,66 +23,177 @@ export const FinancialDataMapbox = {
   // Financial data for Business Districts
   export const FinancialDataBusinessDistrict = {
     'NG018.1': {
-      name: 'Jigawa North',
-      revenueRequired: [3000000000, 3250000000, 3500000000, 3750000000],
-      revenueBilled: [2750000000, 3000000000, 3250000000, 3800000000],
-      collections: [2150000000, 2300000000, 2450000000, 2600000000]
+        name: 'Jigawa North',
+        revenueRequired: [3000000000, 3250000000, 3500000000, 3750000000],
+        revenueBilled: [2750000000, 3000000000, 3250000000, 3800000000],
+        collections: [2150000000, 2300000000, 2450000000, 2600000000],
+        vendorCollections: {
+            'BuyPower.ng': 10,
+            'Banahim.net': 20,
+            'Bank': 30,
+            'Cash': 40,
+            'POS': 10,
+            'powershop.ng': 20,
+            'Remita': 15
+        }, 
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
     },
     'NG018.2': {
-      name: 'Jigawa South',
-      revenueRequired: [3000000000, 3250000000, 3500000000, 3750000000],
-      revenueBilled: [2750000000, 3000000000, 3250000000, 3800000000],
-      collections: [2150000000, 2300000000, 2450000000, 2600000000]
+        name: 'Jigawa South',
+        revenueRequired: [3000000000, 3250000000, 3500000000, 3750000000],
+        revenueBilled: [2750000000, 3000000000, 3250000000, 3800000000],
+        collections: [2150000000, 2300000000, 2450000000, 2600000000],
+        vendorCollections: {
+            'BuyPower.ng': 15,
+            'Banahim.net': 25,
+            'Bank': 35,
+            'Cash': 45,
+            'POS': 15,
+            'powershop.ng': 25,
+            'Remita': 20
+        },
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
     },
     'NG020.1': {
-      name: 'Kano Central',
-      revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
-      revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
-      collections: [700000000, 730000000, 760000000, 790000000]
+        name: 'Kano Central',
+        revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
+        revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
+        collections: [700000000, 730000000, 760000000, 790000000],
+        vendorCollections: {
+            'BuyPower.ng': 20,
+            'Banahim.net': 30,
+            'Bank': 40,
+            'Cash': 50,
+            'POS': 20,
+            'powershop.ng': 30,
+            'Remita': 25
+        },
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
     },
     'NG020.2': {
-      name: 'Kano South',
-      revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
-      revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
-      collections: [700000000, 730000000, 760000000, 790000000]
+        name: 'Kano South',
+        revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
+        revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
+        collections: [700000000, 730000000, 760000000, 790000000],
+        vendorCollections: {
+            'BuyPower.ng': 18,
+            'Banahim.net': 28,
+            'Bank': 38,
+            'Cash': 48,
+            'POS': 18,
+            'powershop.ng': 28,
+            'Remita': 23
+        },
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
     },
     'NG020.3': {
-      name: 'Kano North',
-      revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
-      revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
-      collections: [700000000, 730000000, 760000000, 790000000]
+        name: 'Kano North',
+        revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
+        revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
+        collections: [700000000, 730000000, 760000000, 790000000],
+        vendorCollections: {
+            'BuyPower.ng': 22,
+            'Banahim.net': 32,
+            'Bank': 42,
+            'Cash': 52,
+            'POS': 22,
+            'powershop.ng': 32,
+            'Remita': 27
+        },
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
     },
     'NG020.4': {
-      name: 'Kano Industrial',
-      revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
-      revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
-      collections: [700000000, 730000000, 760000000, 790000000]
+        name: 'Kano Industrial',
+        revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
+        revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
+        collections: [700000000, 730000000, 760000000, 790000000],
+        vendorCollections: {
+            'BuyPower.ng': 25,
+            'Banahim.net': 35,
+            'Bank': 45,
+            'Cash': 55,
+            'POS': 25,
+            'powershop.ng': 35,
+            'Remita': 30
+        },
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
     },
     'NG020.5': {
-      name: 'Kano East',
-      revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
-      revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
-      collections: [700000000, 730000000, 760000000, 790000000]
+        name: 'Kano East',
+        revenueRequired: [1000000000, 1200000000, 1300000000, 1400000000],
+        revenueBilled: [950000000, 1000000000, 1050000000, 1500000000],
+        collections: [700000000, 730000000, 760000000, 790000000],
+        vendorCollections: {
+            'BuyPower.ng': 19,
+            'Banahim.net': 29,
+            'Bank': 39,
+            'Cash': 49,
+            'POS': 19,
+            'powershop.ng': 29,
+            'Remita': 24
+        },
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
     },
     'NG021.1': {
-      name: 'Katsina South',
-      revenueRequired: [2000000000, 2200000000, 2400000000, 2600000000],
-      revenueBilled: [1800000000, 1900000000, 2000000000, 2700000000],
-      collections: [1350000000, 1450000000, 1550000000, 1650000000]
+        name: 'Katsina South',
+        revenueRequired: [2000000000, 2200000000, 2400000000, 2600000000],
+        revenueBilled: [1800000000, 1900000000, 2000000000, 2700000000],
+        collections: [1350000000, 1450000000, 1550000000, 1650000000],
+        vendorCollections: {
+            'BuyPower.ng': 14,
+            'Banahim.net': 24,
+            'Bank': 34,
+            'Cash': 44,
+            'POS': 14,
+            'powershop.ng': 24,
+            'Remita': 19
+        },
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
     },
     'NG021.2': {
-      name: 'Katsina Central',
-      revenueRequired: [2000000000, 2200000000, 2400000000, 2600000000],
-      revenueBilled: [1800000000, 1900000000, 2000000000, 2700000000],
-      collections: [1350000000, 1450000000, 1550000000, 1650000000]
+        name: 'Katsina Central',
+        revenueRequired: [2000000000, 2200000000, 2400000000, 2600000000],
+        revenueBilled: [1800000000, 1900000000, 2000000000, 2700000000],
+        collections: [1350000000, 1450000000, 1550000000, 1650000000],
+        vendorCollections: {
+            'BuyPower.ng': 16,
+            'Banahim.net': 26,
+            'Bank': 36,
+            'Cash': 46,
+            'POS': 16,
+            'powershop.ng': 26,
+            'Remita': 21
+        },
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
     },
     'NG021.3': {
-      name: 'Katsina North',
-      revenueRequired: [2000000000, 2200000000, 2400000000, 2600000000],
-      revenueBilled: [1800000000, 1900000000, 2000000000, 2700000000],
-      collections: [1350000000, 1450000000, 1550000000, 1650000000]
-    },
-  };
+        name: 'Katsina North',
+        revenueRequired: [2000000000, 2200000000, 2400000000, 2600000000],
+        revenueBilled: [1800000000, 1900000000, 2000000000, 2700000000],
+        collections: [1350000000, 1450000000, 1550000000, 1650000000],
+        vendorCollections: {
+            'BuyPower.ng': 12,
+            'Banahim.net': 22,
+            'Bank': 32,
+            'Cash': 42,
+            'POS': 12,
+            'powershop.ng': 22,
+            'Remita': 17
+        },
+        dailyPostPaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10), 
+        dailyPrePaidCollections: Array.from({ length: 31 }, () => Math.floor(Math.random() * 50) + 10),
+    }
+};
+
   
   export const FinancialDataOpex = {
     'NG018.1': { 
@@ -394,3 +505,6 @@ export const FinancialDataMapbox = {
       }
     }
   };
+
+ 
+  
