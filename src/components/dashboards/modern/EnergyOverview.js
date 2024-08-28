@@ -72,7 +72,7 @@ const EnergyOverview = () => {
       },
     },
     xaxis: {
-      categories: ['Mar', 'Apr', 'May', 'Jun'],
+      categories: ['July', 'June', 'May', 'April'],
       axisBorder: {
         show: false,
       },

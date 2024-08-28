@@ -27,7 +27,7 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       toolbar: {
         show: false,
       },
-      height: 200, // Increased height for better visibility
+      height: 200, 
       sparkline: {
         enabled: false,
       },
@@ -63,7 +63,7 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       show: false,
     },
     xaxis: {
-      categories: ['July', 'June', 'May', 'April'],
+      categories: [b'July', 'June', 'May', 'April'],
       labels: {
         show: true,
         style: {

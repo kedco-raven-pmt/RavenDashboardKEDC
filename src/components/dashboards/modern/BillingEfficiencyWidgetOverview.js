@@ -54,7 +54,7 @@ const BillingEfficiencyWidgetOverview = () => {
       },
     },
     xaxis: {
-      categories: ['March', 'April', 'May', 'June'],
+      categories: ['July', 'June', 'May', 'April'],
       labels: {
         style: {
           fontSize: '10px',
