@@ -132,7 +132,7 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
           </Grid>
           <Grid item xs={12}>
             <Typography mb={2} variant="subtitle2" whiteSpace="nowrap" fontWeight={600} textAlign="center">
-              Previous 4 Months
+              Past Four Months
             </Typography>
             <Box mt={2}>
               <Chart
