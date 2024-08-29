@@ -33,9 +33,9 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       toolbar: {
         show: false,
       },
-      height: 70,
+      height: 200,
       sparkline: {
-        enabled: true,
+        enabled: false,
       },
     },
     colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6','#e4e9ec', '#e4e9ec', '#e4e9ec', '#b8c0c6'],
@@ -57,9 +57,9 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       },
       position: 'top',
       style: {
-        fontSize: '10px',
-        colors: ['#304758'],
-        fontWeight: 700,
+        fontSize: '12px',
+        colors: [theme.palette.mode === 'dark' ? '#fff' : '#304758'],
+        fontWeight: 600,
       },
       offsetY: -20,
     },
@@ -74,7 +74,7 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       },
     },
     xaxis: {
-      categories: ['Apr', 'May', 'Jun', 'Jul'],
+      categories: ['July', 'June', 'May', 'April'],
       labels: {
         show: true,
         style: {
@@ -145,14 +145,14 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
           </Grid>
           <Grid item xs={12}>
             <Typography mb={2} variant="subtitle2" whiteSpace="nowrap" fontWeight={600} textAlign="center">
-              Previous 4 Months
+              Past Four Months
             </Typography>
             <Box mt={2}>
               <Chart
                 options={optionscolumnchart}
                 series={seriescolumnchart}
                 type="bar"
-                height="70px"
+                height="200px"
               />
             </Box>
           </Grid>

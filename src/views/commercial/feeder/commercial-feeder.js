@@ -55,18 +55,17 @@ const CommercialFeeder = () => {
       <Breadcrumb title="Commercial Feeder" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-      <Grid item xs={12}>
-          <FeederFilterCommercial onFilterChange={handleFilterChange} selectedState={selectedState} selectedBusinessDistrict={selectedBusinessDistrict} />
-        </Grid>
-        <Grid item xs={12}>
-          <BreakdownCommercialFeeder filteredData={filteredData} />
-        </Grid>
-
       <Grid item xs={12} lg={6}>
           <LowestATCCFeeder />
         </Grid>
         <Grid item xs={12} lg={6}>
           <HighestATCCFeeder />
+        </Grid>
+      <Grid item xs={12}>
+          <FeederFilterCommercial onFilterChange={handleFilterChange} selectedState={selectedState} selectedBusinessDistrict={selectedBusinessDistrict} />
+        </Grid>
+        <Grid item xs={12}>
+          <BreakdownCommercialFeeder filteredData={filteredData} />
         </Grid>
       </Grid>
     </PageContainer>

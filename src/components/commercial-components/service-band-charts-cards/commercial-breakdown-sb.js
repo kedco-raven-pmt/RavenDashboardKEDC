@@ -3,27 +3,24 @@ import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Box, Button, CardContent, Grid, Typography, Stack, Avatar, Chip, Tooltip } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
-import DashboardWidgetCard from '../../shared/DashboardWidgetCard';
-import CostBreakdownCards from '../../shared/costbreakdowncard';
-import { fontSize, fontWeight, padding, width } from '@mui/system';
 
 const BreakdownCommercialSBT = () => {
-  // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
-  const textColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#2A3547';
+  const secondary = theme.palette.secondary.main;
+  const redColor = '#009688'; 
 
   // Common chart options
   const SBTChartOptions = {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#2A3547',
       toolbar: { show: false },
       height: 200,
       width: "100%",
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6'],
+    colors: [primary, secondary, redColor], 
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -40,7 +37,7 @@ const BreakdownCommercialSBT = () => {
       position: 'top',
       style: {
         fontSize: '10px',
-        colors: ['#304758'],
+        colors: [theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : '#304758'], // Ensure visibility in dark mode
         fontWeight: 700,
       },
       offsetY: -20,
@@ -87,12 +84,12 @@ const BreakdownCommercialSBT = () => {
             <Typography variant="h5">Service Bands</Typography>
           </Stack>
           <Stack direction="row" spacing={3}>
-            {['#3B80B2', '#599BC8', '#77ADD2', '#00000014'].map((color, index) => (
+            {['Energy Delivered', 'Energy Billed', 'Energy Collected', 'ATC&C'].map((label, index) => (
               <Stack direction="row" alignItems="center" spacing={1} key={index}>
-                <Avatar sx={{ width: 9, height: 9, bgcolor: color, svg: { display: 'none' } }}></Avatar>
+                <Avatar sx={{ width: 9, height: 9, bgcolor: index === 3 ? redColor : (index % 2 === 0 ? primary : secondary), svg: { display: 'none' } }}></Avatar>
                 <Box>
                   <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                    {['Energy Delivered', 'Energy Billed', 'Energy Collected', 'ATC&C'][index]}
+                    {label}
                   </Typography>
                 </Box>
               </Stack>
