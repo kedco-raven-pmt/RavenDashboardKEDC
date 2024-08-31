@@ -27,12 +27,22 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       toolbar: {
         show: false,
       },
-      height: 200, 
+      height: 200,
       sparkline: {
         enabled: false,
       },
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6','#e4e9ec', '#e4e9ec', '#e4e9ec', '#b8c0c6'],
+    colors: [
+      '#3B80B2',
+      '#599BC8',
+      '#77ADD2',
+      '#97BEDC',
+      '#B3CEE6',
+      '#e4e9ec',
+      '#e4e9ec',
+      '#e4e9ec',
+      '#b8c0c6',
+    ],
     plotOptions: {
       bar: {
         borderRadius: 4,
@@ -63,7 +73,7 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       show: false,
     },
     xaxis: {
-      categories: [b'July', 'June', 'May', 'April'],
+      categories: ['July', 'June', 'May', 'April'],
       labels: {
         show: true,
         style: {
@@ -131,7 +141,13 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
             </Stack>
           </Grid>
           <Grid item xs={12}>
-            <Typography mb={2} variant="subtitle2" whiteSpace="nowrap" fontWeight={600} textAlign="center">
+            <Typography
+              mb={2}
+              variant="subtitle2"
+              whiteSpace="nowrap"
+              fontWeight={600}
+              textAlign="center"
+            >
               Past Four Months
             </Typography>
             <Box mt={2}>
