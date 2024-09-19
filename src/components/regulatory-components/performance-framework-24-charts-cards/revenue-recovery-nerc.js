@@ -27,14 +27,11 @@ const RevenueRecoveryNERC = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
-      sparkline: {
-        enabled: true,
-      },
     },
     colors: ['#394d5c', '#627787', '#a5bac9', '#c8d5de'],
 
@@ -73,8 +70,9 @@ const RevenueRecoveryNERC = () => {
       },
     },
     xaxis: {
+      categories: [['July'], ['June'], ['May'], ['April']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -91,16 +89,6 @@ const RevenueRecoveryNERC = () => {
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
-    },
   };
   const allowedtariffseries = [
     {
@@ -112,14 +100,11 @@ const RevenueRecoveryNERC = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
-      sparkline: {
-        enabled: true,
-      },
     },
     colors: ['#395c4b', '#628774', '#a5c9b4', '#c8decf'],
     plotOptions: {
@@ -157,8 +142,9 @@ const RevenueRecoveryNERC = () => {
       },
     },
     xaxis: {
+      categories: [['July'], ['June'], ['May'], ['April']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -175,16 +161,6 @@ const RevenueRecoveryNERC = () => {
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
-    },
   };
   const revenuerecoveredseries = [
     {
@@ -196,14 +172,11 @@ const RevenueRecoveryNERC = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
-      sparkline: {
-        enabled: true,
-      },
     },
     colors: ['#a8d70f', '#b6e717', '#cdf93c', '#e0ff78'],
     plotOptions: {
@@ -241,8 +214,9 @@ const RevenueRecoveryNERC = () => {
       },
     },
     xaxis: {
+      categories: [['July'], ['June'], ['May'], ['April']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -258,16 +232,6 @@ const RevenueRecoveryNERC = () => {
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-    },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
     },
   };
   const recoveryrateseries = [
@@ -357,7 +321,7 @@ const RevenueRecoveryNERC = () => {
                             options={allowedtariffchart}
                             series={allowedtariffseries}
                             type="bar"
-                            height="70px"
+                            height="120px"
                           />
                         </Grid>
                       </Grid>
@@ -398,7 +362,7 @@ const RevenueRecoveryNERC = () => {
                             options={revenuerecoveredchart}
                             series={revenuerecoveredseries}
                             type="bar"
-                            height="70px"
+                            height="120px"
                           />
                         </Grid>
                       </Grid>
@@ -451,7 +415,7 @@ const RevenueRecoveryNERC = () => {
                             options={recoveryratechart}
                             series={recoveryrateseries}
                             type="bar"
-                            height="70px"
+                            height="120px"
                           />
                         </Grid>
                       </Grid>

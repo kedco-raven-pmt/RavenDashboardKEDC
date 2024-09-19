@@ -5,7 +5,7 @@ import { CardContent, Typography, Avatar, Grid, Stack, Chip, Box } from '@mui/ma
 import BlankCard from '../../shared/BlankCard';
 import { IconArrowUpRight, IconArrowDownRight } from '@tabler/icons';
 
-const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
+const StateMapBoxDataCards = ({ title, value, chartData, unit, stateName }) => {
   const theme = useTheme();
 
   const calculatePercentageChange = (data) => {
@@ -27,12 +27,22 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       toolbar: {
         show: false,
       },
-      height: 200, 
+      height: 120,
       sparkline: {
         enabled: false,
       },
     },
-    colors: ['#3B80B2', '#599BC8', '#77ADD2', '#97BEDC', '#B3CEE6','#e4e9ec', '#e4e9ec', '#e4e9ec', '#b8c0c6'],
+    colors: [
+      '#3B80B2',
+      '#599BC8',
+      '#77ADD2',
+      '#97BEDC',
+      '#B3CEE6',
+      '#e4e9ec',
+      '#e4e9ec',
+      '#e4e9ec',
+      '#b8c0c6',
+    ],
     plotOptions: {
       bar: {
         borderRadius: 4,
@@ -47,11 +57,11 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return '₦' + val + 'm';
+        return `${val} ${unit}`;
       },
       offsetY: -20,
       style: {
-        fontSize: '12px',
+        fontSize: '10px',
         colors: [theme.palette.mode === 'dark' ? '#fff' : '#304758'],
         fontWeight: 600,
       },
@@ -84,23 +94,18 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       },
     },
     tooltip: {
-      enabled: false,
-    },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
+      y: {
+        formatter: function (val) {
+          return `${val} ${unit}`;
+        },
       },
     },
   };
 
   const seriescolumnchart = [
     {
-      name: 'Total Cost',
+      name: '',
       data: chartData,
     },
   ];
@@ -131,7 +136,13 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
             </Stack>
           </Grid>
           <Grid item xs={12}>
-            <Typography mb={2} variant="subtitle2" whiteSpace="nowrap" fontWeight={600} textAlign="center">
+            <Typography
+              mb={2}
+              variant="subtitle2"
+              whiteSpace="nowrap"
+              fontWeight={600}
+              textAlign="center"
+            >
               Past Four Months
             </Typography>
             <Box mt={2}>
@@ -139,7 +150,7 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
                 options={optionscolumnchart}
                 series={seriescolumnchart}
                 type="bar"
-                height="200px"
+                height="120px"
               />
             </Box>
           </Grid>

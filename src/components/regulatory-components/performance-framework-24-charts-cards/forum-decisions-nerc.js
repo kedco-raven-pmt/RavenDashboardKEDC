@@ -27,14 +27,11 @@ const ForumOfficeDecisionsNERC = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
-      sparkline: {
-        enabled: true,
-      },
     },
     colors: ['#394d5c', '#627787', '#a5bac9', '#c8d5de'],
 
@@ -73,8 +70,9 @@ const ForumOfficeDecisionsNERC = () => {
       },
     },
     xaxis: {
+      categories: [['July'], ['June'], ['May'], ['April']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -86,20 +84,13 @@ const ForumOfficeDecisionsNERC = () => {
     yaxis: {
       labels: {
         show: false,
+        formatter: function (val) {
+          return val + '  - Decisions';
+        },
       },
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-    },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
     },
   };
   const forumdecisionsmadeseries = [
@@ -112,14 +103,11 @@ const ForumOfficeDecisionsNERC = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
-      sparkline: {
-        enabled: true,
-      },
     },
     colors: ['#395c4b', '#628774', '#a5c9b4', '#c8decf'],
     plotOptions: {
@@ -157,8 +145,9 @@ const ForumOfficeDecisionsNERC = () => {
       },
     },
     xaxis: {
+      categories: [['July'], ['June'], ['May'], ['April']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -170,20 +159,13 @@ const ForumOfficeDecisionsNERC = () => {
     yaxis: {
       labels: {
         show: false,
+        formatter: function (val) {
+          return val + '  - Implemented';
+        },
       },
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-    },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
     },
   };
   const forumdecisionsimplementedseries = [
@@ -196,14 +178,11 @@ const ForumOfficeDecisionsNERC = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
-      sparkline: {
-        enabled: true,
-      },
     },
     colors: ['#a8d70f', '#b6e717', '#cdf93c', '#e0ff78'],
     plotOptions: {
@@ -241,8 +220,9 @@ const ForumOfficeDecisionsNERC = () => {
       },
     },
     xaxis: {
+      categories: [['July'], ['June'], ['May'], ['April']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -254,20 +234,13 @@ const ForumOfficeDecisionsNERC = () => {
     yaxis: {
       labels: {
         show: false,
+        formatter: function (val) {
+          return val + '%';
+        },
       },
     },
     tooltip: {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-    },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
     },
   };
   const compliancerateseries = [
@@ -357,7 +330,7 @@ const ForumOfficeDecisionsNERC = () => {
                             options={forumdecisionsmadechart}
                             series={forumdecisionsmadeseries}
                             type="bar"
-                            height="70px"
+                            height="120px"
                           />
                         </Grid>
                       </Grid>
@@ -400,7 +373,7 @@ const ForumOfficeDecisionsNERC = () => {
                             options={forumdecisionsimplementedchart}
                             series={forumdecisionsimplementedseries}
                             type="bar"
-                            height="70px"
+                            height="120px"
                           />
                         </Grid>
                       </Grid>
@@ -453,7 +426,7 @@ const ForumOfficeDecisionsNERC = () => {
                             options={complianceratechart}
                             series={compliancerateseries}
                             type="bar"
-                            height="70px"
+                            height="120px"
                           />
                         </Grid>
                       </Grid>

@@ -164,6 +164,7 @@ const StateMapboxCommercialBS = ({ selectedState, onStateClick }) => {
                 } GWh`}
                 chartData={selectedStateData.energyDelivered}
                 stateName={selectedStateData.name}
+                unit="GWh"
               />
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -174,6 +175,7 @@ const StateMapboxCommercialBS = ({ selectedState, onStateClick }) => {
                 } GWh`}
                 chartData={selectedStateData.energyBilled}
                 stateName={selectedStateData.name}
+                unit="GWh"
               />
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -184,6 +186,7 @@ const StateMapboxCommercialBS = ({ selectedState, onStateClick }) => {
                 } GWh`}
                 chartData={selectedStateData.collections}
                 stateName={selectedStateData.name}
+                unit="GWh"
               />
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -191,6 +194,7 @@ const StateMapboxCommercialBS = ({ selectedState, onStateClick }) => {
                 title="ATCC"
                 value={`${selectedStateData.atcc[selectedStateData.atcc.length - 1]}%`}
                 chartData={selectedStateData.atcc}
+                unit="%"
                 stateName={selectedStateData.name}
               />
             </Grid>
@@ -203,6 +207,7 @@ const StateMapboxCommercialBS = ({ selectedState, onStateClick }) => {
                   ]
                 }%`}
                 chartData={selectedStateData.billingEfficiency}
+                unit="%"
                 stateName={selectedStateData.name}
               />
             </Grid>
@@ -216,6 +221,7 @@ const StateMapboxCommercialBS = ({ selectedState, onStateClick }) => {
                 }%`}
                 chartData={selectedStateData.collectionEfficiency}
                 stateName={selectedStateData.name}
+                unit="%"
               />
             </Grid>
           </>

@@ -52,8 +52,8 @@ const FinancialFeeder = Loadable(lazy(() => import('../views/financial/feeder/fi
 const FinancialServiceBand = Loadable(
   lazy(() => import('../views/financial/serviceband/financial-service-band')),
 );
-const FinancialCustomer = Loadable(
-  lazy(() => import('../views/financial/customer/financial-customer')),
+const FinancialSalesRep = Loadable(
+  lazy(() => import('../views/financial/salesrep/financial-sales-rep')),
 );
 
 /* ****Technical***** */
@@ -140,7 +140,7 @@ const Router = [
       },
       { path: '/financial/financial-feeder', element: <FinancialFeeder /> },
       { path: '/financial/financial-service-band', element: <FinancialServiceBand /> },
-      { path: '/financial/financial-customer', element: <FinancialCustomer /> },
+      { path: '/financial/financial-sales-rep', element: <FinancialSalesRep /> },
 
       { path: '/technical/technical-overview', exact: true, element: <TechnicalOverview /> },
       { path: '/technical/technical-all-state', element: <TechnicalAllState /> },

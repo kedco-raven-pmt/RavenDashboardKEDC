@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Box, Chip } from '@mui/material';
@@ -8,29 +8,41 @@ import { FeederData } from './dataroom-financial-feeder/dataroom-financial-feede
 const formatAmount = (amount) => {
   if (amount >= 1000000000) {
     return `₦${(amount / 1000000000).toFixed(1)}B`;
+  } else if (amount >= 1000000) {
+    return `₦${(amount / 1000000).toFixed(1)}M`;
+  } else {
+    return `₦${(amount / 1000).toFixed(0)}K`;
   }
-  return `₦${(amount / 1000000).toFixed(1)}M`;
 };
 
-const aggregateCollections = (type, selectedState, selectedBusinessDistrict) => {
+// Function to aggregate DT collections across all levels (state, business district, feeder)
+const aggregateDTCollections = (type, selectedState, selectedBusinessDistrict, selectedFeeder) => {
   const aggregated = Array.from({ length: 31 }, () => 0);
 
-  Object.values(FeederData).forEach((state) => {
-    if (selectedState && state.name !== selectedState) return;
+  Object.entries(FeederData).forEach(([stateName, stateData]) => {
+    if (selectedState && stateName !== selectedState) return; // Filter by state if selected
 
-    Object.entries(state.businessDistricts).forEach(([districtName, districtFeeders]) => {
-      if (selectedBusinessDistrict && districtName !== selectedBusinessDistrict) return;
+    Object.entries(stateData.businessDistricts).forEach(([districtName, districtFeeders]) => {
+      if (selectedBusinessDistrict && districtName !== selectedBusinessDistrict) return; // Filter by business district if selected
 
       districtFeeders.forEach((feeder) => {
-        const collections =
-          type === 'prepaid' ? feeder.dailyPrePaidCollections : feeder.dailyPostPaidCollections;
-        collections.forEach((amount, index) => {
-          aggregated[index] += amount;
+        if (selectedFeeder && feeder.name !== selectedFeeder) return; // Filter by feeder if selected
+
+        // Aggregate DT data for each feeder
+        feeder.DTs.forEach((dt) => {
+          const dtCollections = type === 'postpaid' ? dt.dailyPostPaidCollections : [];
+
+          dtCollections.forEach((amount, index) => {
+            if (amount && !isNaN(amount)) {
+              aggregated[index] += amount;
+            }
+          });
         });
       });
     });
   });
 
+  console.log('Final Aggregated Data:', aggregated);
   return aggregated;
 };
 
@@ -38,21 +50,44 @@ const DailyCollectionPostPaidFeeder = ({
   selectedState,
   selectedBusinessDistrict,
   selectedFeeder,
+  selectedDT,
 }) => {
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const secondary = theme.palette.secondary.main;
 
-  const feederData =
-    selectedFeeder && selectedFeeder !== 'Feeder' && selectedState && selectedBusinessDistrict
-      ? FeederData[selectedState].businessDistricts[selectedBusinessDistrict]?.find(
-          (feeder) => feeder.name === selectedFeeder,
-        )
-      : null;
+  const [dailyPostPaidCollections, setDailyPostPaidCollections] = useState([]);
 
-  const dailyPostPaidCollections = feederData
-    ? feederData.dailyPostPaidCollections
-    : aggregateCollections('postpaid', selectedState, selectedBusinessDistrict);
+  useEffect(() => {
+    const aggregateAndSetData = () => {
+      let aggregatedCollections;
+      if (selectedDT && selectedFeeder && selectedBusinessDistrict && selectedState) {
+        const feederData = FeederData[selectedState].businessDistricts[
+          selectedBusinessDistrict
+        ].find((feeder) => feeder.name === selectedFeeder);
+        const dtData = feederData.DTs.find((dt) => dt.name === selectedDT);
+        aggregatedCollections = dtData ? dtData.dailyPostPaidCollections : [];
+      } else {
+        // Aggregate across all DTs if no specific filters are selected
+        aggregatedCollections = aggregateDTCollections(
+          'postpaid',
+          selectedState,
+          selectedBusinessDistrict,
+          selectedFeeder,
+        );
+      }
+
+      setDailyPostPaidCollections(aggregatedCollections);
+    };
+
+    aggregateAndSetData();
+  }, [selectedState, selectedBusinessDistrict, selectedFeeder, selectedDT]);
+
+  // Initial load: run aggregation when the component mounts
+  useEffect(() => {
+    const defaultAggregation = aggregateDTCollections('postpaid');
+    setDailyPostPaidCollections(defaultAggregation);
+  }, []); // Empty dependency array ensures this runs only once on initial mount
 
   const optionscolumnchart = {
     chart: {
@@ -90,7 +125,7 @@ const DailyCollectionPostPaidFeeder = ({
     },
     dataLabels: {
       enabled: true,
-      formatter: (val) => formatAmount(val),
+      formatter: formatAmount,
       position: 'top',
       offsetY: -10,
       style: {
@@ -109,6 +144,9 @@ const DailyCollectionPostPaidFeeder = ({
     yaxis: {
       min: 0,
       tickAmount: 4,
+      labels: {
+        formatter: formatAmount,
+      },
     },
     xaxis: {
       categories: Array.from({ length: 31 }, (_, i) => [`${i + 1}`]),
@@ -136,7 +174,9 @@ const DailyCollectionPostPaidFeeder = ({
         <Box display="flex" alignItems="left">
           <Chip
             label={
-              selectedFeeder && selectedFeeder !== 'Feeder'
+              selectedDT && selectedDT !== 'DT'
+                ? selectedDT
+                : selectedFeeder && selectedFeeder !== 'Feeder'
                 ? selectedFeeder
                 : selectedBusinessDistrict || selectedState || 'All Feeders'
             }

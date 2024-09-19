@@ -27,14 +27,11 @@ const OfftakePerPCCNERC = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
-      sparkline: {
-        enabled: true,
-      },
     },
     colors: ['#394d5c', '#627787', '#a5bac9', '#c8d5de'],
 
@@ -73,8 +70,9 @@ const OfftakePerPCCNERC = () => {
       },
     },
     xaxis: {
+      categories: [['July'], ['June'], ['May'], ['April']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -86,6 +84,9 @@ const OfftakePerPCCNERC = () => {
     yaxis: {
       labels: {
         show: false,
+        formatter: function (val) {
+          return val + ' MW';
+        },
       },
     },
     tooltip: {
@@ -112,14 +113,11 @@ const OfftakePerPCCNERC = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
-      sparkline: {
-        enabled: true,
-      },
     },
     colors: ['#395c4b', '#628774', '#a5c9b4', '#c8decf'],
     plotOptions: {
@@ -157,8 +155,9 @@ const OfftakePerPCCNERC = () => {
       },
     },
     xaxis: {
+      categories: [['July'], ['June'], ['May'], ['April']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -170,6 +169,9 @@ const OfftakePerPCCNERC = () => {
     yaxis: {
       labels: {
         show: false,
+        formatter: function (val) {
+          return val + ' MWh';
+        },
       },
     },
     tooltip: {
@@ -196,14 +198,11 @@ const OfftakePerPCCNERC = () => {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
       height: 70,
-      sparkline: {
-        enabled: true,
-      },
     },
     colors: ['#a8d70f', '#b6e717', '#cdf93c', '#e0ff78'],
     plotOptions: {
@@ -241,8 +240,9 @@ const OfftakePerPCCNERC = () => {
       },
     },
     xaxis: {
+      categories: [['July'], ['June'], ['May'], ['April']],
       labels: {
-        show: false,
+        show: true,
       },
       axisBorder: {
         show: false,
@@ -254,6 +254,9 @@ const OfftakePerPCCNERC = () => {
     yaxis: {
       labels: {
         show: false,
+        formatter: function (val) {
+          return val + '%';
+        },
       },
     },
     tooltip: {
@@ -357,7 +360,7 @@ const OfftakePerPCCNERC = () => {
                             options={nominationchart}
                             series={nominationseries}
                             type="bar"
-                            height="70px"
+                            height="120px"
                           />
                         </Grid>
                       </Grid>
@@ -398,7 +401,7 @@ const OfftakePerPCCNERC = () => {
                             options={offtakechart}
                             series={offtakeseries}
                             type="bar"
-                            height="70px"
+                            height="120px"
                           />
                         </Grid>
                       </Grid>
@@ -451,7 +454,7 @@ const OfftakePerPCCNERC = () => {
                             options={relativechart}
                             series={relativeseries}
                             type="bar"
-                            height="70px"
+                            height="120px"
                           />
                         </Grid>
                       </Grid>

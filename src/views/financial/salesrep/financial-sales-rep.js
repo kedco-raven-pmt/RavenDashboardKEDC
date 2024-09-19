@@ -26,15 +26,15 @@ const BCrumb = [
     title: 'State',
   },
   {
-    title: 'Financial Customer',
+    title: 'Financial Sales Rep',
   },
 ];
 
-const FinancialCustomer = () => {
+const FinancialSalesRep = () => {
   return (
-    <PageContainer title="Financial Customer" description="this is Charts page">
+    <PageContainer title="Financial Sales Representative" description="this is Charts page">
       {/* breadcrumb */}
-      <Breadcrumb title="Financial Customer" items={BCrumb} />
+      <Breadcrumb title="Financial Sales Representative" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
         <Grid item xs={12} sm={3}>
@@ -96,4 +96,4 @@ const FinancialCustomer = () => {
   );
 };
 
-export default FinancialCustomer;
+export default FinancialSalesRep;

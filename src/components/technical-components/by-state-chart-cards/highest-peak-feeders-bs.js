@@ -24,7 +24,7 @@ const HighestPeakFeedersBS = () => {
       height: 200,
       width: '100%',
     },
-    colors: ['#cc1c1c', '#ff4545', '#fc9798', '#e9c4c3', '#f2cbcb'],
+    colors: ['#ff4545', '#e95657', '#fc9798', '#e9c4c3', '#f2cbcb'],
     plotOptions: {
       bar: {
         borderRadius: 3,
