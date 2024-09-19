@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 import TechnicalWelcomeCard from '../../components/technical-components/overview-charts-cards/TechnicalWelcomeCard';
-import EnergyDeliveredTechnicalOverview from '../../components/technical-components/overview-charts-cards/energy-delivered-to';
+import TATTechnicalOverview from '../../components/technical-components/overview-charts-cards/turnaround-time-to';
 import AverageAvailabilityTechnicalOverview from '../../components/technical-components/overview-charts-cards/average-availability-to';
 import AverageDurationOfInterruptionTO from '../../components/technical-components/overview-charts-cards/average-interruption-duration-to';
 import TechnicalBreakdownFinancial from '../../components/technical-components/overview-charts-cards/overview-breakdown-to';
@@ -25,18 +25,18 @@ const TechnicalOverview = () => {
           {/* column */}
 
           <Grid item xs={12} sm={4}>
-            <EnergyDeliveredTechnicalOverview />
-          </Grid>
-          <Grid item xs={12} sm={4}>
             <AverageAvailabilityTechnicalOverview />
           </Grid>
           <Grid item xs={12} sm={4}>
             <AverageDurationOfInterruptionTO />
           </Grid>
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={4}>
+            <TATTechnicalOverview />
+          </Grid>
+          <Grid item xs={12} sm={12}>
             <TechnicalBreakdownFinancial />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={12}>
             <FeederInterruptionsTO />
           </Grid>
           <Grid item xs={12}>

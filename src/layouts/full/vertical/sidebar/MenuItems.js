@@ -193,6 +193,12 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
+    title: 'Sales Rep',
+    icon: IconChartDonut3,
+    href: '/financial/financial-sales-rep',
+  },
+  {
+    id: uniqueId(),
     title: 'Service Band',
     icon: IconChartDonut3,
     href: '/financial/financial-service-band',

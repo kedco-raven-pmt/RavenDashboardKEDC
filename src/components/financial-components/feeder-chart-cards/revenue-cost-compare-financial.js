@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Box, CardContent, Typography, Stack, Avatar } from '@mui/material';
+import { Box, CardContent, Grid, Typography, Stack, Avatar } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
 import { FeederData } from './dataroom-financial-feeder/dataroom-financial-feeder';
 
@@ -12,56 +12,90 @@ const formatAmount = (amount) => {
   return `₦${(amount / 1000000).toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}M`;
 };
 
-const FeederCompareFinancial = ({ selectedState, selectedBusinessDistrict, selectedFeeder }) => {
+// Aggregates DT values if needed
+const aggregateDTValues = (feeder) => {
+  const totalCost = feeder.DTs?.reduce((acc, dt) => acc + (dt.totalCost || 0), 0);
+  const revenueBilled = feeder.DTs?.reduce((acc, dt) => acc + (dt.revenueBilled || 0), 0);
+  const collections = feeder.DTs?.reduce((acc, dt) => acc + (dt.collections || 0), 0);
+  return {
+    totalCost: feeder.totalCost || totalCost,
+    revenueBilled: feeder.revenueBilled || revenueBilled,
+    collections: feeder.collections || collections,
+  };
+};
+
+const FeederCompareFinancial = ({
+  selectedState,
+  selectedBusinessDistrict,
+  selectedFeederList,
+  selectedDTList,
+}) => {
   const theme = useTheme();
-  const [comparisonData, setComparisonData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    const calculateData = () => {
-      let data = [];
+    if (selectedState && FeederData[selectedState]) {
+      const stateData = FeederData[selectedState];
+      const districtData = selectedBusinessDistrict
+        ? stateData.businessDistricts[selectedBusinessDistrict] || []
+        : Object.values(stateData.businessDistricts).flat();
 
-      if (selectedState && selectedBusinessDistrict && selectedFeeder) {
-        const feederData = FeederData[selectedState].businessDistricts[selectedBusinessDistrict].find(feeder => feeder.name === selectedFeeder);
-        data = feederData ? [feederData] : [];
-      } else if (selectedState && selectedBusinessDistrict) {
-        data = FeederData[selectedState].businessDistricts[selectedBusinessDistrict];
-      } else if (selectedState) {
-        data = Object.values(FeederData[selectedState].businessDistricts).flat();
-      } else {
-        data = Object.values(FeederData).flatMap(state => Object.values(state.businessDistricts).flat());
-      }
+      const comparisonData = selectedFeederList
+        .map((feederName) => {
+          const feederData = districtData.find((feeder) => feeder.name === feederName);
+          if (!feederData) return null;
 
-      setComparisonData(data);
-    };
+          // Check if there are selected DTs for this feeder
+          const selectedDTs = selectedDTList.filter((dt) => dt.feederName === feederName);
+          if (selectedDTs.length > 0) {
+            // Show parent feeder and selected DTs
+            return [
+              { name: feederData.name, ...aggregateDTValues(feederData) },
+              ...selectedDTs
+                .map((dt) => {
+                  const dtData = feederData.DTs?.find((d) => d.name === dt.dtName);
+                  return dtData ? { ...dtData, isDT: true } : null;
+                })
+                .filter(Boolean),
+            ];
+          }
 
-    calculateData();
-  }, [selectedState, selectedBusinessDistrict, selectedFeeder]);
+          // Return parent feeder with aggregated DT values if no specific DTs are selected
+          return [{ name: feederData.name, ...aggregateDTValues(feederData) }];
+        })
+        .flat()
+        .filter(Boolean);
 
-  const visibleData = comparisonData.slice(0, 6); // Display only the first 6 feeders
+      setFilteredData(comparisonData);
+    } else {
+      // Handle cases when state or data is unavailable
+      setFilteredData([]);
+    }
+  }, [selectedState, selectedBusinessDistrict, selectedFeederList, selectedDTList]);
 
-  const FeederComparisonChart = {
+  const FeederChartOptions = {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
       foreColor: '#adb0bb',
       toolbar: { show: false },
-      height: 265,
-      width: "100%",
-      zoom: { enabled: false },
+      height: 200,
+      width: '100%',
     },
-    colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9'],
     plotOptions: {
       bar: {
         borderRadius: 3,
         columnWidth: '60%',
         barHeight: '60%',
+        distributed: true,
         endingShape: 'rounded',
         dataLabels: { position: 'top' },
       },
     },
     dataLabels: {
       enabled: true,
-      formatter: val => formatAmount(val),
+      formatter: (val) => formatAmount(val),
       position: 'top',
       style: {
         fontSize: '10px',
@@ -70,69 +104,98 @@ const FeederCompareFinancial = ({ selectedState, selectedBusinessDistrict, selec
       },
       offsetY: -20,
     },
-    legend: { show: true },
-    grid: { yaxis: { lines: { show: false } } },
+    legend: { show: false },
+    grid: { show: false },
     xaxis: {
-      categories: visibleData.map(feeder => feeder.name), // Only show categories for visible feeders
+      categories: [
+        ['Total', 'Cost'],
+        ['Rev.', 'Billed'],
+        ['Rev.', 'Collect'],
+      ],
       axisBorder: { show: false },
-      labels: { rotate: -45 },
+      axisTicks: { show: false },
+      labels: { show: true },
     },
     yaxis: {
-      tickAmount: 3,
       labels: {
-        show: true,
-        style: { colors: theme.palette.mode === 'dark' ? '#fff' : '#adb0bb' },
+        show: false,
+        formatter: (val) => formatAmount(val),
       },
     },
     tooltip: { theme: theme.palette.mode === 'dark' ? 'dark' : 'light' },
   };
 
-  const FeederComparisonSeries = [
-    { name: 'Total Cost', data: visibleData.map(feeder => feeder.totalCost) },
-    { name: 'Revenue Billed', data: visibleData.map(feeder => feeder.revenueBilled) },
-    { name: 'Collections', data: visibleData.map(feeder => feeder.collections) },
-  ];
-
   return (
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
-          <Typography variant="h5">Feeder Metrics Comparison</Typography>
-          <Stack direction="row" spacing={2} mt={5} justifyContent="center">
-            <Stack direction="row" spacing={3}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Avatar sx={{ width: 9, height: 9, bgcolor: '#0074BA', svg: { display: 'none' } }}></Avatar>
-                <Box>
-                  <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                    Total Cost
-                  </Typography>
-                </Box>
+          <Typography variant="h5">Feeder and DT Comparison</Typography>
+          <Stack direction="row" spacing={3}>
+            {['Total Cost', 'Revenue Billed', 'Collections'].map((label, index) => (
+              <Stack direction="row" alignItems="center" spacing={1} key={index}>
+                <Avatar
+                  sx={{
+                    width: 9,
+                    height: 9,
+                    bgcolor: FeederChartOptions.colors[index],
+                    svg: { display: 'none' },
+                  }}
+                ></Avatar>
+                <Typography
+                  variant="subtitle2"
+                  fontSize="12px"
+                  fontWeight={700}
+                  color="textSecondary"
+                >
+                  {label}
+                </Typography>
               </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Avatar sx={{ width: 9, height: 9, bgcolor: '#02B7FA', svg: { display: 'none' } }}></Avatar>
-                <Box>
-                  <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                    Revenue Billed
-                  </Typography>
-                </Box>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Avatar sx={{ width: 9, height: 9, bgcolor: '#ABC4C9', svg: { display: 'none' } }}></Avatar>
-                <Box>
-                  <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                    Collections
-                  </Typography>
-                </Box>
-              </Stack>
-            </Stack>
+            ))}
           </Stack>
         </Stack>
 
-        <Box sx={{ overflowX: 'auto', whiteSpace: 'nowrap', width: '100%' }}>
-          <Box sx={{ width: '100%', minWidth: '1000px' }}> {/* Ensure minimum width for 6 feeders */}
-            <Chart options={FeederComparisonChart} series={FeederComparisonSeries} type="bar" height="265px" />
-          </Box>
-        </Box>
+        <Grid container spacing={3} mt={2}>
+          {filteredData.map((item, index) => (
+            <Grid item xs={12} sm={2.4} key={index}>
+              <BlankCard>
+                <CardContent sx={{ p: '20px' }}>
+                  <Box>
+                    <Chart
+                      options={FeederChartOptions}
+                      series={[
+                        { name: '', data: [item.totalCost, item.revenueBilled, item.collections] },
+                      ]}
+                      type="bar"
+                      height="220px"
+                    />
+                  </Box>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    mt={1}
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Typography
+                      variant="h10"
+                      fontSize="11px"
+                      fontWeight={600}
+                      textAlign="center"
+                      mb={1}
+                    >
+                      {item.isDT ? `DT-${item.name}` : item.name}
+                    </Typography>
+                    <Avatar sx={{ bgcolor: '#f7f8f9', width: 30, height: 30 }}>
+                      <Typography variant="subtitle1" fontSize="10px" color="#000">
+                        {index + 1}
+                      </Typography>
+                    </Avatar>
+                  </Stack>
+                </CardContent>
+              </BlankCard>
+            </Grid>
+          ))}
+        </Grid>
       </CardContent>
     </BlankCard>
   );

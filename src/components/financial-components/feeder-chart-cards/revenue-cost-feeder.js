@@ -12,26 +12,89 @@ const formatAmount = (amount) => {
   return `₦${(amount / 1000000).toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}M`;
 };
 
-const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder }) => {
+const aggregateDTValues = (feeder) => {
+  const totalCost = feeder.DTs?.reduce((acc, dt) => acc + (dt.totalCost || 0), 0);
+  const revenueBilled = feeder.DTs?.reduce((acc, dt) => acc + (dt.revenueBilled || 0), 0);
+  const collections = feeder.DTs?.reduce((acc, dt) => acc + (dt.collections || 0), 0);
+  return {
+    totalCost: feeder.totalCost || totalCost,
+    revenueBilled: feeder.revenueBilled || revenueBilled,
+    collections: feeder.collections || collections,
+  };
+};
+
+const RevenueCostFinancialFeeder = ({
+  selectedState,
+  selectedBusinessDistrict,
+  selectedFeeder,
+  selectedDT,
+}) => {
   const theme = useTheme();
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    if (selectedState && selectedBusinessDistrict) {
-      if (selectedFeeder) {
-        const feederData = FeederData[selectedState].businessDistricts[selectedBusinessDistrict].find(feeder => feeder.name === selectedFeeder);
-        setFilteredData(feederData ? [feederData] : []);
-      } else {
-        setFilteredData(FeederData[selectedState].businessDistricts[selectedBusinessDistrict]);
+    if (selectedState) {
+      const stateData = FeederData[selectedState];
+      if (stateData) {
+        if (selectedBusinessDistrict) {
+          const districtData = stateData.businessDistricts[selectedBusinessDistrict];
+          if (districtData) {
+            if (selectedFeeder && selectedFeeder !== 'All Feeders') {
+              const feederData = districtData.find((feeder) => feeder.name === selectedFeeder);
+              if (selectedDT && feederData) {
+                const selectedDTData = feederData.DTs.find((dt) => dt.name === selectedDT);
+                if (selectedDTData) {
+                  setFilteredData([
+                    { name: feederData.name, ...aggregateDTValues(feederData) },
+                    { ...selectedDTData, isDT: true },
+                  ]);
+                }
+              } else if (feederData) {
+                const aggregatedFeeder = {
+                  name: feederData.name,
+                  ...aggregateDTValues(feederData),
+                };
+                setFilteredData([
+                  aggregatedFeeder,
+                  ...feederData.DTs.map((dt) => ({
+                    ...dt,
+                    isDT: true,
+                  })),
+                ]);
+              }
+            } else {
+              const aggregatedFeederData = districtData.map((feeder) => ({
+                name: feeder.name,
+                ...aggregateDTValues(feeder),
+              }));
+              setFilteredData(aggregatedFeederData);
+            }
+          }
+        } else {
+          const aggregatedDistrictFeederData = Object.values(stateData.businessDistricts).flatMap(
+            (district) =>
+              district.map((feeder) => ({
+                name: feeder.name,
+                ...aggregateDTValues(feeder),
+              })),
+          );
+          setFilteredData(aggregatedDistrictFeederData);
+        }
       }
-    } else if (selectedState) {
-      const data = Object.values(FeederData[selectedState].businessDistricts).flat();
-      setFilteredData(data);
     } else {
-      const data = Object.values(FeederData).flatMap(state => Object.values(state.businessDistricts).flat());
-      setFilteredData(data);
+      const allStateFeederData = Object.values(FeederData).flatMap((state) =>
+        Object.values(state.businessDistricts).flatMap((district) =>
+          district.map((feeder) => ({
+            name: feeder.name,
+            ...aggregateDTValues(feeder),
+          })),
+        ),
+      );
+      setFilteredData(allStateFeederData);
     }
-  }, [selectedState, selectedBusinessDistrict, selectedFeeder]);
+  }, [selectedState, selectedBusinessDistrict, selectedFeeder, selectedDT]);
+
+  console.log('Filtered Data:', filteredData);
 
   const FeederChartOptions = {
     chart: {
@@ -40,9 +103,9 @@ const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict, s
       foreColor: '#adb0bb',
       toolbar: { show: false },
       height: 200,
-      width: "100%",
+      width: '100%',
     },
-    colors: ['#0074BA', '#02B7FA', '#ABC4C9',],
+    colors: ['#0074BA', '#02B7FA', '#ABC4C9'],
     plotOptions: {
       bar: {
         borderRadius: 3,
@@ -55,7 +118,7 @@ const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict, s
     },
     dataLabels: {
       enabled: true,
-      formatter: val => formatAmount(val),
+      formatter: (val) => formatAmount(val),
       position: 'top',
       style: {
         fontSize: '10px',
@@ -67,7 +130,11 @@ const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict, s
     legend: { show: false },
     grid: { show: false },
     xaxis: {
-      categories: [['Total', 'Cost'], ['Rev.' ,'Billed'], ['Rev.', 'Collect']],
+      categories: [
+        ['Total', 'Cost'],
+        ['Rev.', 'Billed'],
+        ['Rev.', 'Collect'],
+      ],
       axisBorder: { show: false },
       axisTicks: { show: false },
       labels: { show: true },
@@ -75,10 +142,10 @@ const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict, s
     yaxis: {
       labels: {
         show: false,
-        formatter: val => formatAmount(val),
+        formatter: (val) => formatAmount(val),
       },
     },
-    tooltip: { theme: theme.palette.mode === 'dark' ? 'dark' : 'light'  },
+    tooltip: { theme: theme.palette.mode === 'dark' ? 'dark' : 'light' },
   };
 
   return (
@@ -89,8 +156,20 @@ const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict, s
           <Stack direction="row" spacing={3}>
             {['Total Cost', 'Revenue Billed', 'Collections'].map((label, index) => (
               <Stack direction="row" alignItems="center" spacing={1} key={index}>
-                <Avatar sx={{ width: 9, height: 9, bgcolor: FeederChartOptions.colors[index], svg: { display: 'none' } }}></Avatar>
-                <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
+                <Avatar
+                  sx={{
+                    width: 9,
+                    height: 9,
+                    bgcolor: FeederChartOptions.colors[index],
+                    svg: { display: 'none' },
+                  }}
+                ></Avatar>
+                <Typography
+                  variant="subtitle2"
+                  fontSize="12px"
+                  fontWeight={700}
+                  color="textSecondary"
+                >
                   {label}
                 </Typography>
               </Stack>
@@ -99,30 +178,56 @@ const RevenueCostFinancialFeeder = ({ selectedState, selectedBusinessDistrict, s
         </Stack>
 
         <Grid container spacing={3} mt={2}>
-          {filteredData.map((feeder, index) => (
+          {filteredData.map((item, index) => (
             <Grid item xs={12} sm={2.4} key={index}>
-              <BlankCard>
-                <CardContent sx={{ p: '20px' }}>
-                  <Box>
-                    <Chart
-                      options={FeederChartOptions}
-                      series={[{ name: '', data: [feeder.totalCost, feeder.revenueBilled, feeder.collections] }]}
-                      type="bar"
-                      height="220px"
-                    />
-                  </Box>
-                  <Stack direction="row" spacing={1} mt={1} alignItems="center" justifyContent="space-between">
-                    <Typography variant="h10" fontSize="11px" fontWeight={600} textAlign="center" mb={1}>
-                      {feeder.name}
-                    </Typography>
-                    <Avatar sx={{ bgcolor: '#f7f8f9', width: 30, height: 30 }}>
-                      <Typography variant="subtitle1" fontSize="10px" color="#000">
-                        {index + 1}
+              <Box
+                sx={{
+                  boxShadow:
+                    item.name === selectedFeeder
+                      ? 'rgb(0 214 255) 0px 0px 2px 0px, rgb(22 118 141 / 22%) 0px 12px 24px -4px !important'
+                      : '',
+                }}
+              >
+                <BlankCard>
+                  <CardContent sx={{ p: '20px' }}>
+                    <Box>
+                      <Chart
+                        options={FeederChartOptions}
+                        series={[
+                          {
+                            name: '',
+                            data: [item.totalCost, item.revenueBilled, item.collections],
+                          },
+                        ]}
+                        type="bar"
+                        height="220px"
+                      />
+                    </Box>
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      mt={1}
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Typography
+                        variant="h10"
+                        fontSize="11px"
+                        fontWeight={600}
+                        textAlign="center"
+                        mb={1}
+                      >
+                        {item.name}
                       </Typography>
-                    </Avatar>
-                  </Stack>
-                </CardContent>
-              </BlankCard>
+                      <Avatar sx={{ bgcolor: '#f7f8f9', width: 30, height: 30 }}>
+                        <Typography variant="subtitle1" fontSize="10px" color="#000">
+                          {item.isDT ? `DT-${index}` : index + 1}
+                        </Typography>
+                      </Avatar>
+                    </Stack>
+                  </CardContent>
+                </BlankCard>
+              </Box>
             </Grid>
           ))}
         </Grid>

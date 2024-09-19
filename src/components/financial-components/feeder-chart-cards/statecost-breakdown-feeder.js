@@ -5,7 +5,8 @@ import { Box, Grid, Typography, Stack, Avatar, CardContent, Chip } from '@mui/ma
 import BlankCard from '../../shared/BlankCard';
 import { FeederData } from './dataroom-financial-feeder/dataroom-financial-feeder';
 
-const aggregateCosts = (selectedState, selectedBusinessDistrict, selectedFeeder) => {
+// Aggregate costs including feeder and DT-level costs
+const aggregateCosts = (selectedState, selectedBusinessDistrict, selectedFeeder, selectedDT) => {
   const aggregated = {
     'NBET Invoice': 0,
     'MO Invoice': 0,
@@ -14,23 +15,34 @@ const aggregateCosts = (selectedState, selectedBusinessDistrict, selectedFeeder)
     Others: 0,
   };
 
-  if (!FeederData) {
-    console.error('FeederData is not available');
-    return aggregated;
-  }
+  if (!FeederData) return aggregated;
 
-  Object.values(FeederData).forEach((state) => {
-    if (selectedState && state.name !== selectedState) return;
+  Object.entries(FeederData).forEach(([stateName, stateData]) => {
+    if (selectedState && stateName !== selectedState) return;
 
-    Object.entries(state.businessDistricts).forEach(([districtName, feeders]) => {
+    Object.entries(stateData.businessDistricts || {}).forEach(([districtName, feeders]) => {
       if (selectedBusinessDistrict && districtName !== selectedBusinessDistrict) return;
 
       feeders.forEach((feeder) => {
         if (selectedFeeder && feeder.name !== selectedFeeder) return;
 
+        // Aggregate costs for Feeder
         if (feeder.costs) {
-          Object.entries(feeder.costs).forEach(([costType, amount]) => {
+          Object.entries(feeder.costs || {}).forEach(([costType, amount]) => {
             aggregated[costType] += amount;
+          });
+        }
+
+        // Aggregate costs for DTs when a feeder is selected or no specific DT is selected
+        if (feeder.DTs) {
+          feeder.DTs.forEach((dt) => {
+            if (!selectedDT || dt.name === selectedDT) {
+              if (dt.costs) {
+                Object.entries(dt.costs || {}).forEach(([costType, amount]) => {
+                  aggregated[costType] += amount;
+                });
+              }
+            }
           });
         }
       });
@@ -40,17 +52,31 @@ const aggregateCosts = (selectedState, selectedBusinessDistrict, selectedFeeder)
   return aggregated;
 };
 
-const StateCostBreakdownFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder }) => {
+const StateCostBreakdownFeeder = ({
+  selectedState,
+  selectedBusinessDistrict,
+  selectedFeeder,
+  selectedDT,
+}) => {
   const theme = useTheme();
-  const [costs, setCosts] = useState(() =>
-    aggregateCosts(selectedState, selectedBusinessDistrict, selectedFeeder),
-  );
+  const [costs, setCosts] = useState(() => aggregateCosts());
 
   useEffect(() => {
-    // Update costs when state, district, or feeder changes
-    const updatedCosts = aggregateCosts(selectedState, selectedBusinessDistrict, selectedFeeder);
+    // Update costs when state, district, feeder, or DT changes
+    const updatedCosts = aggregateCosts(
+      selectedState,
+      selectedBusinessDistrict,
+      selectedFeeder,
+      selectedDT,
+    );
     setCosts(updatedCosts);
-  }, [selectedState, selectedBusinessDistrict, selectedFeeder]);
+  }, [selectedState, selectedBusinessDistrict, selectedFeeder, selectedDT]);
+
+  // Ensure the component runs the aggregation for the initial load
+  useEffect(() => {
+    const defaultCosts = aggregateCosts();
+    setCosts(defaultCosts);
+  }, []); // Empty dependency array ensures this runs only once on initial mount
 
   const totalCost = Object.values(costs).reduce((sum, val) => sum + val, 0);
 
@@ -60,7 +86,7 @@ const StateCostBreakdownFeeder = ({ selectedState, selectedBusinessDistrict, sel
   const formatAmount = (amount) => {
     return amount >= 1000000000
       ? `₦${(amount / 1000000000).toFixed(1)}B`
-      : `₦${amount / 1000000}.0M`;
+      : `₦${(amount / 1000000).toFixed(1)}M`;
   };
 
   const formatCategories = (categories) => {
@@ -133,10 +159,16 @@ const StateCostBreakdownFeeder = ({ selectedState, selectedBusinessDistrict, sel
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
-          <Typography variant="h5">Cost And Breakdown By Feeder</Typography>
+          <Typography variant="h5">Previous 4 Months Perfomance - Total Expenses</Typography>
           <Box display="flex" alignItems="left">
             <Chip
-              label={selectedFeeder || selectedBusinessDistrict || selectedState || 'All Feeders'}
+              label={
+                selectedDT && selectedDT !== 'DT'
+                  ? selectedDT
+                  : selectedFeeder && selectedFeeder !== 'Feeder'
+                  ? selectedFeeder
+                  : selectedBusinessDistrict || selectedState || 'All Feeders'
+              }
               size="small"
             />
           </Box>

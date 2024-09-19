@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Stack, Button, styled } from '@mui/material';
 import PropTypes from 'prop-types';
 
+// Custom styled button
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: 0,
   '&:first-of-type': {
@@ -19,7 +20,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const FeederFilterFinancial = ({ onFilterChange, selectedState, selectedBusinessDistrict }) => {
   const [localSelectedState, setLocalSelectedState] = useState(selectedState);
-  const [localSelectedBusinessDistrict, setLocalSelectedBusinessDistrict] = useState(selectedBusinessDistrict);
+  const [localSelectedBusinessDistrict, setLocalSelectedBusinessDistrict] =
+    useState(selectedBusinessDistrict);
 
   useEffect(() => {
     setLocalSelectedState(selectedState);
@@ -34,15 +36,22 @@ const FeederFilterFinancial = ({ onFilterChange, selectedState, selectedBusiness
   const handleStateButtonClick = (state) => {
     const newSelectedState = localSelectedState === state ? '' : state;
     setLocalSelectedState(newSelectedState);
+    setLocalSelectedBusinessDistrict(''); // Reset business district when state changes
     onFilterChange({ state: newSelectedState, businessDistrict: '' });
     console.log('State button clicked:', state, 'New state:', newSelectedState);
   };
 
   const handleBusinessDistrictButtonClick = (businessDistrict) => {
-    const newSelectedBusinessDistrict = localSelectedBusinessDistrict === businessDistrict ? '' : businessDistrict;
+    const newSelectedBusinessDistrict =
+      localSelectedBusinessDistrict === businessDistrict ? '' : businessDistrict;
     setLocalSelectedBusinessDistrict(newSelectedBusinessDistrict);
     onFilterChange({ state: localSelectedState, businessDistrict: newSelectedBusinessDistrict });
-    console.log('Business district button clicked:', businessDistrict, 'New business district:', newSelectedBusinessDistrict);
+    console.log(
+      'Business district button clicked:',
+      businessDistrict,
+      'New business district:',
+      newSelectedBusinessDistrict,
+    );
   };
 
   const stateButtons = (
@@ -69,15 +78,9 @@ const FeederFilterFinancial = ({ onFilterChange, selectedState, selectedBusiness
   );
 
   const businessDistrictButtons = {
-    Kano: [
-      'Kano Central', 'Kano East', 'Kano Industrial', 'Kano North', 'Kano South'
-    ],
-    Katsina: [
-      'Katsina Central', 'Katsina North', 'Katsina South'
-    ],
-    Jigawa: [
-      'Jigawa North', 'Jigawa South'
-    ],
+    Kano: ['Kano Central', 'Kano East', 'Kano Industrial', 'Kano North', 'Kano South'],
+    Katsina: ['Katsina Central', 'Katsina North', 'Katsina South'],
+    Jigawa: ['Jigawa North', 'Jigawa South'],
   };
 
   return (
@@ -85,7 +88,7 @@ const FeederFilterFinancial = ({ onFilterChange, selectedState, selectedBusiness
       {localSelectedState ? (
         <>
           <StyledButton
-            variant='contained'
+            variant="contained"
             onClick={() => handleStateButtonClick(localSelectedState)}
           >
             {localSelectedState}
@@ -107,6 +110,7 @@ const FeederFilterFinancial = ({ onFilterChange, selectedState, selectedBusiness
   );
 };
 
+// Define prop types for better type-checking
 FeederFilterFinancial.propTypes = {
   onFilterChange: PropTypes.func.isRequired,
   selectedState: PropTypes.string,

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Box, Grid, Typography, Stack, Avatar, CardContent, Chip } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
 import { FeederData } from './dataroom-financial-feeder/dataroom-financial-feeder';
 
-const aggregateTariffs = () => {
+// Helper function to aggregate tariffs across DTs within feeders
+const aggregateTariffs = (selectedState, selectedBusinessDistrict, selectedFeeder) => {
   const aggregated = {
     'MYTO Tariff': { sum: 0, count: 0 },
     'Billing Tariff': { sum: 0, count: 0 },
@@ -13,74 +14,46 @@ const aggregateTariffs = () => {
     'Tariff Loss': { sum: 0, count: 0 },
   };
 
-  Object.values(FeederData).forEach((state) => {
-    Object.values(state.businessDistricts).forEach((districtFeeders) => {
+  Object.entries(FeederData).forEach(([stateName, stateData]) => {
+    if (selectedState && stateName !== selectedState) return;
+
+    Object.entries(stateData.businessDistricts).forEach(([districtName, districtFeeders]) => {
+      if (selectedBusinessDistrict && districtName !== selectedBusinessDistrict) return;
+
       districtFeeders.forEach((feeder) => {
-        aggregated['MYTO Tariff'].sum += feeder.tariffs[0] || 0;
-        aggregated['MYTO Tariff'].count += 1;
+        if (selectedFeeder && feeder.name !== selectedFeeder) return;
 
-        aggregated['Billing Tariff'].sum += feeder.tariffs[1] || 0;
-        aggregated['Billing Tariff'].count += 1;
+        feeder.DTs.forEach((dt) => {
+          aggregated['MYTO Tariff'].sum += dt.tariffs[0] || 0;
+          aggregated['MYTO Tariff'].count += 1;
 
-        aggregated['Collection Tariff'].sum += feeder.tariffs[2] || 0;
-        aggregated['Collection Tariff'].count += 1;
+          aggregated['Billing Tariff'].sum += dt.tariffs[1] || 0;
+          aggregated['Billing Tariff'].count += 1;
 
-        aggregated['Tariff Loss'].sum += feeder.tariffs[3] || 0;
-        aggregated['Tariff Loss'].count += 1;
+          aggregated['Collection Tariff'].sum += dt.tariffs[2] || 0;
+          aggregated['Collection Tariff'].count += 1;
+
+          aggregated['Tariff Loss'].sum += dt.tariffs[3] || 0;
+          aggregated['Tariff Loss'].count += 1;
+        });
       });
     });
   });
 
   return {
-    'MYTO Tariff': aggregated['MYTO Tariff'].sum / aggregated['MYTO Tariff'].count,
-    'Billing Tariff': aggregated['Billing Tariff'].sum / aggregated['Billing Tariff'].count,
-    'Collection Tariff':
-      aggregated['Collection Tariff'].sum / aggregated['Collection Tariff'].count,
-    'Tariff Loss': aggregated['Tariff Loss'].sum / aggregated['Tariff Loss'].count,
+    'MYTO Tariff': aggregated['MYTO Tariff'].count
+      ? aggregated['MYTO Tariff'].sum / aggregated['MYTO Tariff'].count
+      : 0,
+    'Billing Tariff': aggregated['Billing Tariff'].count
+      ? aggregated['Billing Tariff'].sum / aggregated['Billing Tariff'].count
+      : 0,
+    'Collection Tariff': aggregated['Collection Tariff'].count
+      ? aggregated['Collection Tariff'].sum / aggregated['Collection Tariff'].count
+      : 0,
+    'Tariff Loss': aggregated['Tariff Loss'].count
+      ? aggregated['Tariff Loss'].sum / aggregated['Tariff Loss'].count
+      : 0,
   };
-};
-
-const calculateWeightedAverageTariff = (
-  selectedFeeder,
-  selectedBusinessDistrict,
-  selectedState,
-) => {
-  if (selectedFeeder) {
-    const state = FeederData[selectedState];
-    if (!state || !state.businessDistricts[selectedBusinessDistrict]) return 0;
-
-    const feeders = state.businessDistricts[selectedBusinessDistrict];
-    const feeder = feeders.find((feeder) => feeder.name === selectedFeeder);
-    return feeder ? feeder.tariffs[2] : 0;
-  }
-
-  const totalEnergyDelivered = Object.values(FeederData).reduce((sum, state) => {
-    return (
-      sum +
-      Object.values(state.businessDistricts).reduce(
-        (subSum, districtFeeders) =>
-          subSum + districtFeeders.reduce((total, feeder) => total + feeder.energyDelivered, 0),
-        0,
-      )
-    );
-  }, 0);
-
-  const weightedTariffSum = Object.values(FeederData).reduce((sum, state) => {
-    return (
-      sum +
-      Object.values(state.businessDistricts).reduce(
-        (subSum, districtFeeders) =>
-          subSum +
-          districtFeeders.reduce(
-            (total, feeder) => total + feeder.tariffs[2] * feeder.energyDelivered,
-            0,
-          ),
-        0,
-      )
-    );
-  }, 0);
-
-  return weightedTariffSum / totalEnergyDelivered;
 };
 
 const formatAmount = (amount) => {
@@ -94,23 +67,28 @@ const formatCategories = (categories) => {
   });
 };
 
-const TariffFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder }) => {
+const TariffFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder, selectedDT }) => {
   const theme = useTheme();
+  const [tariffs, setTariffs] = useState(() =>
+    aggregateTariffs(selectedState, selectedBusinessDistrict, selectedFeeder, selectedDT),
+  );
 
-  let tariffs;
-  if (selectedFeeder) {
-    const state = FeederData[selectedState];
-    if (!state || !state.businessDistricts[selectedBusinessDistrict]) {
-      tariffs = Object.values(aggregateTariffs());
-    } else {
-      const feeder = state.businessDistricts[selectedBusinessDistrict].find(
-        (f) => f.name === selectedFeeder,
-      );
-      tariffs = feeder ? feeder.tariffs : Object.values(aggregateTariffs());
-    }
-  } else {
-    tariffs = Object.values(aggregateTariffs());
-  }
+  useEffect(() => {
+    // Update tariffs when state, district, feeder, or DT changes
+    const updatedTariffs = aggregateTariffs(
+      selectedState,
+      selectedBusinessDistrict,
+      selectedFeeder,
+      selectedDT,
+    );
+    setTariffs(updatedTariffs);
+  }, [selectedState, selectedBusinessDistrict, selectedFeeder, selectedDT]);
+
+  // Aggregate tariffs on initial load
+  useEffect(() => {
+    const defaultTariffs = aggregateTariffs();
+    setTariffs(defaultTariffs);
+  }, []);
 
   const categories = ['MYTO Tariff', 'Billing Tariff', 'Collection Tariff', 'Tariff Loss'];
   const formattedCategories = formatCategories(categories);
@@ -170,13 +148,7 @@ const TariffFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder 
     },
   };
 
-  const chartSeries = [{ name: '', data: tariffs }];
-
-  const weightedAverageTariff = calculateWeightedAverageTariff(
-    selectedFeeder,
-    selectedBusinessDistrict,
-    selectedState,
-  );
+  const chartSeries = [{ name: '', data: Object.values(tariffs) }];
 
   return (
     <BlankCard>
@@ -185,7 +157,13 @@ const TariffFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder 
           <Typography variant="h5">Tariff Breakdown By Feeder</Typography>
           <Box display="flex" alignItems="left">
             <Chip
-              label={selectedFeeder || selectedBusinessDistrict || selectedState || 'All Feeders'}
+              label={
+                selectedDT ||
+                selectedFeeder ||
+                selectedBusinessDistrict ||
+                selectedState ||
+                'All Feeders'
+              }
               size="small"
             />
           </Box>
@@ -227,7 +205,9 @@ const TariffFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder 
                       {month}
                     </Typography>
                     <Stack direction="row" spacing={2} justifyContent="space-between">
-                      <Typography variant="h5">{formatAmount(weightedAverageTariff)}</Typography>
+                      <Typography variant="h5">
+                        {formatAmount(tariffs['Collection Tariff'])}
+                      </Typography>
                       <Typography variant="subtitle1" color="success.main">
                         +2.5%
                       </Typography>

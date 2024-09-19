@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Box, Chip } from '@mui/material';
@@ -6,29 +6,52 @@ import DashboardCard from '../../shared/DashboardCard';
 import { FeederData } from './dataroom-financial-feeder/dataroom-financial-feeder';
 
 const formatAmount = (amount) => {
-  if (amount >= 1000) {
-    return `₦${(amount / 1000).toFixed(1)}B`;
+  if (amount >= 1000000000) {
+    return `₦${(amount / 1000000000).toFixed(1)}B`;
+  } else if (amount >= 1000000) {
+    return `₦${(amount / 1000000).toFixed(1)}M`;
   } else {
-    return `₦${amount.toFixed(0)}M`;
+    return `₦${(amount / 1000).toFixed(0)}K`;
   }
 };
 
-// Helper function to aggregate vendor collections
-const aggregateVendorCollections = (selectedState, selectedBusinessDistrict) => {
+// Helper function to aggregate vendor collections from DTs within a feeder
+const aggregateVendorCollectionsForFeeder = (feeder) => {
   const aggregated = {};
 
-  Object.values(FeederData).forEach((state) => {
-    if (selectedState && state.name !== selectedState) return;
+  feeder.DTs?.forEach((dt) => {
+    Object.entries(dt.vendorCollections || {}).forEach(([vendor, collection]) => {
+      if (!aggregated[vendor]) {
+        aggregated[vendor] = 0;
+      }
+      aggregated[vendor] += collection;
+    });
+  });
 
-    Object.entries(state.businessDistricts || {}).forEach(([districtName, districtFeeders]) => {
+  return aggregated;
+};
+
+// Helper function to aggregate vendor collections across all states, business districts, and feeders
+const aggregateVendorCollections = (selectedState, selectedBusinessDistrict, selectedFeeder) => {
+  const aggregated = {};
+
+  Object.entries(FeederData).forEach(([stateName, stateData]) => {
+    if (selectedState && stateName !== selectedState) return;
+
+    Object.entries(stateData.businessDistricts || {}).forEach(([districtName, districtFeeders]) => {
       if (selectedBusinessDistrict && districtName !== selectedBusinessDistrict) return;
 
       districtFeeders.forEach((feeder) => {
-        Object.entries(feeder.vendorCollections || {}).forEach(([vendor, collection]) => {
-          if (!aggregated[vendor]) {
-            aggregated[vendor] = 0;
-          }
-          aggregated[vendor] += collection;
+        if (selectedFeeder && feeder.name !== selectedFeeder) return;
+
+        // Aggregate vendor collections from feeder-level data if available
+        feeder.DTs?.forEach((dt) => {
+          Object.entries(dt.vendorCollections || {}).forEach(([vendor, collection]) => {
+            if (!aggregated[vendor]) {
+              aggregated[vendor] = 0;
+            }
+            aggregated[vendor] += collection;
+          });
         });
       });
     });
@@ -40,29 +63,68 @@ const aggregateVendorCollections = (selectedState, selectedBusinessDistrict) => 
   }));
 };
 
-const AgentCollectionsFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder }) => {
+const AgentCollectionsFeeder = ({
+  selectedState,
+  selectedBusinessDistrict,
+  selectedFeeder,
+  selectedDT,
+}) => {
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const secondary = theme.palette.secondary.main;
 
-  const feederData =
-    selectedFeeder &&
-    selectedFeeder !== 'Feeder' &&
-    selectedState &&
-    selectedBusinessDistrict &&
-    FeederData[selectedState] &&
-    FeederData[selectedState].businessDistricts[selectedBusinessDistrict]
-      ? FeederData[selectedState].businessDistricts[selectedBusinessDistrict].find(
-          (feeder) => feeder.name === selectedFeeder,
-        )
-      : null;
+  const [vendorCollections, setVendorCollections] = useState([]);
 
-  const vendorCollections = feederData
-    ? Object.entries(feederData.vendorCollections || {}).map(([vendor, collection]) => ({
-        name: vendor,
-        data: collection,
-      }))
-    : aggregateVendorCollections(selectedState, selectedBusinessDistrict);
+  useEffect(() => {
+    const aggregateAndSetData = () => {
+      let aggregatedCollections = [];
+
+      // If a specific DT is selected, use its data directly
+      if (selectedDT && selectedFeeder && selectedBusinessDistrict && selectedState) {
+        const feederData = FeederData[selectedState]?.businessDistricts[
+          selectedBusinessDistrict
+        ]?.find((feeder) => feeder.name === selectedFeeder);
+        const dtData = feederData?.DTs?.find((dt) => dt.name === selectedDT);
+        aggregatedCollections = Object.entries(dtData?.vendorCollections || {}).map(
+          ([vendor, collection]) => ({
+            name: vendor,
+            data: collection,
+          }),
+        );
+      } else if (selectedFeeder && selectedBusinessDistrict && selectedState) {
+        // If a feeder is selected, aggregate vendor collections from its DTs
+        const feederData = FeederData[selectedState]?.businessDistricts[
+          selectedBusinessDistrict
+        ]?.find((feeder) => feeder.name === selectedFeeder);
+        if (feederData) {
+          const aggregatedFeederCollections = aggregateVendorCollectionsForFeeder(feederData);
+          aggregatedCollections = Object.entries(aggregatedFeederCollections).map(
+            ([vendor, collection]) => ({
+              name: vendor,
+              data: collection,
+            }),
+          );
+        }
+      } else {
+        // Aggregate across all states, business districts, and feeders
+        aggregatedCollections = aggregateVendorCollections(
+          selectedState,
+          selectedBusinessDistrict,
+          selectedFeeder,
+        );
+      }
+
+      setVendorCollections(aggregatedCollections);
+    };
+
+    aggregateAndSetData();
+  }, [selectedState, selectedBusinessDistrict, selectedFeeder, selectedDT]);
+
+  // Initial load: run aggregation when the component mounts
+  useEffect(() => {
+    const defaultAggregation = aggregateVendorCollections();
+    setVendorCollections(defaultAggregation);
+  }, []); // Empty dependency array ensures this runs only once on initial mount
 
   const optionscolumnchart = {
     chart: {
@@ -104,6 +166,9 @@ const AgentCollectionsFeeder = ({ selectedState, selectedBusinessDistrict, selec
     yaxis: {
       min: 0,
       tickAmount: 4,
+      labels: {
+        formatter: formatAmount,
+      },
     },
     xaxis: {
       categories: vendorCollections.map((vendor) => vendor.name),
@@ -131,7 +196,9 @@ const AgentCollectionsFeeder = ({ selectedState, selectedBusinessDistrict, selec
         <Box display="flex" alignItems="left">
           <Chip
             label={
-              selectedFeeder && selectedFeeder !== 'Feeder'
+              selectedDT && selectedDT !== 'DT'
+                ? selectedDT
+                : selectedFeeder && selectedFeeder !== 'Feeder'
                 ? selectedFeeder
                 : selectedBusinessDistrict || selectedState || 'All Feeders'
             }

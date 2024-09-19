@@ -5,48 +5,51 @@ import { CardContent, Typography, Avatar, Grid, Stack } from '@mui/material';
 import BlankCard from '../../shared/BlankCard';
 import { IconArrowUpRight } from '@tabler/icons';
 
-const EnergyDeliveredTechnicalOverview = () => {
+const TATTechnicalOverview = () => {
+  // chart color
   const theme = useTheme();
-  const textColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.9)' : '#2A3547'; // Adapts to theme mode
-  const primaryColor = theme.palette.primary.main; // Using primary color for the bars
+  const secondary = theme.palette.secondary.main;
+  const secondarylight = theme.palette.secondary.light;
 
-  // Updated chart options
+  // chart
   const optionscolumnchart = {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: textColor,
+      foreColor: '#4d5561',
       toolbar: {
         show: false,
       },
-      height: 150,
+      height: 70,
       sparkline: {
         enabled: false,
       },
     },
-    colors: [primaryColor], // Setting bar color to primary
+    colors: ['#beb15b', '#d0d274', '#d5d98c', '#dfe2a6'],
     plotOptions: {
       bar: {
         borderRadius: 4,
         columnWidth: '50%',
+
         distributed: true,
         endingShape: 'rounded',
         dataLabels: {
-          position: 'top', 
+          position: 'top',
         },
       },
     },
     dataLabels: {
       enabled: true,
-      offsetY: -20, 
+      formatter: function (val) {
+        return val + ' Hrs';
+      },
+      position: 'top',
       style: {
-        colors: [textColor],
         fontSize: '10px',
-        fontWeight: '600',
+        colors: ['#304758'],
+        fontWeight: 700,
       },
-      formatter: function(val) {
-        return val; 
-      },
+      offsetY: -20,
     },
     legend: {
       show: false,
@@ -57,21 +60,14 @@ const EnergyDeliveredTechnicalOverview = () => {
           show: false,
         },
       },
-      padding: { left: 0, right: 0 }
     },
     xaxis: {
-      categories: ['July', 'June', 'May', 'April'],
-      labels: {
-        show: true,
-        style: {
-          colors: textColor,
-        },
-      },
+      categories: [['Aug'], ['Jul'], ['Jun'], ['May']],
       axisBorder: {
-        show: true,
+        show: false,
       },
       axisTicks: {
-        show: true,
+        show: false,
       },
     },
     yaxis: {
@@ -83,23 +79,22 @@ const EnergyDeliveredTechnicalOverview = () => {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
   };
-
   const seriescolumnchart = [
     {
       name: '',
-      data: [20, 15, 30, 25],
+      data: [8, 7, 2, 2],
     },
   ];
 
   return (
     <BlankCard>
       <CardContent sx={{ p: '30px' }}>
-        <Typography variant="h5">Energy Delivered (GWh)</Typography>
+        <Typography variant="h5">Average Turnaround Time - Faults</Typography>
+
         <Grid container spacing={3}>
-          <Grid item xs={7}>
-            <Typography variant="h4" mt={3} fontWeight={600}>1772</Typography>
-            <Typography variant="subtitle2" mt={1} fontSize="12px" color="textSecondary">
-              (MTD: <strong>177.62 </strong>)
+          <Grid item xs={12}>
+            <Typography variant="h4" mt={3} fontWeight={600}>
+              6 Hrs
             </Typography>
             <Stack direction="row" spacing={1} mt={1} alignItems="center">
               <Avatar sx={{ bgcolor: 'success.light', width: 20, height: 20 }}>
@@ -110,12 +105,21 @@ const EnergyDeliveredTechnicalOverview = () => {
               </Typography>
             </Stack>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={12}>
+            <Typography
+              mb={2}
+              variant="subtitle2"
+              whiteSpace="nowrap"
+              fontWeight={600}
+              textAlign="center"
+            >
+              Previous 4 Months
+            </Typography>
             <Chart
               options={optionscolumnchart}
               series={seriescolumnchart}
               type="bar"
-              height="150px"
+              height="120px"
             />
           </Grid>
         </Grid>
@@ -124,4 +128,4 @@ const EnergyDeliveredTechnicalOverview = () => {
   );
 };
 
-export default EnergyDeliveredTechnicalOverview;
+export default TATTechnicalOverview;
