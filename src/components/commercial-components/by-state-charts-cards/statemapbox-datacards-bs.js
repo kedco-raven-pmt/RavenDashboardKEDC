@@ -63,7 +63,7 @@ const StateMapBoxDataCards = ({ title, value, chartData, stateName }) => {
       show: false,
     },
     xaxis: {
-      categories: [b'July', 'June', 'May', 'April'],
+      categories: ['July', 'June', 'May', 'April'],
       labels: {
         show: true,
         style: {
