@@ -158,11 +158,11 @@ const TariffFeeder = ({ selectedState, selectedBusinessDistrict, selectedFeeder,
           <Box display="flex" alignItems="left">
             <Chip
               label={
-                selectedDT ||
-                selectedFeeder ||
-                selectedBusinessDistrict ||
-                selectedState ||
-                'All Feeders'
+                selectedDT && selectedDT !== 'DT'
+                  ? selectedDT
+                  : selectedFeeder && selectedFeeder !== 'Feeder'
+                  ? selectedFeeder
+                  : selectedBusinessDistrict || selectedState || 'All Feeders'
               }
               size="small"
             />

@@ -1,125 +1,77 @@
-import React from 'react';
-import {
-  Box,
-  Avatar,
-  Typography,
-  Card,
-  CardContent,
-  Grid,
-  Divider,
-  Stack,
-  MenuItem,
-  Chip,
-  Tooltip,
-} from '@mui/material';
-import { IconArrowUpRight, IconArrowDownLeft } from '@tabler/icons';
+import React, { useEffect, useState } from 'react';
+import { Box, Avatar, Typography, Grid, Stack, CardContent } from '@mui/material';
+import { IconArrowUpRight, IconArrowDownRight } from '@tabler/icons';
 import BlankCard from '../../shared/BlankCard';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import BlankCardTransparent from '../../shared/BlankCardTransparent';
-import CLientLogo from 'src/assets/images/logos/cropped-Kedco-Logo-web copy.png';
+import { SalesRepData } from './dataroom-financial-salesrep/dataroom-financial-salesrep';
 
-const OfftakePerPCCNERC = () => {
+const FinancialOverviewSalesRep = ({ selectedSalesRep, selectedDT }) => {
   const theme = useTheme();
-  const primary = theme.palette.primary.main;
+  const [aggregatedData, setAggregatedData] = useState({
+    totalCost: 0,
+    revenueBilled: 0,
+    collections: 0,
+  });
 
-  const nominationchart = {
-    chart: {
-      type: 'bar',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#4d5561',
-      toolbar: {
-        show: false,
-      },
-      height: 70,
-    },
-    colors: ['#394d5c', '#627787', '#a5bac9', '#c8d5de'],
+  const formatAmount = (amount) => {
+    if (amount >= 1000000000) {
+      return `₦${(amount / 1000000000).toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}B`;
+    }
+    return `₦${(amount / 1000000).toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}M`;
+  };
 
-    plotOptions: {
-      bar: {
-        borderRadius: 4,
-        columnWidth: '50%',
-        distributed: true,
-        endingShape: 'rounded',
-        dataLabels: {
-          position: 'top',
-        },
-      },
-    },
-    dataLabels: {
-      enabled: true,
-      formatter: function (val) {
-        return val + ' MW';
-      },
-      position: 'top',
-      style: {
-        fontSize: '10px',
-        colors: ['#304758'],
-        fontWeight: 700,
-      },
-      offsetY: -20,
-    },
-    legend: {
-      show: false,
-    },
-    grid: {
-      yaxis: {
-        lines: {
-          show: false,
-        },
-      },
-    },
-    xaxis: {
-      categories: [['July'], ['June'], ['May'], ['April']],
-      labels: {
-        show: true,
-      },
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
-    },
-    yaxis: {
-      labels: {
-        show: false,
-        formatter: function (val) {
-          return val + ' MW';
-        },
-      },
-    },
-    tooltip: {
-      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-    },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
-    },
+  useEffect(() => {
+    const calculateAggregatedData = () => {
+      let totalCost = 0;
+      let revenueBilled = 0;
+      let collections = 0;
+
+      const data = SalesRepData[selectedSalesRep] || {};
+
+      if (selectedDT) {
+        const dtData = data.DTs?.find((dt) => dt.name === selectedDT);
+        if (dtData) {
+          totalCost = dtData.totalCost || 0;
+          revenueBilled = dtData.revenueBilled || 0;
+          collections = dtData.collections || 0;
+        }
+      } else {
+        data.DTs?.forEach((dt) => {
+          totalCost += dt.totalCost || 0;
+          revenueBilled += dt.revenueBilled || 0;
+          collections += dt.collections || 0;
+        });
+      }
+
+      setAggregatedData({
+        totalCost,
+        revenueBilled,
+        collections,
+      });
+    };
+
+    calculateAggregatedData();
+  }, [selectedSalesRep, selectedDT]);
+
+  const generateSeriesData = (value) => {
+    return Array(4).fill(value);
   };
-  const nominationseries = [
-    {
-      name: '',
-      data: [241, 243, 251, 245],
-    },
-  ];
-  const offtakechart = {
+
+  const totalcostchart = {
     chart: {
       type: 'bar',
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#4d5561',
+      foreColor: '#adb0bb',
       toolbar: {
         show: false,
       },
       height: 70,
+      sparkline: {
+        enabled: true,
+      },
     },
-    colors: ['#395c4b', '#628774', '#a5c9b4', '#c8decf'],
+    colors: ['#0074BA'],
     plotOptions: {
       bar: {
         borderRadius: 4,
@@ -133,9 +85,7 @@ const OfftakePerPCCNERC = () => {
     },
     dataLabels: {
       enabled: true,
-      formatter: function (val) {
-        return val + ' MWh';
-      },
+      formatter: formatAmount,
       position: 'top',
       style: {
         fontSize: '10px',
@@ -155,9 +105,12 @@ const OfftakePerPCCNERC = () => {
       },
     },
     xaxis: {
-      categories: [['July'], ['June'], ['May'], ['April']],
+      categories: ['Sep', 'Aug', 'Jul', 'Jun'],
       labels: {
         show: true,
+        style: {
+          fontSize: '10px',
+        },
       },
       axisBorder: {
         show: false,
@@ -169,9 +122,7 @@ const OfftakePerPCCNERC = () => {
     yaxis: {
       labels: {
         show: false,
-        formatter: function (val) {
-          return val + ' MWh';
-        },
+        formatter: formatAmount,
       },
     },
     tooltip: {
@@ -188,97 +139,12 @@ const OfftakePerPCCNERC = () => {
       },
     },
   };
-  const offtakeseries = [
-    {
-      name: '',
-      data: [234, 227, 229, 225],
-    },
+
+  const totalcostseries = [{ name: '', data: generateSeriesData(aggregatedData.totalCost) }];
+  const revenuebilledseries = [
+    { name: '', data: generateSeriesData(aggregatedData.revenueBilled) },
   ];
-  const relativechart = {
-    chart: {
-      type: 'bar',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#4d5561',
-      toolbar: {
-        show: false,
-      },
-      height: 70,
-    },
-    colors: ['#a8d70f', '#b6e717', '#cdf93c', '#e0ff78'],
-    plotOptions: {
-      bar: {
-        borderRadius: 4,
-        columnWidth: '50%',
-        distributed: true,
-        endingShape: 'rounded',
-        dataLabels: {
-          position: 'top',
-        },
-      },
-    },
-    dataLabels: {
-      enabled: true,
-      formatter: function (val) {
-        return '₦' + val + 'B';
-      },
-      position: 'top',
-      style: {
-        fontSize: '10px',
-        colors: ['#304758'],
-        fontWeight: 700,
-      },
-      offsetY: -20,
-    },
-    legend: {
-      show: false,
-    },
-    grid: {
-      yaxis: {
-        lines: {
-          show: false,
-        },
-      },
-    },
-    xaxis: {
-      categories: [['July'], ['June'], ['May'], ['April']],
-      labels: {
-        show: true,
-      },
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
-    },
-    yaxis: {
-      labels: {
-        show: false,
-        formatter: function (val) {
-          return val + '%';
-        },
-      },
-    },
-    tooltip: {
-      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-    },
-    title: {
-      text: '',
-      align: 'center',
-      style: {
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#263238',
-        padding: '10px',
-      },
-    },
-  };
-  const relativeseries = [
-    {
-      name: '',
-      data: [34, 27, 29, 25],
-    },
-  ];
+  const collectionsseries = [{ name: '', data: generateSeriesData(aggregatedData.collections) }];
 
   return (
     <BlankCard elevation={0} sx={{ backgroundColor: '#EAF1F6', p: 2 }}>
@@ -286,19 +152,18 @@ const OfftakePerPCCNERC = () => {
         <Grid container justifyContent="space-between">
           <Grid item xs={12} sm={12} gap={3} display="flex" alignItems="center" textAlign="left">
             <Box width="100%" gap={3}>
-              <Stack mb={5}>
+              <Stack direction="row" justifyContent="space-between">
                 <Typography
                   gap="16px"
-                  mb={4}
                   variant="h4"
-                  textAlign="center"
+                  textAlign="left"
                   whiteSpace="nowrap"
                   fontWeight={700}
                 >
-                  Energy Offtake Relative To PCC (%)
+                  Financial Overview - Sales Rep
                 </Typography>
-                <Stack direction="row" spacing={3} justifyContent="center">
-                  {['#627787', '#628774', '#a8d70f', '#49BEFF'].map((color, index) => (
+                <Stack direction="row" spacing={3}>
+                  {['#0074BA', '#02B7FA', '#ABC4C9'].map((color, index) => (
                     <Stack direction="row" alignItems="center" spacing={1} key={index}>
                       <Avatar
                         sx={{ width: 9, height: 9, bgcolor: color, svg: { display: 'none' } }}
@@ -310,14 +175,7 @@ const OfftakePerPCCNERC = () => {
                           fontWeight={700}
                           color="textSecondary"
                         >
-                          {
-                            [
-                              'Available Nomination',
-                              'Energy Offtake',
-                              '% Offtake Relative to PCC',
-                              'NERC Target',
-                            ][index]
-                          }
+                          {['Outstanding - All-Time', 'Revenue Billed', 'Collections'][index]}
                         </Typography>
                       </Box>
                     </Stack>
@@ -330,12 +188,11 @@ const OfftakePerPCCNERC = () => {
                 <Grid item xs={12} sm={4}>
                   <BlankCard>
                     <CardContent sx={{ p: '30px' }}>
-                      <Typography variant="h5">Available Nomination</Typography>
-
+                      <Typography variant="h5">Outstanding Billed</Typography>
                       <Grid container spacing={3}>
                         <Grid item xs={12}>
-                          <Typography variant="h4" mt={3} fontWeight={600}>
-                            248.99 MW
+                          <Typography variant="h4" mt={2} fontWeight={600}>
+                            ₦{aggregatedData.totalCost.toLocaleString()}
                           </Typography>
                           <Stack direction="row" spacing={1} mt={1} alignItems="center">
                             <Avatar sx={{ bgcolor: 'success.light', width: 20, height: 20 }}>
@@ -357,10 +214,10 @@ const OfftakePerPCCNERC = () => {
                             Previous 4 Months
                           </Typography>
                           <Chart
-                            options={nominationchart}
-                            series={nominationseries}
+                            options={totalcostchart}
+                            series={totalcostseries}
                             type="bar"
-                            height="120px"
+                            height="70px"
                           />
                         </Grid>
                       </Grid>
@@ -371,12 +228,11 @@ const OfftakePerPCCNERC = () => {
                 <Grid item xs={12} sm={4}>
                   <BlankCard>
                     <CardContent sx={{ p: '30px' }}>
-                      <Typography variant="h5">Energy Offtake</Typography>
-
+                      <Typography variant="h5">Current Billed</Typography>
                       <Grid container spacing={3}>
                         <Grid item xs={12}>
-                          <Typography variant="h4" mt={3} fontWeight={600}>
-                            243 MWh
+                          <Typography variant="h4" mt={2} fontWeight={600}>
+                            ₦{aggregatedData.revenueBilled.toLocaleString()}
                           </Typography>
                           <Stack direction="row" spacing={1} mt={1} alignItems="center">
                             <Avatar sx={{ bgcolor: 'success.light', width: 20, height: 20 }}>
@@ -398,10 +254,10 @@ const OfftakePerPCCNERC = () => {
                             Previous 4 Months
                           </Typography>
                           <Chart
-                            options={offtakechart}
-                            series={offtakeseries}
+                            options={totalcostchart}
+                            series={revenuebilledseries}
                             type="bar"
-                            height="120px"
+                            height="70px"
                           />
                         </Grid>
                       </Grid>
@@ -413,23 +269,12 @@ const OfftakePerPCCNERC = () => {
                   <BlankCard>
                     <CardContent sx={{ p: '30px' }}>
                       <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="h5">% Of Offtake To PCC</Typography>
-                        <Box justifyContent="center" textAlign="right">
-                          <Tooltip title="NERC Target">
-                            <Chip
-                              color="secondary"
-                              justifyContent="center"
-                              label="100%"
-                              size="small"
-                            />
-                          </Tooltip>
-                        </Box>
+                        <Typography variant="h5">Collections</Typography>
                       </Box>
-
                       <Grid container spacing={3}>
                         <Grid item xs={12}>
-                          <Typography variant="h4" mt={3} fontWeight={600}>
-                            97.7%
+                          <Typography variant="h4" mt={2} fontWeight={600}>
+                            ₦{aggregatedData.collections.toLocaleString()}
                           </Typography>
                           <Stack direction="row" spacing={1} mt={1} alignItems="center">
                             <Avatar sx={{ bgcolor: 'success.light', width: 20, height: 20 }}>
@@ -451,10 +296,10 @@ const OfftakePerPCCNERC = () => {
                             Previous 4 Months
                           </Typography>
                           <Chart
-                            options={relativechart}
-                            series={relativeseries}
+                            options={totalcostchart}
+                            series={collectionsseries}
                             type="bar"
-                            height="120px"
+                            height="70px"
                           />
                         </Grid>
                       </Grid>
@@ -470,4 +315,4 @@ const OfftakePerPCCNERC = () => {
   );
 };
 
-export default OfftakePerPCCNERC;
+export default FinancialOverviewSalesRep;
