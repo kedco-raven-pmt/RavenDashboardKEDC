@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 import OpexBreakdownFinancial from '../../components/financial-components/overview-charts-cards/opex-breakdown-fo';
-import FinancialWelcomeCard from 'src/components/dashboards/ecommerce/FinancialWelcomeCard';
+import FinancialWelcomeCard from '../../components/financial-components/overview-charts-cards/financial-welcome-card-fo';
 import TotalCostFinancial from '../../components/financial-components/overview-charts-cards/total-cost-fo';
 import RevenueBilledFinancial from '../../components/financial-components/overview-charts-cards/revenue-billed-fo';
 import CollectionsFinancial from '../../components/financial-components/overview-charts-cards/collections-fo';
@@ -12,19 +12,21 @@ import DailyPostpaidCollectionFinancialOverview from '../../components/financial
 import TariffBreakdownFinancial from '../../components/financial-components/overview-charts-cards/tariff-breakdown-fo';
 import AgentCollectionFinancialOverview from '../../components/financial-components/overview-charts-cards/agent-collections-fo';
 
-
 const FinancialOverview = () => {
   return (
-    <PageContainer title="Financial Overview" description="this is Financial Overview Dashboard page">
+    <PageContainer
+      title="Financial Overview"
+      description="this is Financial Overview Dashboard page"
+    >
       <Box mt={1}>
         <Grid container spacing={3}>
           {/* column */}
-          <Grid item xs={12} >
+          <Grid item xs={12}>
             <FinancialWelcomeCard />
           </Grid>
 
-          {/* column */} 
-          
+          {/* column */}
+
           <Grid item xs={12} sm={4}>
             <TotalCostFinancial />
           </Grid>
@@ -35,16 +37,16 @@ const FinancialOverview = () => {
             <CollectionsFinancial />
           </Grid>
           <Grid item xs={12} sm={12}>
-              <DailyCollectionFinancialOverview />
+            <DailyCollectionFinancialOverview />
           </Grid>
           <Grid item xs={12} sm={12}>
-              <DailyPostpaidCollectionFinancialOverview />
+            <DailyPostpaidCollectionFinancialOverview />
           </Grid>
           <Grid item xs={12} sm={12}>
             <AgentCollectionFinancialOverview />
           </Grid>
           <Grid item xs={12} sm={12}>
-              <OpexBreakdownFinancial />
+            <OpexBreakdownFinancial />
           </Grid>
           <Grid item xs={12} sm={12}>
             <CostBreakdownFinancial />
@@ -52,7 +54,6 @@ const FinancialOverview = () => {
           <Grid item xs={12} sm={12}>
             <TariffBreakdownFinancial />
           </Grid>
-          
         </Grid>
       </Box>
     </PageContainer>

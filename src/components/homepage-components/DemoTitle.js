@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Typography, AvatarGroup, Avatar, Stack } from '@mui/material';
-import AnimationFadeIn from '../../components/landingpage/animation/Animation';
+import AnimationFadeIn from '../material-ui/landingpage/animation/Animation';
 // images
 import img1 from 'src/assets/images/profile/user-1.jpg';
 import img2 from 'src/assets/images/profile/user-2.jpg';
@@ -18,15 +18,8 @@ const DemoTitle = () => {
             justifyContent="center"
             mb={2}
           >
-            <AvatarGroup>
-              <Avatar alt="Remy Sharp" src={img1} sx={{ width: 28, height: 28 }} />
-              <Avatar alt="Travis Howard" src={img2} sx={{ width: 28, height: 28 }} />
-              <Avatar alt="Cindy Baker" src={img3} sx={{ width: 28, height: 28 }} />
-            </AvatarGroup>
-            <Typography variant="h6">52,589+</Typography>
-            <Typography variant="h6" color="textSecondary">
-              developers & agencies using our templates
-            </Typography>
+            <Typography variant="h6"></Typography>
+            <Typography variant="h6" color="textSecondary"></Typography>
           </Stack>
           <Typography
             variant="h2"
@@ -42,9 +35,7 @@ const DemoTitle = () => {
                 xs: '30px',
               },
             }}
-          >
-            Production Ready & Developer Friendly Material UI React Admin Template
-          </Typography>
+          ></Typography>
         </AnimationFadeIn>
       </Grid>
     </Grid>

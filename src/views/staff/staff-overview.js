@@ -1,16 +1,12 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
-
-import WeeklyStats from 'src/components/dashboards/modern/WeeklyStats';
-import YearlySales from 'src/components/dashboards/ecommerce/YearlySales';
-import PaymentGateways from 'src/components/dashboards/ecommerce/PaymentGateways';
 import StaffWelcomeCard from '../../components/staff-components/overview-charts-cards/StaffWelcomeCard';
-import ChurnRate from 'src/components/dashboards/ecommerce/ChurnRate';
-import StaffDistribution from 'src/components/dashboards/ecommerce/StaffDistribution';
-import GenderDistribution from 'src/components/dashboards/ecommerce/GenderDistribution';
-import RetentionRate from 'src/components/dashboards/ecommerce/RetentionRate';
-import CollectionsPerStaff from 'src/components/dashboards/ecommerce/CollectionsPerStaff';
+import ChurnRate from '../../components/staff-components/overview-charts-cards/ChurnRate';
+import StaffDistribution from '../../components/staff-components/overview-charts-cards/StaffDistribution';
+import GenderDistribution from '../../components/staff-components/overview-charts-cards/GenderDistribution';
+import RetentionRate from '../../components/staff-components/overview-charts-cards/RetentionRate';
+import CollectionsPerStaff from '../../components/staff-components/overview-charts-cards/CollectionsPerStaff';
 
 const StaffOverview = () => {
   return (

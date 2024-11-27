@@ -1,12 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Box, Breadcrumbs, Link, MenuItem, FormControl, InputLabel, Stack, Button, useTheme } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  Box,
+  Breadcrumbs,
+  Link,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Stack,
+  Button,
+  useTheme,
+} from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import CustomSelect from '../../../../components/forms/theme-elements/CustomSelect';
+import CustomSelect from '../../../../components/mui-forms/theme-elements/CustomSelect';
 import { IconCircle } from '@tabler/icons';
 
 const businessDistricts = [
-  'Kano Industrial', 'Kano Central', 'Katsina North', 'Kano North', 'Kano East',
-  'Kano West', 'Katsina South', 'Jigawa South', 'Jigawa North', 'Katsina Central'
+  'Kano Industrial',
+  'Kano Central',
+  'Katsina North',
+  'Kano North',
+  'Kano East',
+  'Kano West',
+  'Katsina South',
+  'Jigawa South',
+  'Jigawa North',
+  'Katsina Central',
 ];
 
 const CommercialBusinessDistrictBreadcrumb = ({ subtitle, items, title, onFilterChange }) => {
@@ -35,7 +55,21 @@ const CommercialBusinessDistrictBreadcrumb = ({ subtitle, items, title, onFilter
   };
 
   const years = ['All', '2023', '2024'];
-  const allMonths = ['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const allMonths = [
+    'All',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
   useEffect(() => {
     if (year === '2024') {
@@ -89,22 +123,17 @@ const CommercialBusinessDistrictBreadcrumb = ({ subtitle, items, title, onFilter
         </Breadcrumbs>
       </Grid>
       <Grid item xs={12} display="flex" justifyContent="space-between" mt={2}>
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="flex-start"
-          sx={{ maxWidth: '600px' }} 
-        >
+        <Box display="flex" flexWrap="wrap" justifyContent="flex-start" sx={{ maxWidth: '600px' }}>
           {businessDistricts.map((district) => (
             <Button
               key={district}
               variant={selectedDistrict === district ? 'contained' : 'outlined'}
               onClick={() => handleDistrictButtonClick(district)}
-              sx={{ 
-                m: 0.5, 
+              sx={{
+                m: 0.5,
                 flexBasis: 'calc(20% - 8px)',
-                padding: '4px 8px', 
-                fontSize: '0.75rem', 
+                padding: '4px 8px',
+                fontSize: '0.75rem',
               }}
             >
               {district}
@@ -127,9 +156,12 @@ const CommercialBusinessDistrictBreadcrumb = ({ subtitle, items, title, onFilter
                 onChange={handleYearChange}
                 label="Year"
                 sx={{
-                  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
                   color: theme.palette.mode === 'dark' ? 'white' : 'black',
-                  '& .MuiSelect-icon': { color: theme.palette.mode === 'dark' ? 'white' : 'inherit' },
+                  '& .MuiSelect-icon': {
+                    color: theme.palette.mode === 'dark' ? 'white' : 'inherit',
+                  },
                 }}
               >
                 {years.map((y) => (
@@ -157,9 +189,12 @@ const CommercialBusinessDistrictBreadcrumb = ({ subtitle, items, title, onFilter
                 onChange={handleMonthChange}
                 label="Month"
                 sx={{
-                  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
                   color: theme.palette.mode === 'dark' ? 'white' : 'black',
-                  '& .MuiSelect-icon': { color: theme.palette.mode === 'dark' ? 'white' : 'inherit' },
+                  '& .MuiSelect-icon': {
+                    color: theme.palette.mode === 'dark' ? 'white' : 'inherit',
+                  },
                 }}
               >
                 {allMonths.map((m) => (

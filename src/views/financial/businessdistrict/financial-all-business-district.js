@@ -7,7 +7,7 @@ import TariffLossFinancialABD from '../../../components/financial-components/all
 import HighestTariffLossFinancialABD from '../../../components/financial-components/all-business-district-chart-card/highest-tariffloss-abd';
 import LowestTariffLossFinancialABD from '../../../components/financial-components/all-business-district-chart-card/lowest-tariffloss-abd';
 import CostBreakdownCompareFinancialABD from '../../../components/financial-components/all-business-district-chart-card/cost-breakdown-compare-abd';
-import CustomSwitch from '../../../components/forms/theme-elements/CustomSwitch';
+import CustomSwitch from '../../../components/mui-forms/theme-elements/CustomSwitch';
 import StateFilterFinancialABD from '../../../components/financial-components/all-business-district-chart-card/state-filters-fin-abd';
 
 const BCrumb = [
@@ -44,7 +44,10 @@ const FinancialAllBusinessDistricts = () => {
       <Breadcrumb title="Financial All Business District" items={BCrumb} />
       <Grid container spacing={3}>
         <Grid item xs={4}>
-          <StateFilterFinancialABD onFilterChange={handleFilterChange} selectedState={selectedState} />
+          <StateFilterFinancialABD
+            onFilterChange={handleFilterChange}
+            selectedState={selectedState}
+          />
         </Grid>
         <Grid item xs={8}>
           <Box textAlign="right">
@@ -68,9 +71,12 @@ const FinancialAllBusinessDistricts = () => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          {compare ? <CostBreakdownCompareFinancialABD selectedState={selectedState} /> : <CostBreakdownFinancialABD selectedState={selectedState} />}
+          {compare ? (
+            <CostBreakdownCompareFinancialABD selectedState={selectedState} />
+          ) : (
+            <CostBreakdownFinancialABD selectedState={selectedState} />
+          )}
         </Grid>
-        
       </Grid>
     </PageContainer>
   );

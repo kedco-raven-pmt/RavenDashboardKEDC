@@ -1,18 +1,23 @@
 import React from 'react';
-import { Grid, Box, Container, useMediaQuery, styled, Stack, Typography, Avatar, Button } from '@mui/material';
+import {
+  Grid,
+  Box,
+  Container,
+  useMediaQuery,
+  styled,
+  Stack,
+  Typography,
+  Avatar,
+  Button,
+} from '@mui/material';
 import BannerContent from './BannerContent';
-import bannerbgImg1 from 'src/assets/images/landingpage/bannerimg1.svg';
-import bannerbgImg2 from 'src/assets/images/landingpage/bannerimg2.svg';
-
-
 
 // images
-import mainDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';  
-import darkDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';  
-import horizontalDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';  
-import minisidebarDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';  
-import rtlDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';  
-
+import mainDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';
+import darkDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';
+import horizontalDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';
+import minisidebarDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';
+import rtlDemo from '../../assets/images/landingpage/demos/demo-rtl.jpg';
 
 const StyledBox = styled(Box)(() => ({
   overflow: 'auto',
@@ -43,9 +48,6 @@ const StyledBox = styled(Box)(() => ({
     },
   },
 }));
-
-
-
 
 const demos = [
   {
@@ -104,8 +106,6 @@ const Banner = () => {
     animation: 'slideDown 35s linear infinite',
   }));
 
-
-
   return (
     <Box mb={10} sx={{ overflow: 'hidden' }}>
       <Container maxWidth="lg">
@@ -113,7 +113,6 @@ const Banner = () => {
           <Grid item xs={12}>
             <BannerContent />
           </Grid>
-          
         </Grid>
       </Container>
     </Box>

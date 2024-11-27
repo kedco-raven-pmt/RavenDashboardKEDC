@@ -2,8 +2,8 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import Customers from '../../../components/widgets/charts/Customers';
-import ServiceBandCustomers from '../../../components/widgets/charts/ServiceBandCustomers';
+import Customers from '../../../components/commercial-components/customer-charts-cards/Customers';
+import ServiceBandCustomers from '../../../components/commercial-components/customer-charts-cards/ServiceBandCustomers';
 
 const BCrumb = [
   {
@@ -25,10 +25,6 @@ const CommercialCustomer = () => {
       <Breadcrumb title="Commercial Customer" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-        
-        
-        
-        
         <Grid item xs={12}>
           <Customers />
         </Grid>
@@ -36,25 +32,13 @@ const CommercialCustomer = () => {
           <ServiceBandCustomers />
         </Grid>
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-           
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-            
-            
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
       </Grid>
     </PageContainer>

@@ -6,7 +6,7 @@ import RevenueCostFinancialAS from '../../../components/financial-components/all
 import TariffFinancialAS from '../../../components/financial-components/all-state-chart-cards/tariff-as';
 import RevenueCostCompareFinancialAS from '../../../components/financial-components/all-state-chart-cards/revenue-cost-compare-as';
 import TariffCompareFinancialAS from '../../../components/financial-components/all-state-chart-cards/tariff-compare-as';
-import CustomSwitch from '../../../components/forms/theme-elements/CustomSwitch';
+import CustomSwitch from '../../../components/mui-forms/theme-elements/CustomSwitch';
 
 const BCrumb = [
   {

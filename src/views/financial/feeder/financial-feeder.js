@@ -7,7 +7,7 @@ import FeederFilterFinancial from '../../../components/financial-components/feed
 import FeederCompareFinancial from '../../../components/financial-components/feeder-chart-cards/revenue-cost-compare-financial';
 import FeederDropdown from '../../../components/financial-components/feeder-chart-cards/feeder-dropdown';
 import DTDropdown from '../../../components/financial-components/feeder-chart-cards/dt-dropdown';
-import CustomSwitch from '../../../components/forms/theme-elements/CustomSwitch';
+import CustomSwitch from '../../../components/mui-forms/theme-elements/CustomSwitch';
 import DailyCollectionPostPaidFeeder from '../../../components/financial-components/feeder-chart-cards/daily-collections-postpaid-feeder';
 import DailyCollectionPrePaidFeeder from '../../../components/financial-components/feeder-chart-cards/daily-collections-prepaid-feeder';
 import AgentCollectionsFeeder from '../../../components/financial-components/feeder-chart-cards/agent-collections-feeder';

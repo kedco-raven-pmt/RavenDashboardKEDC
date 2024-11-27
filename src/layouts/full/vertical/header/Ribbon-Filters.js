@@ -1,9 +1,9 @@
 // src/layouts/full/vertical/header/Ribbon.jsx
 import React from 'react';
-import { Box, MenuItem, Grid, Stack, Typography, IconButton} from '@mui/material';
+import { Box, MenuItem, Grid, Stack, Typography, IconButton } from '@mui/material';
 import PropTypes from 'prop-types';
-import CustomSelect from '../../../../components/forms/theme-elements/CustomSelect';
-import CustomTextField from '../../../../components/forms/theme-elements/CustomTextField';
+import CustomSelect from '../../../../components/mui-forms/theme-elements/CustomSelect';
+import CustomTextField from '../../../../components/mui-forms/theme-elements/CustomTextField';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -34,7 +34,6 @@ const Ribbon = ({ onFilterChange }) => {
     setYear(event.target.value);
     onFilterChange('year', event.target.value);
   };
-  
 
   return (
     <Box
@@ -47,15 +46,17 @@ const Ribbon = ({ onFilterChange }) => {
         top: '64px', // Adjust this value based on your header height
         zIndex: 1100,
         width: '100%',
-        borderRadius:0,
-        marginBottom:1,
+        borderRadius: 0,
+        marginBottom: 1,
       }}
     >
       <Stack spacing={1} direction="row" alignItems="center">
         <IconButton>
           <IconFilter />
         </IconButton>
-        <Typography variant="h6" fontSize={14} color="#7b7f95">Filter:</Typography>
+        <Typography variant="h6" fontSize={14} color="#7b7f95">
+          Filter:
+        </Typography>
 
         <Grid item xs={2}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>

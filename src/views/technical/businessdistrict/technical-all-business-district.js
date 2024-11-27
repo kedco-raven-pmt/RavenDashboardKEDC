@@ -6,7 +6,7 @@ import AvailabilityTechnicalABD from '../../../components/technical-components/a
 import AvailabilityCompareTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/availability-compare-abd';
 import FeederNumberTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/feeder-number-abd';
 import PeakLoadTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/peak-load-abd';
-import CustomSwitch from '../../../components/forms/theme-elements/CustomSwitch';
+import CustomSwitch from '../../../components/mui-forms/theme-elements/CustomSwitch';
 import StateFilterTechnicalABD from '../../../components/technical-components/all-business-district-chart-cards/state-filters-tech-abd';
 
 const BCrumb = [
@@ -43,7 +43,10 @@ const TechnicalAllBusinessDistricts = () => {
       <Breadcrumb title="Technical All Business District" items={BCrumb} />
       <Grid container spacing={3}>
         <Grid item xs={4}>
-          <StateFilterTechnicalABD onFilterChange={handleFilterChange} selectedState={selectedState} />
+          <StateFilterTechnicalABD
+            onFilterChange={handleFilterChange}
+            selectedState={selectedState}
+          />
         </Grid>
         <Grid item xs={8}>
           <Box textAlign="right">
@@ -54,7 +57,11 @@ const TechnicalAllBusinessDistricts = () => {
           </Box>
         </Grid>
         <Grid item xs={12}>
-          {compare ? <AvailabilityCompareTechnicalABD selectedState={selectedState} /> : <AvailabilityTechnicalABD selectedState={selectedState} />}
+          {compare ? (
+            <AvailabilityCompareTechnicalABD selectedState={selectedState} />
+          ) : (
+            <AvailabilityTechnicalABD selectedState={selectedState} />
+          )}
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={3}>

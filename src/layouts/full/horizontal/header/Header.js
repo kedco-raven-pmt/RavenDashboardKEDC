@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
 import { IconMenu2 } from '@tabler/icons';
 import Notifications from 'src/layouts/full/vertical/header/Notifications';
-import Cart from 'src/layouts/full/vertical/header/Cart';
 import Profile from 'src/layouts/full/vertical/header/Profile';
 import Search from 'src/layouts/full/vertical/header/Search';
 import Language from 'src/layouts/full/vertical/header/Language';
@@ -29,7 +28,11 @@ const Header = () => {
       minHeight: customizer.TopbarHeight,
     },
   }));
-  const ToolbarStyled = styled(Toolbar)(({theme}) => ({ margin: '0 auto', width: '100%', color: `${theme.palette.text.secondary} !important`, }));
+  const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
+    margin: '0 auto',
+    width: '100%',
+    color: `${theme.palette.text.secondary} !important`,
+  }));
 
   return (
     <AppBarStyled position="sticky" color="default" elevation={8}>

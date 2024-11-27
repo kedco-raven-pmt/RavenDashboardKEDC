@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Card, CardContent, Grid, Divider, Stack, MenuItem, FormControl, InputLabel } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+  Divider,
+  Stack,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from '@mui/material';
 import { IconArrowUpRight, IconArrowDownLeft } from '@tabler/icons';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
+import CustomSelect from '../../mui-forms/theme-elements/CustomSelect';
 import welcomeImg from 'src/assets/images/backgrounds/overveiw-bg.svg';
 import { useTheme } from '@mui/material/styles';
 
@@ -22,7 +33,21 @@ const TechnicalWelcomeCard = () => {
   };
 
   const years = ['All', '2023', '2024'];
-  const allMonths = ['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const allMonths = [
+    'All',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
   const [availableMonths, setAvailableMonths] = useState(allMonths);
 
@@ -45,7 +70,8 @@ const TechnicalWelcomeCard = () => {
                 Welcome back Regis Fortune!
               </Typography>
               <Box
-                gap="16px" mb={5}
+                gap="16px"
+                mb={5}
                 sx={{
                   display: {
                     xs: 'block',
@@ -54,21 +80,48 @@ const TechnicalWelcomeCard = () => {
                   alignItems: 'center',
                 }}
               >
-                <Typography variant="h5" whiteSpace="nowrap">Technical Overview:</Typography>
+                <Typography variant="h5" whiteSpace="nowrap">
+                  Technical Overview:
+                </Typography>
               </Box>
 
-              <Stack spacing={2} direction="row" divider={<Divider orientation="vertical" flexItem />}>
-                <Box>  
-                  <Typography variant="h2" whiteSpace="nowrap">2,950 (MW) <span><IconArrowUpRight width={18} color="#39B69A" /></span></Typography>
-                  <Typography variant="subtitle1" whiteSpace="nowrap">Energy Delivered</Typography>
-                </Box>
-                <Box> 
-                  <Typography variant="h2" whiteSpace="nowrap">2.9 (MW) <span><IconArrowUpRight width={18} color="#39B69A" /></span></Typography>
-                  <Typography variant="subtitle1" whiteSpace="nowrap">Average Load</Typography>
+              <Stack
+                spacing={2}
+                direction="row"
+                divider={<Divider orientation="vertical" flexItem />}
+              >
+                <Box>
+                  <Typography variant="h2" whiteSpace="nowrap">
+                    2,950 (MW){' '}
+                    <span>
+                      <IconArrowUpRight width={18} color="#39B69A" />
+                    </span>
+                  </Typography>
+                  <Typography variant="subtitle1" whiteSpace="nowrap">
+                    Energy Delivered
+                  </Typography>
                 </Box>
                 <Box>
-                  <Typography variant="h2" whiteSpace="nowrap">79<span><IconArrowDownLeft width={18} color="#b63939" /></span></Typography>
-                  <Typography variant="subtitle1" whiteSpace="nowrap">Interruptions</Typography>
+                  <Typography variant="h2" whiteSpace="nowrap">
+                    2.9 (MW){' '}
+                    <span>
+                      <IconArrowUpRight width={18} color="#39B69A" />
+                    </span>
+                  </Typography>
+                  <Typography variant="subtitle1" whiteSpace="nowrap">
+                    Average Load
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="h2" whiteSpace="nowrap">
+                    79
+                    <span>
+                      <IconArrowDownLeft width={18} color="#b63939" />
+                    </span>
+                  </Typography>
+                  <Typography variant="subtitle1" whiteSpace="nowrap">
+                    Interruptions
+                  </Typography>
                 </Box>
               </Stack>
             </Box>

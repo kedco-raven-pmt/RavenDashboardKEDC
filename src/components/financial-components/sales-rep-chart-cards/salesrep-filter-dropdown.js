@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
+import CustomSelect from '../../mui-forms/theme-elements/CustomSelect';
 import { MenuItem } from '@mui/material';
 import { SalesRepData } from './dataroom-financial-salesrep/dataroom-financial-salesrep';
 

@@ -2,8 +2,8 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import StaffCollectionBusinessDistrict from '../../../components/widgets/charts/StaffCollectionBusinessDistrict';
-import RetentionVsChurnBusinessDistrict from '../../../components/widgets/charts/RetentionVsChurnBusinessDistrict';
+import StaffCollectionBusinessDistrict from '../../../components/staff-components/all-bd-charts-cards/StaffCollectionBusinessDistrict';
+import RetentionVsChurnBusinessDistrict from '../../../components/staff-components/all-bd-charts-cards/RetentionVsChurnBusinessDistrict';
 import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter';
 
 const BCrumb = [
@@ -26,40 +26,24 @@ const StaffAllBusinessDistricts = () => {
       <Breadcrumb title="Staff All Business District" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-      <Grid item xs={4}>
+        <Grid item xs={4}>
           <StateFilter />
         </Grid>
-      <Grid item xs={12}>
+        <Grid item xs={12}>
           <StaffCollectionBusinessDistrict />
         </Grid>
         <Grid item xs={12}>
           <RetentionVsChurnBusinessDistrict />
         </Grid>
-        
-        
-        
-        
-        
+
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-            
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-           
-            
-            
-            
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
       </Grid>
     </PageContainer>

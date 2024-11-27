@@ -10,8 +10,7 @@ import {
   IconLogin,
   IconUserPlus,
   IconRotate,
-  IconZoomCode
-
+  IconZoomCode,
 } from '@tabler/icons';
 import { uniqueId } from 'lodash';
 
@@ -465,49 +464,49 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Forms',
     icon: IconFileDescription,
-    href: '/forms/form-elements/autocomplete',
+    href: '/mui-forms/form-elements/autocomplete',
     children: [
       {
         id: uniqueId(),
         title: 'Form Elements',
         icon: IconPoint,
-        href: '/forms/form-elements/autocomplete',
+        href: '/mui-forms/form-elements/autocomplete',
         children: [
           {
             id: uniqueId(),
             title: 'Autocomplete',
             icon: IconPoint,
-            href: '/forms/form-elements/autocomplete',
+            href: '/mui-forms/form-elements/autocomplete',
           },
           {
             id: uniqueId(),
             title: 'Button',
             icon: IconPoint,
-            href: '/forms/form-elements/button',
+            href: '/mui-forms/form-elements/button',
           },
           {
             id: uniqueId(),
             title: 'Radio',
             icon: IconPoint,
-            href: '/forms/form-elements/radio',
+            href: '/mui-forms/form-elements/radio',
           },
           {
             id: uniqueId(),
             title: 'Date Time',
             icon: IconPoint,
-            href: '/forms/form-elements/date-time',
+            href: '/mui-forms/form-elements/date-time',
           },
           {
             id: uniqueId(),
             title: 'Slider',
             icon: IconPoint,
-            href: '/forms/form-elements/slider',
+            href: '/mui-forms/form-elements/slider',
           },
           {
             id: uniqueId(),
             title: 'Switch',
             icon: IconPoint,
-            href: '/forms/form-elements/switch',
+            href: '/mui-forms/form-elements/switch',
           },
         ],
       },
@@ -515,43 +514,43 @@ const Menuitems = [
         id: uniqueId(),
         title: 'Form Layout',
         icon: IconPoint,
-        href: '/forms/form-layouts',
+        href: '/mui-forms/form-layouts',
       },
       {
         id: uniqueId(),
         title: 'Form Horizontal',
         icon: IconPoint,
-        href: '/forms/form-horizontal',
+        href: '/mui-forms/form-horizontal',
       },
       {
         id: uniqueId(),
         title: 'Form Vertical',
         icon: IconPoint,
-        href: '/forms/form-vertical',
+        href: '/mui-forms/form-vertical',
       },
       {
         id: uniqueId(),
         title: 'Form Custom',
         icon: IconPoint,
-        href: '/forms/form-custom',
+        href: '/mui-forms/form-custom',
       },
       {
         id: uniqueId(),
         title: 'Form Wizard',
         icon: IconPoint,
-        href: '/forms/form-wizard',
+        href: '/mui-forms/form-wizard',
       },
       {
         id: uniqueId(),
         title: 'Form Validation',
         icon: IconPoint,
-        href: '/forms/form-validation',
+        href: '/mui-forms/form-validation',
       },
       {
         id: uniqueId(),
         title: 'Quill Editor',
         icon: IconPoint,
-        href: '/forms/quill-editor',
+        href: '/mui-forms/quill-editor',
       },
     ],
   },

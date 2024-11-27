@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, FormControl, InputLabel, MenuItem, useTheme, Box, Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import CustomSelect from '../../../../components/forms/theme-elements/CustomSelect';
+import CustomSelect from '../../../../components/mui-forms/theme-elements/CustomSelect';
 
 const states = ['All', 'Kano', 'Katsina', 'Jigawa'];
 
@@ -41,7 +41,9 @@ const StateMenuFilter = ({ onFilterChange }) => {
             }}
           >
             {states.map((s) => (
-              <MenuItem key={s} value={s}>{s}</MenuItem>
+              <MenuItem key={s} value={s}>
+                {s}
+              </MenuItem>
             ))}
           </CustomSelect>
         </FormControl>

@@ -42,7 +42,11 @@ const FullLayout = ({ onFilterChange }) => {
           }),
         }}
       >
-        {customizer.isHorizontal ? <HorizontalHeader /> : <Header onFilterChange={onFilterChange} />}
+        {customizer.isHorizontal ? (
+          <HorizontalHeader />
+        ) : (
+          <Header onFilterChange={onFilterChange} />
+        )}
         {customizer.isHorizontal ? <Navigation /> : ''}
         <Container
           sx={{

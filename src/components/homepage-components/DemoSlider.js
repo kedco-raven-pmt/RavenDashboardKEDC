@@ -1,7 +1,5 @@
 import React from 'react';
-import { Box, Container, Button, styled, Typography, Grid, Avatar,  Chip } from '@mui/material';
-
-import DemoTitle from './DemoTitle';
+import { Box, Container, Button, styled, Typography, Grid, Avatar, Chip } from '@mui/material';
 
 // images
 import mainDemo from 'src/assets/images/landingpage/demos/demo-main.jpg';
@@ -9,20 +7,6 @@ import darkDemo from 'src/assets/images/landingpage/demos/demo-dark.jpg';
 import horizontalDemo from 'src/assets/images/landingpage/demos/demo-horizontal.jpg';
 import minisidebarDemo from 'src/assets/images/landingpage/demos/demo-firebase.jpg';
 import rtlDemo from 'src/assets/images/landingpage/demos/demo-rtl.jpg';
-
-import app1 from 'src/assets/images/landingpage/apps/app-calendar.jpg';
-import app2 from 'src/assets/images/landingpage/apps/app-chat.jpg';
-import app3 from 'src/assets/images/landingpage/apps/app-contact.jpg';
-import app4 from 'src/assets/images/landingpage/apps/app-email.jpg';
-import app5 from 'src/assets/images/landingpage/apps/app-note.jpg';
-import app6 from 'src/assets/images/landingpage/apps/app-user-profile.jpg';
-import app7 from 'src/assets/images/landingpage/apps/app-blog.jpg';
-import app8 from 'src/assets/images/landingpage/apps/app-ticket.jpg';
-import app9 from 'src/assets/images/landingpage/apps/app-ecommerce-shop.jpg';
-import app10 from 'src/assets/images/landingpage/apps/app-ecommerce-detail.jpg';
-import app11 from 'src/assets/images/landingpage/apps/app-ecommerce-checkout.jpg';
-import app12 from 'src/assets/images/landingpage/apps/app-ecommerce-list.jpg';
-import app13 from 'src/assets/images/landingpage/apps/app-blog-detail.jpg';
 
 const StyledBox = styled(Box)(() => ({
   overflow: 'auto',
@@ -81,7 +65,6 @@ const demos = [
     title: 'Staff Manager',
   },
 ];
-
 
 const DemoSlider = () => {
   return (

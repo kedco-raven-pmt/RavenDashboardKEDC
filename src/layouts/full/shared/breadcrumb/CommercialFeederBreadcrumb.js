@@ -1,12 +1,32 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Box, Breadcrumbs, Link, MenuItem, FormControl, InputLabel, Stack, Button, useTheme } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  Box,
+  Breadcrumbs,
+  Link,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Stack,
+  Button,
+  useTheme,
+} from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import CustomSelect from '../../../../components/forms/theme-elements/CustomSelect';
+import CustomSelect from '../../../../components/mui-forms/theme-elements/CustomSelect';
 import { IconCircle } from '@tabler/icons';
 
 const businessDistricts = [
-  'Kano Industrial', 'Kano Central', 'Katsina North', 'Kano North', 'Kano East',
-  'Kano West', 'Katsina South', 'Jigawa South', 'Jigawa North', 'Katsina Central'
+  'Kano Industrial',
+  'Kano Central',
+  'Katsina North',
+  'Kano North',
+  'Kano East',
+  'Kano West',
+  'Katsina South',
+  'Jigawa South',
+  'Jigawa North',
+  'Katsina Central',
 ];
 
 const CommercialFeederBreadcrumb = ({ subtitle, items, title, onFilterChange }) => {
@@ -23,36 +43,77 @@ const CommercialFeederBreadcrumb = ({ subtitle, items, title, onFilterChange }) 
     const currentMonthIndex = selectedYear === '2024' ? new Date().getMonth() + 1 : 12; // Get current month index if year is 2024
     setYear(selectedYear);
     setMonth('All'); // Reset month when year changes
-    onFilterChange({ year: selectedYear, month: 'All', district: selectedDistrict, state: selectedState, voltage: selectedVoltage });
+    onFilterChange({
+      year: selectedYear,
+      month: 'All',
+      district: selectedDistrict,
+      state: selectedState,
+      voltage: selectedVoltage,
+    });
   };
 
   const handleMonthChange = (event) => {
     setMonth(event.target.value);
-    onFilterChange({ year, month: event.target.value, district: selectedDistrict, state: selectedState, voltage: selectedVoltage });
+    onFilterChange({
+      year,
+      month: event.target.value,
+      district: selectedDistrict,
+      state: selectedState,
+      voltage: selectedVoltage,
+    });
   };
 
   const handleDistrictButtonClick = (district) => {
     const newSelectedDistrict = selectedDistrict === district ? '' : district;
     setSelectedDistrict(newSelectedDistrict);
-    onFilterChange({ year, month, district: newSelectedDistrict, state: selectedState, voltage: selectedVoltage });
+    onFilterChange({
+      year,
+      month,
+      district: newSelectedDistrict,
+      state: selectedState,
+      voltage: selectedVoltage,
+    });
   };
 
   const handleStateChange = (event) => {
     setSelectedState(event.target.value);
-    onFilterChange({ year, month, district: selectedDistrict, state: event.target.value, voltage: selectedVoltage });
+    onFilterChange({
+      year,
+      month,
+      district: selectedDistrict,
+      state: event.target.value,
+      voltage: selectedVoltage,
+    });
   };
 
   const handleVoltageButtonClick = (voltage) => {
     const newSelectedVoltage = selectedVoltage === voltage ? '' : voltage;
     setSelectedVoltage(newSelectedVoltage);
-    onFilterChange({ year, month, district: selectedDistrict, state: selectedState, voltage: newSelectedVoltage });
+    onFilterChange({
+      year,
+      month,
+      district: selectedDistrict,
+      state: selectedState,
+      voltage: newSelectedVoltage,
+    });
   };
 
-  
   const currentYear = new Date().getFullYear();
   const currentMonthIndex = year === '2024' ? new Date().getMonth() + 1 : 12;
   const months = [
-    'All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+    'All',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ].slice(0, currentMonthIndex + 1);
 
   const years = ['All', '2023', '2024'];
@@ -113,13 +174,16 @@ const CommercialFeederBreadcrumb = ({ subtitle, items, title, onFilterChange }) 
               onChange={handleYearChange}
               label="Year"
               sx={{
-                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
+                backgroundColor:
+                  theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
                 color: theme.palette.mode === 'dark' ? 'white' : 'black',
                 '& .MuiSelect-icon': { color: theme.palette.mode === 'dark' ? 'white' : 'inherit' },
               }}
             >
               {years.map((y) => (
-                <MenuItem key={y} value={y}>{y}</MenuItem>
+                <MenuItem key={y} value={y}>
+                  {y}
+                </MenuItem>
               ))}
             </CustomSelect>
           </FormControl>
@@ -132,13 +196,16 @@ const CommercialFeederBreadcrumb = ({ subtitle, items, title, onFilterChange }) 
               onChange={handleMonthChange}
               label="Month"
               sx={{
-                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
+                backgroundColor:
+                  theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
                 color: theme.palette.mode === 'dark' ? 'white' : 'black',
                 '& .MuiSelect-icon': { color: theme.palette.mode === 'dark' ? 'white' : 'inherit' },
               }}
             >
               {months.map((m) => (
-                <MenuItem key={m} value={m}>{m}</MenuItem>
+                <MenuItem key={m} value={m}>
+                  {m}
+                </MenuItem>
               ))}
             </CustomSelect>
           </FormControl>
@@ -151,11 +218,11 @@ const CommercialFeederBreadcrumb = ({ subtitle, items, title, onFilterChange }) 
               key={district}
               variant={selectedDistrict === district ? 'contained' : 'outlined'}
               onClick={() => handleDistrictButtonClick(district)}
-              sx={{ 
-                m: 0.5, 
+              sx={{
+                m: 0.5,
                 minWidth: 120, // Adjusted width
-                padding: '4px 8px', 
-                fontSize: '0.75rem', 
+                padding: '4px 8px',
+                fontSize: '0.75rem',
                 textAlign: 'left', // Align text to left
               }}
             >
@@ -173,13 +240,16 @@ const CommercialFeederBreadcrumb = ({ subtitle, items, title, onFilterChange }) 
               onChange={handleStateChange}
               label="State"
               sx={{
-                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
+                backgroundColor:
+                  theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'white',
                 color: theme.palette.mode === 'dark' ? 'white' : 'black',
                 '& .MuiSelect-icon': { color: theme.palette.mode === 'dark' ? 'white' : 'inherit' },
               }}
             >
               {states.map((s) => (
-                <MenuItem key={s} value={s}>{s}</MenuItem>
+                <MenuItem key={s} value={s}>
+                  {s}
+                </MenuItem>
               ))}
             </CustomSelect>
           </FormControl>

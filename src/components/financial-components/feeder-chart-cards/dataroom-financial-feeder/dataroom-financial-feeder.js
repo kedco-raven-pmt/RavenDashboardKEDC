@@ -1,7 +1,7 @@
 export const FeederData = {
   Kano: {
     businessDistricts: {
-      'Kano Central': [
+      'Kano Central    ': [
         {
           name: '11KV Dr Bala',
           DTs: [

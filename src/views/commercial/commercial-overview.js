@@ -3,14 +3,17 @@ import { Box, Grid } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 
 import WelcomeCard from '../../components/commercial-components/overview-charts-cards/CommercialWelcomeCard';
-import ATCC from 'src/components/dashboards/ecommerce/ATCC';
-import BillingEfficiency from 'src/components/dashboards/ecommerce/BillingEfficiency';
-import CollectionEfficiency from 'src/components/dashboards/ecommerce/CollectionEfficiency';
-import CustomerMetrics from 'src/components/dashboards/ecommerce/CustomerMetrics';
+import ATCC from 'src/components/commercial-components/overview-charts-cards/ATCC';
+import BillingEfficiency from 'src/components/commercial-components/overview-charts-cards/BillingEfficiency';
+import CollectionEfficiency from 'src/components/commercial-components/overview-charts-cards/CollectionEfficiency';
+import CustomerMetrics from 'src/components/commercial-components/overview-charts-cards/CustomerMetrics';
 
 const CommercialOverview = () => {
   return (
-    <PageContainer title="Financial Overview" description="This is Financial Overview Dashboard page">
+    <PageContainer
+      title="Financial Overview"
+      description="This is Financial Overview Dashboard page"
+    >
       <Box mt={3}>
         <Grid container spacing={3}>
           {/* Welcome Card */}

@@ -1,14 +1,23 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button, CardContent, Grid, Typography, Stack, Avatar, FormControlLabel } from '@mui/material';
+import {
+  Box,
+  Button,
+  CardContent,
+  Grid,
+  Typography,
+  Stack,
+  Avatar,
+  FormControlLabel,
+} from '@mui/material';
 import GreyCard from '../../shared/greycard';
 import DashboardWidgetCard from '../../shared/DashboardWidgetCard';
 import CostBreakdownCards from '../../shared/costbreakdowncard';
 import { color, fontSize, fontWeight, padding, width } from '@mui/system';
 import BlankCard from '../../shared/BlankCard';
 import BlankCardTransparent from '../../shared/BlankCardTransparent';
-import CustomSwitch from '../../forms/theme-elements/CustomSwitch';
+import CustomSwitch from '../../mui-forms/theme-elements/CustomSwitch';
 
 const RevenueCostCompareFinancialAS = () => {
   // chart color
@@ -27,7 +36,7 @@ const RevenueCostCompareFinancialAS = () => {
         show: false,
       },
       height: 265,
-      width: "100%",
+      width: '100%',
     },
     colors: ['#0074BA', '#02B7FA', '#ABC4C9', '#97BEDC', '#B3CEE6'],
     plotOptions: {
@@ -38,15 +47,14 @@ const RevenueCostCompareFinancialAS = () => {
         grouped: true,
         endingShape: 'rounded',
         dataLabels: {
-            position: 'top', 
-            
-          },
+          position: 'top',
+        },
       },
     },
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return "₦" + val + " /kWh";  
+        return '₦' + val + ' /kWh';
       },
       position: 'top',
       style: {
@@ -54,8 +62,7 @@ const RevenueCostCompareFinancialAS = () => {
         colors: ['#304758'],
         fontWeight: 700,
       },
-      offsetY: -20 ,
-      
+      offsetY: -20,
     },
     legend: {
       show: true,
@@ -86,7 +93,7 @@ const RevenueCostCompareFinancialAS = () => {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
     },
   };
-  
+
   const RevenueCostComparisonSeries = [
     {
       name: 'Total Cost',
@@ -102,47 +109,60 @@ const RevenueCostCompareFinancialAS = () => {
     },
   ];
 
-
   return (
-    <BlankCard  >
-      <CardContent sx={{ p: '30px'}} >
-        
-      <Stack direction="row" spacing={2} justifyContent="space-between">
+    <BlankCard>
+      <CardContent sx={{ p: '30px' }}>
+        <Stack direction="row" spacing={2} justifyContent="space-between">
           <Typography variant="h5">Expenditure and Collections Metrics</Typography>
           <Stack direction="row" spacing={2} mt={5} justifyContent="center">
-          <Stack direction="row" spacing={3}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#0074BA', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Total Cost
-              </Typography>
-            </Box>
+            <Stack direction="row" spacing={3}>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Avatar
+                  sx={{ width: 9, height: 9, bgcolor: '#0074BA', svg: { display: 'none' } }}
+                ></Avatar>
+                <Box>
+                  <Typography
+                    variant="subtitle2"
+                    fontSize="12px"
+                    fontWeight={700}
+                    color="textSecondary"
+                  >
+                    Total Cost
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Avatar
+                  sx={{ width: 9, height: 9, bgcolor: '#02B7FA', svg: { display: 'none' } }}
+                ></Avatar>
+                <Box>
+                  <Typography
+                    variant="subtitle2"
+                    fontSize="12px"
+                    fontWeight={700}
+                    color="textSecondary"
+                  >
+                    Revenue Billed
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Avatar
+                  sx={{ width: 9, height: 9, bgcolor: '#ABC4C9', svg: { display: 'none' } }}
+                ></Avatar>
+                <Box>
+                  <Typography
+                    variant="subtitle2"
+                    fontSize="12px"
+                    fontWeight={700}
+                    color="textSecondary"
+                  >
+                    Collections
+                  </Typography>
+                </Box>
+              </Stack>
+            </Stack>
           </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#02B7FA', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-              Revenue Billed
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              sx={{ width: 9, height: 9, bgcolor: '#ABC4C9', svg: { display: 'none' } }}
-            ></Avatar>
-            <Box>
-              <Typography variant="subtitle2" fontSize="12px" fontWeight={700} color="textSecondary">
-                Collections
-              </Typography>
-            </Box>
-          </Stack>
-        </Stack>
-        </Stack>
         </Stack>
 
         <Grid container spacing={3} mt={2}>
@@ -151,7 +171,12 @@ const RevenueCostCompareFinancialAS = () => {
             <BlankCard>
               <CardContent sx={{ p: '10px' }}>
                 <Box>
-                <Chart options={RevenueCostComparisonChart} series={RevenueCostComparisonSeries} type="bar" height="265px" /> 
+                  <Chart
+                    options={RevenueCostComparisonChart}
+                    series={RevenueCostComparisonSeries}
+                    type="bar"
+                    height="265px"
+                  />
                 </Box>
               </CardContent>
             </BlankCard>

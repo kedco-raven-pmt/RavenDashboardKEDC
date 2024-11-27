@@ -19,7 +19,7 @@ import {
   IconArrowsRight,
   IconArrowRight,
 } from '@tabler/icons';
-import CustomSelect from '../forms/theme-elements/CustomSelect';
+import CustomSelect from '../mui-forms/theme-elements/CustomSelect';
 import welcomeImg from 'src/assets/images/backgrounds/overveiw-bg.svg';
 import { useTheme } from '@mui/material/styles';
 

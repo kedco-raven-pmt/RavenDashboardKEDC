@@ -2,12 +2,12 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import EnergyAllStates from '../../../components/dashboards/ecommerce/EnergyAllStates';
-import BillingsandCollections from '../../../components/dashboards/ecommerce/BillingsandCollections';
-import CollectionEfficiencyWidget from '../../../components/widgets/charts/CollectionEfficiencyWidget';
-import BillingEfficiencyWidget from '../../../components/widgets/charts/BillingEfficiencyWidget';
-import CustomerResponseRateWidget from '../../../components/widgets/charts/CustomerResponseRateWidget';
-import ATCCWidget from '../../../components/widgets/charts/ATCCWidget';
+import EnergyAllStates from '../../../components/commercial-components/all-state-charts-cards/EnergyAllStates';
+import BillingsandCollections from '../../../components/commercial-components/all-state-charts-cards/BillingsandCollections';
+import CollectionEfficiencyWidget from '../../../components/commercial-components/all-state-charts-cards/CollectionEfficiencyWidget';
+import BillingEfficiencyWidget from '../../../components/commercial-components/all-state-charts-cards/BillingEfficiencyWidget';
+import CustomerResponseRateWidget from '../../../components/commercial-components/all-state-charts-cards/CustomerResponseRateWidget';
+import ATCCWidget from '../../../components/commercial-components/all-state-charts-cards/ATCCWidget';
 
 const BCrumb = [
   {

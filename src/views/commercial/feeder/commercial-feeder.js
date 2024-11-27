@@ -1,4 +1,4 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Box } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
@@ -22,7 +22,7 @@ const BCrumb = [
 ];
 
 const buttonStyles = {
-  minWidth: '100px', // Adjust this value as needed
+  minWidth: '100px',
   margin: '5px',
 };
 
@@ -44,7 +44,9 @@ const CommercialFeeder = () => {
       const data = Object.values(CommercialData[selectedState].businessDistricts).flat();
       setFilteredData(data);
     } else {
-      const data = Object.values(CommercialData).flatMap(state => Object.values(state.businessDistricts).flat());
+      const data = Object.values(CommercialData).flatMap((state) =>
+        Object.values(state.businessDistricts).flat(),
+      );
       setFilteredData(data);
     }
   }, [selectedState, selectedBusinessDistrict]);
@@ -55,14 +57,18 @@ const CommercialFeeder = () => {
       <Breadcrumb title="Commercial Feeder" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-      <Grid item xs={12} lg={6}>
+        <Grid item xs={12} lg={6}>
           <LowestATCCFeeder />
         </Grid>
         <Grid item xs={12} lg={6}>
           <HighestATCCFeeder />
         </Grid>
-      <Grid item xs={12}>
-          <FeederFilterCommercial onFilterChange={handleFilterChange} selectedState={selectedState} selectedBusinessDistrict={selectedBusinessDistrict} />
+        <Grid item xs={12}>
+          <FeederFilterCommercial
+            onFilterChange={handleFilterChange}
+            selectedState={selectedState}
+            selectedBusinessDistrict={selectedBusinessDistrict}
+          />
         </Grid>
         <Grid item xs={12}>
           <BreakdownCommercialFeeder filteredData={filteredData} />

@@ -6,13 +6,9 @@ import AvailabilityTechnicalAS from '../../../components/technical-components/al
 import FeederInfoTechnicalAS from '../../../components/technical-components/all-state-charts-cards/feeder-info-as';
 import AvailabilityCompareTechnicalAS from '../../../components/technical-components/all-state-charts-cards/availability-compare-as';
 import FeederInfoCompareTechnicalAS from '../../../components/technical-components/all-state-charts-cards/feeder-info-compare-as';
-import CustomSwitch from '../../../components/forms/theme-elements/CustomSwitch';
+import CustomSwitch from '../../../components/mui-forms/theme-elements/CustomSwitch';
 
-const BCrumb = [
-  { to: '/', title: 'Home' },
-  { title: 'State' },
-  { title: 'Technical All State' },
-];
+const BCrumb = [{ to: '/', title: 'Home' }, { title: 'State' }, { title: 'Technical All State' }];
 
 const TechnicalAllState = () => {
   const [compare, setCompare] = useState(false);

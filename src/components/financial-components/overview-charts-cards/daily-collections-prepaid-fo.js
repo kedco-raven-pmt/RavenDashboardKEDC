@@ -3,7 +3,7 @@ import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Box } from '@mui/material';
 import DashboardCard from '../../shared/DashboardCard';
-import CustomTextField from '../../forms/theme-elements/CustomTextField';
+import CustomTextField from '../../mui-forms/theme-elements/CustomTextField';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -36,14 +36,14 @@ const DailyCollectionFinancialOverview = () => {
           {
             offset: 0,
             color: primary,
-            opacity: 0.3
+            opacity: 0.3,
           },
           {
             offset: 100,
             color: secondary,
-            opacity: 0
-          }
-        ]
+            opacity: 0,
+          },
+        ],
       },
     },
     stroke: {
@@ -52,7 +52,7 @@ const DailyCollectionFinancialOverview = () => {
     },
     dataLabels: {
       enabled: true,
-      formatter: val => `₦${val}M`,
+      formatter: (val) => `₦${val}M`,
       position: 'top',
       offsetY: -10,
       style: {
@@ -86,7 +86,10 @@ const DailyCollectionFinancialOverview = () => {
   const seriescolumnchart = [
     {
       name: 'Daily Collections',
-      data: [15, 27, 22, 36, 15, 10, 15, 27, 22, 36, 15, 27, 22, 36, 15, 10, 15, 27, 22, 36, 15, 27, 22, 15, 36, 15, 27, 22, 15, 36, 15],
+      data: [
+        15, 27, 22, 36, 15, 10, 15, 27, 22, 36, 15, 27, 22, 36, 15, 10, 15, 27, 22, 36, 15, 27, 22,
+        15, 36, 15, 27, 22, 15, 36, 15,
+      ],
     },
   ];
 

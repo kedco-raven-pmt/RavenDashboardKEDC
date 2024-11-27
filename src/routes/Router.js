@@ -88,11 +88,6 @@ const StaffAllBusinessDistricts = Loadable(
 const StaffByBusinessDistricts = Loadable(
   lazy(() => import('../views/staff/businessdistrict/staff-by-business-district')),
 );
-const StaffFeeder = Loadable(lazy(() => import('../views/staff/feeder/staff-feeder')));
-const StaffServiceBand = Loadable(
-  lazy(() => import('../views/staff/serviceband/staff-service-band')),
-);
-const StaffCustomer = Loadable(lazy(() => import('../views/staff/customer/staff-customer')));
 
 /* ****Regulatory***** */
 const PerformanceFramework24 = Loadable(
@@ -162,9 +157,6 @@ const Router = [
       { path: '/staff/staff-by-state', element: <StaffByState /> },
       { path: '/staff/staff-all-business-district', element: <StaffAllBusinessDistricts /> },
       { path: '/staff/staff-by-business-district', element: <StaffByBusinessDistricts /> },
-      { path: '/staff/staff-feeder', element: <StaffFeeder /> },
-      { path: '/staff/staff-service-band', element: <StaffServiceBand /> },
-      { path: '/staff/staff-customer', element: <StaffCustomer /> },
 
       { path: '/regulatory/performance-framework-2024', element: <PerformanceFramework24 /> },
 

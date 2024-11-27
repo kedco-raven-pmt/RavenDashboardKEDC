@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Grid, Box } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import StaffCollectionBusinessDistrict_II from '../../../components/widgets/charts/StaffCollectionBusinessDistrict_II';
-import RetentionVsChurnBusinessDistrict_II from '../../../components/widgets/charts/RetentionVsChurnBusinessDistrict_II';
+import StaffCollectionBusinessDistrict_II from '../../../components/staff-components/by-bbd-charts-cards/StaffCollectionBusinessDistrict_II';
+import RetentionVsChurnBusinessDistrict_II from '../../../components/staff-components/by-bbd-charts-cards/RetentionVsChurnBusinessDistrict_II';
 import BusinessDistrictFilter from '/src/layouts/full/shared/breadcrumb/BusinessDistrictFilter';
 
 const BCrumb = [
@@ -45,8 +45,6 @@ const StaffByBusinessDistricts = () => {
         <Grid item xs={12}>
           <RetentionVsChurnBusinessDistrict_II filteredDistrict={selectedDistrict} />
         </Grid>
-        
-        
       </Grid>
     </PageContainer>
   );

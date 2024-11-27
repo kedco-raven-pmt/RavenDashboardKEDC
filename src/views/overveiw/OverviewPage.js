@@ -1,18 +1,17 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
-import ATCCWidgetOverview from '../../components/dashboards/modern/ATCCWidgetOverview';
-import BillingEfficiencyWidgetOverview from '../../components/dashboards/modern/BillingEfficiencyWidgetOverview';
-import CollectionEfficiencyWidgetOverview from '../../components/dashboards/modern/CollectionEfficiencyWidgetOverview';
-import TotalCostWidgetOverview from '../../components/dashboards/modern/TotalCostWidgetOverview';
-import RevenueBilledWidgetOverview from '../../components/dashboards/modern/RevenueBilledWidgetOverview';
-import CollectionsWidgetOverview from '../../components/dashboards/modern/CollectionsWidgetOverview';
-import EnergyOverview from '../../components/dashboards/modern/EnergyOverview';
-import AverageHoursofSupplyWidgetOverview from '../../components/dashboards/modern/AverageHoursofSupplyWidgetOverview';
-import DurationofInterruptionWidgetOverview from '../../components/dashboards/modern/DurationofInterruptionWidgetOverview';
-import TATWidgetOverview from '../../components/dashboards/modern/TATWidgetOverview';
+import ATCCWidgetOverview from '../../components/overview-page-components/ATCCWidgetOverview';
+import BillingEfficiencyWidgetOverview from '../../components/overview-page-components/BillingEfficiencyWidgetOverview';
+import CollectionEfficiencyWidgetOverview from '../../components/overview-page-components/CollectionEfficiencyWidgetOverview';
+import TotalCostWidgetOverview from '../../components/overview-page-components/TotalCostWidgetOverview';
+import RevenueBilledWidgetOverview from '../../components/overview-page-components/RevenueBilledWidgetOverview';
+import CollectionsWidgetOverview from '../../components/overview-page-components/CollectionsWidgetOverview';
+import EnergyOverview from '../../components/overview-page-components/EnergyOverview';
+import AverageHoursofSupplyWidgetOverview from '../../components/overview-page-components/AverageHoursofSupplyWidgetOverview';
+import DurationofInterruptionWidgetOverview from '../../components/overview-page-components/DurationofInterruptionWidgetOverview';
+import TATWidgetOverview from '../../components/overview-page-components/TATWidgetOverview';
 
 import Welcome from 'src/layouts/full/shared/welcome/Welcome';
-
 
 const OverviewPage = () => {
   return (
@@ -42,36 +41,30 @@ const OverviewPage = () => {
           <EnergyOverview />
         </Grid>
         {/* column */}
-        <Grid item xs={12} >
+        <Grid item xs={12}>
           <Grid container spacing={3}>
-          <Grid item sm={12} lg={4}>
-          <AverageHoursofSupplyWidgetOverview />
-        </Grid>
-        <Grid item sm={12} lg={4}>
-          <DurationofInterruptionWidgetOverview />
-        </Grid>
-        <Grid item sm={12} lg={4}>
-          <TATWidgetOverview />
-        </Grid>
-            
+            <Grid item sm={12} lg={4}>
+              <AverageHoursofSupplyWidgetOverview />
+            </Grid>
+            <Grid item sm={12} lg={4}>
+              <DurationofInterruptionWidgetOverview />
+            </Grid>
+            <Grid item sm={12} lg={4}>
+              <TATWidgetOverview />
+            </Grid>
           </Grid>
         </Grid>
         {/* column */}
-        
+
         {/* column */}
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-           
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
         {/* column */}
-        
+
         {/* column */}
-        
+
         {/* column */}
-        
       </Grid>
       {/* column */}
       <Welcome />

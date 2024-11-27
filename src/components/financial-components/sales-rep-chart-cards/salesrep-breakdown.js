@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import { IconArrowUpRight, IconArrowDownLeft } from '@tabler/icons';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
+import CustomSelect from '../../mui-forms/theme-elements/CustomSelect';
 import welcomeImg from 'src/assets/images/backgrounds/overveiw-bg.svg';
 import userImg from 'src/assets/images/profile/user-1.jpg';
 import BlankCard from '../../shared/BlankCard';

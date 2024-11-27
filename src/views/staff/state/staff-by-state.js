@@ -2,8 +2,7 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import Breadcrumb from 'src/layouts/full/shared/breadcrumb/Breadcrumb';
 import PageContainer from 'src/components/container/PageContainer';
-import StaffMetricsStates from '../../../components/widgets/charts/StaffMetricsStates';
-import StaffCollectionsStates from 'src/components/dashboards/ecommerce/StaffCollectionsStates';
+import StaffMetricsStates from '../../../components/staff-components/by-states-charts-cards/StaffMetricsStates';
 import StateFilter from 'src/layouts/full/shared/breadcrumb/StateFilter';
 
 const BCrumb = [
@@ -26,38 +25,21 @@ const StaffByState = () => {
       <Breadcrumb title="Staff by State" items={BCrumb} />
       {/* end breadcrumb */}
       <Grid container spacing={3}>
-      <Grid item xs={4}>
+        <Grid item xs={4}>
           <StateFilter />
         </Grid>
-      <Grid item xs={12}>
+        <Grid item xs={12}>
           <StaffMetricsStates />
         </Grid>
-     
-        
-        
-        
-        
-        
+
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-            
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-           
-            
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
         <Grid item xs={12} lg={4}>
-          <Grid container spacing={3}>
-            
-            
-          </Grid>
+          <Grid container spacing={3}></Grid>
         </Grid>
       </Grid>
     </PageContainer>

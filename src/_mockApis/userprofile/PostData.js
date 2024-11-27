@@ -14,13 +14,13 @@ import { Chance } from 'chance';
 const chance = new Chance();
 
 // social profile
-const posts= [
+const posts = [
   {
     id: chance.integer({ min: 1, max: 2000 }),
     profile: {
       id: chance.integer({ min: 1, max: 2000 }),
       avatar: user1,
-      name: 'Mathew Anderson',
+      name: 'Fortune Regis',
       time: '15 min ago',
     },
     data: {

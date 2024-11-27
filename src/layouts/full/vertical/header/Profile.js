@@ -20,9 +20,7 @@ const Profile = () => {
   };
 
   return (
-    
     <Box>
-      
       <IconButton
         size="large"
         aria-label="show 11 new notifications"
@@ -36,7 +34,6 @@ const Profile = () => {
         }}
         onClick={handleClick2}
       >
-        
         <Avatar
           src={'https://static.wixstatic.com/shapes/610b66_b4d73c785beb4b1daddded7d0cd17bb7.svg'}
           sx={{
@@ -66,13 +63,19 @@ const Profile = () => {
           <Box p={3}>
             <Typography variant="h5">User Profile</Typography>
             <Stack direction="row" py={3} spacing={2} alignItems="center">
-              <Avatar src={ProfileImg} alt={ProfileImg} sx={{ width: 95, height: 95 }} />
+              <Avatar
+                src={
+                  'https://static.wixstatic.com/shapes/610b66_b4d73c785beb4b1daddded7d0cd17bb7.svg'
+                }
+                alt={ProfileImg}
+                sx={{ width: 95, height: 95 }}
+              />
               <Box>
                 <Typography variant="subtitle2" color="textPrimary" fontWeight={600}>
-                  Mathew Anderson
+                  Fortune Regis
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
-                  Designer
+                  Management
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -82,7 +85,7 @@ const Profile = () => {
                   gap={1}
                 >
                   <IconMail width={15} height={15} />
-                  info@modernize.com
+                  fortune@raven-pmt.com
                 </Typography>
               </Box>
             </Stack>

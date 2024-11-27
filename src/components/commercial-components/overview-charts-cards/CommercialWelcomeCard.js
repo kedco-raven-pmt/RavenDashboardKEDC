@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Card, CardContent, Grid, Divider, Stack, MenuItem, FormControl, InputLabel } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+  Divider,
+  Stack,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from '@mui/material';
 import { IconArrowUpRight, IconArrowDownLeft } from '@tabler/icons';
-import CustomSelect from '../../forms/theme-elements/CustomSelect';
+import CustomSelect from '../../mui-forms/theme-elements/CustomSelect';
 import welcomeImg from 'src/assets/images/backgrounds/overveiw-bg.svg';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
@@ -24,7 +35,21 @@ const WelcomeCard = () => {
   };
 
   const years = ['All', '2023', '2024'];
-  const allMonths = ['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const allMonths = [
+    'All',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
   const [availableMonths, setAvailableMonths] = useState(allMonths);
 
@@ -74,7 +99,7 @@ const WelcomeCard = () => {
   // Hardcoded data for sparklines
   const seriesEnergyDelivered = [{ data: [150, 160, 145, 175], name: '' }];
   const seriesEnergyBilled = [{ data: [100, 110, 105, 115], name: '' }];
-  const seriesEnergyCollected = [{ data: [70, 85, 60, 65 ], name: '' }];
+  const seriesEnergyCollected = [{ data: [70, 85, 60, 65], name: '' }];
 
   return (
     <Card elevation={0} sx={{ backgroundColor: primaryLight, py: 0 }}>
@@ -86,7 +111,8 @@ const WelcomeCard = () => {
                 Welcome back Regis Fortune!
               </Typography>
               <Box
-                gap="16px" mb={5}
+                gap="16px"
+                mb={5}
                 sx={{
                   display: {
                     xs: 'block',
@@ -100,7 +126,11 @@ const WelcomeCard = () => {
                 </Typography>
               </Box>
 
-              <Stack spacing={2} direction="row" divider={<Divider orientation="vertical" flexItem />}>
+              <Stack
+                spacing={2}
+                direction="row"
+                divider={<Divider orientation="vertical" flexItem />}
+              >
                 <Box>
                   <Typography variant="h2" whiteSpace="nowrap">
                     1772{' '}
@@ -120,7 +150,12 @@ const WelcomeCard = () => {
                     Energy Delivered (GWh)
                   </Typography>
                   <Box mt={1}>
-                    <Chart options={optionsSparkline} series={seriesEnergyDelivered} type="area" height={35} />
+                    <Chart
+                      options={optionsSparkline}
+                      series={seriesEnergyDelivered}
+                      type="area"
+                      height={35}
+                    />
                     <Typography variant="subtitle2" color={sparklineTextColor}>
                       24% to target
                     </Typography>
@@ -145,7 +180,12 @@ const WelcomeCard = () => {
                     Energy Billed (GWh)
                   </Typography>
                   <Box mt={1}>
-                    <Chart options={optionsSparkline} series={seriesEnergyBilled} type="area" height={35} />
+                    <Chart
+                      options={optionsSparkline}
+                      series={seriesEnergyBilled}
+                      type="area"
+                      height={35}
+                    />
                     <Typography variant="subtitle2" color={sparklineTextColor}>
                       52% to target
                     </Typography>
@@ -170,7 +210,12 @@ const WelcomeCard = () => {
                     Energy Collected (GWh)
                   </Typography>
                   <Box mt={1}>
-                    <Chart options={optionsSparkline} series={seriesEnergyCollected} type="area" height={35} />
+                    <Chart
+                      options={optionsSparkline}
+                      series={seriesEnergyCollected}
+                      type="area"
+                      height={35}
+                    />
                     <Typography variant="subtitle2" color={sparklineTextColor}>
                       18% to target
                     </Typography>
@@ -191,4 +236,3 @@ const WelcomeCard = () => {
 };
 
 export default WelcomeCard;
-
